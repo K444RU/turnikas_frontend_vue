@@ -1,22 +1,91 @@
 <template>
   <div class="background-image2">
     <Header/>
-    <div class="text-container">
-      <h1>
-        HELLOOOOO SUKA
-      </h1>
-      <p>
-        The Evolution of Football Tournaments: A Glorious Journey Through Time
-        Football tournaments have a rich and captivating history that spans over a century, weaving a narrative of passion, competition, and sportsmanship. The inception of organized football competitions marked the beginning of an era that would forever change the landscape of the beautiful game.
-        The earliest football tournaments were modest affairs, often regional in scope and contested by amateur clubs with a burning desire to showcase their skills. As the sport gained popularity, these local tournaments evolved into more structured events, paving the way for the birth of national competitions.
-        In the late 19th century, the idea of international football tournaments began to take shape. The British Home Championship, established in 1884, stands as one of the earliest examples of national teams engaging in friendly yet fiercely competitive matches. This set the stage for what would eventually become the prestigious international competitions we know today.
-        The 20th century witnessed the meteoric rise of global football tournaments, with the FIFA World Cup emerging as the pinnacle of competitive football. The inaugural World Cup took place in Uruguay in 1930, bringing together nations from around the world in a celebration of unity through sport. Since then, the World Cup has become a quadrennial spectacle, capturing the hearts of millions and producing iconic moments that define football history.
-        Continental competitions, such as the UEFA European Championship and the Copa America, added further layers of excitement to the football calendar. These tournaments provided a platform for rivalries to flourish and for players to etch their names into the annals of the sport.
-        In recent years, club competitions like the UEFA Champions League and the Copa Libertadores have reached unprecedented levels of popularity. These tournaments showcase the best club teams from different continents, offering fans a tantalizing glimpse of top-tier football throughout the year.
-        The history of football tournaments is a story of evolution, innovation, and a relentless pursuit of excellence. From humble beginnings on local fields to the grandeur of international stadiums, football tournaments have become a global phenomenon, uniting diverse cultures under the common banner of the world's most beloved sport. As we eagerly anticipate the next chapter in this ongoing saga, one thing remains certain – the magic of football tournaments will continue to captivate generations to come.
-      </p>
+    <div class="row">
+      <div class="col-lg-4">
+        <nav id="navbar-example3" class="h-100 flex-column1 align-items-stretch pe-4 border-end">
+          <nav class="nav1 nav-pills flex-column">
+            <a class="nav-link nav-link-column" href="#item-1">Item 1</a>
+            <nav class="nav1 nav-pills flex-column">
+              <a class="nav-link nav-link-column" href="#item-1-1">Item 1-1</a>
+              <a class="nav-link nav-link-column" href="#item-1-2">Item 1-2</a>
+            </nav>
+            <a class="nav-link nav-link-column" href="#item-2">Item 2</a>
+            <a class="nav-link nav-link-column" href="#item-3">Item 3</a>
+            <nav class="nav1 nav-pills flex-column">
+              <a class="nav-link nav-link-column" href="#item-3-1">Item 3-1</a>
+              <a class="nav-link nav-link-column" href="#item-3-2">Item 3-2</a>
+            </nav>
+          </nav>
+        </nav>
+      </div>
+
+      <div class="col-8 about-background-column">
+        <div data-bs-spy="scroll" data-bs-target="#navbar-example3" data-bs-smooth-scroll="true"
+             class="scrollspy-example-2" tabindex="0">
+          <div id="item-1">
+            <h4>Item 1</h4>
+            <p>This is some placeholder content for the scrollspy page. Note that as you scroll down the page, the
+              appropriate navigation link is highlighted. It's repeated throughout the component example. We keep adding
+              some more example copy here to emphasize the scrolling and highlighting.</p>
+          </div>
+          <div id="item-1-1">
+            <h5>Item 1-1</h5>
+            <p>This is some placeholder content for the scrollspy page. Note that as you scroll down the page, the
+              appropriate navigation link is highlighted. It's repeated throughout the component example. We keep adding
+              some more example copy here to emphasize the scrolling and highlighting.
+
+              Keep in mind that the JavaScript plugin tries to pick the right element among all that may be visible.
+              Multiple visible scrollspy targets at the same time may cause some issues.</p>
+          </div>
+          <div id="item-1-2">
+            <h5>Item 1-2</h5>
+            <p>This is some placeholder content for the scrollspy page. Note that as you scroll down the page, the
+              appropriate navigation link is highlighted. It's repeated throughout the component example. We keep adding
+              some more example copy here to emphasize the scrolling and highlighting.
+
+              Keep in mind that the JavaScript plugin tries to pick the right element among all that may be visible.
+              Multiple visible scrollspy targets at the same time may cause some issues.</p>
+          </div>
+          <div id="item-2">
+            <h4>Item 2</h4>
+            <p>This is some placeholder content for the scrollspy page. Note that as you scroll down the page, the
+              appropriate navigation link is highlighted. It's repeated throughout the component example. We keep adding
+              some more example copy here to emphasize the scrolling and highlighting.
+
+              Keep in mind that the JavaScript plugin tries to pick the right element among all that may be visible.
+              Multiple visible scrollspy targets at the same time may cause some issues.</p>
+          </div>
+          <div id="item-3">
+            <h4>Item 3</h4>
+            <p>This is some placeholder content for the scrollspy page. Note that as you scroll down the page, the
+              appropriate navigation link is highlighted. It's repeated throughout the component example. We keep adding
+              some more example copy here to emphasize the scrolling and highlighting.
+
+              Keep in mind that the JavaScript plugin tries to pick the right element among all that may be visible.
+              Multiple visible scrollspy targets at the same time may cause some issues.</p>
+          </div>
+          <div id="item-3-1">
+            <h5>Item 3-1</h5>
+            <p>This is some placeholder content for the scrollspy page. Note that as you scroll down the page, the
+              appropriate navigation link is highlighted. It's repeated throughout the component example. We keep adding
+              some more example copy here to emphasize the scrolling and highlighting.
+
+              Keep in mind that the JavaScript plugin tries to pick the right element among all that may be visible.
+              Multiple visible scrollspy targets at the same time may cause some issues.</p>
+          </div>
+          <div id="item-3-2">
+            <h5>Item 3-2</h5>
+            <p>This is some placeholder content for the scrollspy page. Note that as you scroll down the page, the
+              appropriate navigation link is highlighted. It's repeated throughout the component example. We keep adding
+              some more example copy here to emphasize the scrolling and highlighting.
+
+              Keep in mind that the JavaScript plugin tries to pick the right element among all that may be visible.
+              Multiple visible scrollspy targets at the same time may cause some issues.</p>
+          </div>
+        </div>
+      </div>
     </div>
-    <Footer/>
   </div>
 </template>
 
@@ -36,41 +105,25 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
 
-.column {
-  width: 300px;
-  float: left;
-  margin-left: 250px;
+.about-background-column{
+  background-color: #1d2127;
+  border-radius: 20px;
+  margin-top: 20px;
+  padding: 40px;
 }
-
-.walkerProfileBackground {
-  background-image: url("https://www.bil-jac.com/media/4hdctnny/trainyourdogtowalkonaleash.jpg?anchor=center&mode=crop&width=1024&height=512");
-  overflow-x: hidden;
-  width: 100%;
-  background-size: cover;
+.flex-column1{
+  background-color: #1d2127;
+  border-radius: 20px;
+  margin: 20px;
 }
-
 .background-image2 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('../assets/images/desktop-wallpaper-epic-soccer-background-indoor-soccer.jpg');
-  background-size: cover; /* Adjust as needed */
+  background-color: black;
+  background-size: cover;
+  min-height: 200vh;
+  height: available;
+  width: auto;
 }
 
-.text-container {
-  position: absolute;
-  top: 60%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  color: white;
-  background-color: rgb(169, 140, 31); /* Semi-transparent black background */
-  padding: 20px;
-  border-radius: 10px;
-  backdrop-filter: blur(10px); /* Adjust the blur radius as needed */
-}
 
 .text-container h1 {
   font-size: 36px;

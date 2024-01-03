@@ -81,7 +81,7 @@ export default {
       userRequest: {
         firstName: '',
         lastName: '',
-        dateOfBirth: this.getCurrentDate(),
+        dateOfBirth: Date,
         email: '',
         roleCode: 0,
         password: '',
@@ -90,31 +90,20 @@ export default {
       },
       userResponse: {
         id: 0,
-        email: '',
         roleCode: 0
       }
     }
   },
   methods: {
-    // registerNewUser: function () {
-    //   if (this.userRequest.roleCode !== null && this.userRequest.roleCode !== undefined) {
-    //     this.userRequest.roleCode = parseInt(this.userRequest.roleCode);
-    //   }
-    //   this.$http.post('/user/register', this.userRequest)
-    //       .then(response => {
-    //         this.userRequest = response.data;
-    //         console.log('User registered successfully: ', response.data);
-    //       })
-    //       .catch(error => {
-    //         console.log('Error registering user: ', error);
-    //       });
-    // }
     registerNewUser() {
       this.$http.post("/user/register", this.userRequest)
           .then(response => {
-            this.userResponse = response.data;
+            const {id: userId, roleCode } = response.data
+            sessionStorage.setItem("userId", userId);
+            sessionStorage.setItem("roleCode", roleCode);
             console.log(response.data);
             this.resetForm();
+            this.$router.push({ name: "userProfileRoute" });
           })
           .catch(error => {
             console.log(error);
@@ -128,29 +117,27 @@ export default {
         passwordRepeat: ''
       };
     },
-    getCurrentDate() {
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = String(now.getMonth() + 1).padStart(2, '0');
-      const day = String(now.getDate()).padStart(2, '0');
-      return `${year}-${month}-${day}`;
-    },
   }
 }
 </script>
 
 <style>
+
 .calendar {
   border-radius: 5px;
+  background-color: #181818;
+  color: #808080FF;
 }
 
 .font {
   font-family: 'FF Mark W05', sans-serif;
-  color: #FFFFFF;
+  color: gray;
 }
 
 .rounded-input {
   border-radius: 5px; /* Adjust the radius as needed */
+  background-color: #181818;
+  color: #FFFFFF;
 }
 
 .background-image {
@@ -164,6 +151,7 @@ export default {
   justify-content: center;
   align-items: center;
   height: 90vh; /* Adjust as needed */
+  margin-top: 100px;
 }
 
 .registration-column {

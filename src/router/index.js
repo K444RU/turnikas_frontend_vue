@@ -3,6 +3,9 @@ import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LogInView from "@/views/LogInView"
 import userProfileView from "@/views/UserProfileView";
+import JoinView from "@/views/register/JoinView";
+import TestView from "@/views/TestView";
+import Test2View from "@/views/register/test2View";
 
 Vue.use(VueRouter)
 
@@ -13,13 +16,24 @@ const routes = [
     component: HomeView
   },
   {
+    path: '/test',
+    name: 'test',
+    component: TestView
+  },
+{
+    path: '/test2',
+    name: 'test2',
+    component: Test2View
+  },
+
+  {
     path: '/login',
     name: 'login',
     component: LogInView
   },
   {
     path: '/user-profile',
-    name: 'user',
+    name: 'userProfileRoute',
     component: userProfileView
   },
   {
@@ -35,9 +49,7 @@ const routes = [
   {
     path: '/join',
     name: 'join',
-    component: function () {
-      return import('../views/register/JoinView')
-    }
+    component: JoinView
   }
 ]
 

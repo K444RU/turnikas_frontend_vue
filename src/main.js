@@ -3,8 +3,8 @@ import App from './App.vue'
 import router from './router'
 import axios from "axios";
 import VueAxios from "vue-axios";
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import 'bootstrap'; // Import Bootstrap JS
 
 
 import {library} from "@fortawesome/fontawesome-svg-core"
@@ -13,8 +13,6 @@ import {faR, fas, faUserSecret} from '@fortawesome/free-solid-svg-icons'
 
 library.add(faUserSecret, fas, faR)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
-
-
 
 Vue.use(VueAxios, axios)
 Vue.config.productionTip = false

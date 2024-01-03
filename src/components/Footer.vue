@@ -35,6 +35,16 @@
 </template>
 
 <style>
+div.footer-column a {
+  text-decoration: none;
+  color: #FFFFFF;
+}
+
+div.footer-column a:hover {
+  text-decoration: none;
+  font-weight: 400;
+}
+
 body {
   background: #000000;
 }
@@ -115,6 +125,7 @@ div.footer-column.w-clearfix.w-col.w-col-4:before {
   grid-column-start: 1;
   grid-row-end: 2;
   grid-row-start: 1;
+
 }
 
 img.failory-logo-image {

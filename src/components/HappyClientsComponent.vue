@@ -39,10 +39,9 @@ export default {}
 
 .HappyClientsComponent-background {
   background-image: linear-gradient(to left, #8fbc8f, #1D2127FF);
-  margin-top: 100px;
+  margin-top: 300px;
   margin-left: 20px;
   margin-right: 20px;
-  padding: 40px;
   display: flex;
   flex-direction: column;
   align-items: center;

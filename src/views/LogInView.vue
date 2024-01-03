@@ -1,6 +1,6 @@
 <template>
   <div class="login-page-background">
-    <Header />
+    <Header/>
     <div class="container text-center">
       <div class="row align-items-center">
         <div class="col">
@@ -11,18 +11,21 @@
           <div class="kdCHyh ">
             <form @submit.prevent="login">
               <div class="input-container ">
-                <h2 class="font">
+                <h2 class="sign-up-font">
                   Sign in
                 </h2>
                 <input v-model="email"
                        type="text"
-                       placeholder="Email">
+                       placeholder="Email"
+                       class="rounded-input">
                 <input v-model="password"
                        type="password"
-                       placeholder="Password">
+                       placeholder="Password"
+                       class="rounded-input">
               </div>
-              <button v-on:click="$router.push('/user-profile')"
-                      type="submit">Sign In
+              <button
+                  v-on:click="login"
+                  type="submit">Sign In
               </button>
             </form>
           </div>
@@ -43,42 +46,50 @@ import Header from "@/components/Header";
 
 export default {
   name: 'LogInView',
-  components: { Header },
+  components: {Header},
   data() {
     return {
       email: '',
       password: '',
 
       loginResponse: {
-        userId: 0,
-        roleCode: 0,
+        id: 0,
+        roleCode: 0
       }
     }
   },
   methods: {
     login: function () {
-      this.$http.post("/login", {
-            params: {
-              email: this.email,
-              password: this.password
-            }
-          }
-      ).then(response => {
-        this.loginResponse = response.data
-        console.log(response.data)
-      }).catch(error => {
-        console.log(error)
-      })
+      this.$http
+          .post("/user/login", {
+            email: this.email,
+            password: this.password,
+          })
+          .then((response) => {
+            const {id: userId, roleCode } = response.data;
+            sessionStorage.setItem("userId", userId);
+            sessionStorage.setItem("roleCode", roleCode);
+            this.$router.push({ name: "userProfileRoute" });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
     },
-  }
-}
+  },
+};
 </script>
 
 <style>
-.font{
-  font-family: 'FF Mark W05', sans-serif;
+.rounded-input {
+  border-radius: 5px; /* Adjust the radius as needed */
+  background-color: #181818;
   color: #FFFFFF;
 }
+.sign-up-font {
+  font-family: 'Bebas Neue', 'Open Sans', 'Permanent Marker', 'Smooch', sans-serif;
+  font-size: 40px;
+}
+
 .kdCHyh {
   background-color: rgba(255, 255, 255, 0.2); /* White color with opacity */
   margin-top: 200px;
@@ -95,6 +106,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center; /* Align inputs in the center horizontally */
+
 }
 
 .kdCHyh input {
