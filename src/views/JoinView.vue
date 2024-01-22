@@ -8,6 +8,7 @@
           <div class="col">
             <div class="center-container">
               <div class="registration-column font">
+                <h1 class="font">Welcome !</h1>
                 <p>Enter your firstname</p>
                 <input v-model="userRequest.firstName"
                        class="rounded-input" type="text"
@@ -68,8 +69,8 @@
 </template>
 
 <script>
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import Header from "@/components/common/Header";
+import Footer from "@/components/common/Footer";
 
 export default {
   name: 'JoinView',
@@ -130,8 +131,8 @@ export default {
 }
 
 .font {
-  font-family: 'FF Mark W05', sans-serif;
-  color: gray;
+  font-family: 'Bebas Neue', 'Open Sans', 'Permanent Marker', 'Smooch', sans-serif;
+  font-size: 19px;
 }
 
 .rounded-input {
@@ -141,9 +142,10 @@ export default {
 }
 
 .background-image {
-  background-image: url('../../assets/images/LoginPage.jpg');
+  margin-top: 80px;
+  background-image: url('../assets/images/LoginPage.jpg');
   background-size: cover;
-  height: 1400px;
+  height: 1300px;
 }
 
 .center-container {

@@ -28,11 +28,11 @@ export default {}
   /* Other styles */
 }
 .splash{
-  background-image: url("../assets/images/pinkspalsh.png");
+  background-image: url("../../assets/images/pinkspalsh.png");
   background-position: right;
 }
 .splash2{
-  background-image: url("../assets/images/pinkspalsh.png");
+  background-image: url("../../assets/images/pinkspalsh.png");
   background-position: left;
 }
 
@@ -50,7 +50,7 @@ export default {}
   background-size: 700px;
   height: 650px;
   background-repeat: no-repeat;
-  background-image: url("../assets/images/pinkspalsh.png");
+  background-image: url("../../assets/images/pinkspalsh.png");
 
 }
 

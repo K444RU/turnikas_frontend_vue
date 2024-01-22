@@ -3,9 +3,10 @@ import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LogInView from "@/views/LogInView"
 import userProfileView from "@/views/UserProfileView";
-import JoinView from "@/views/register/JoinView";
+import JoinView from "@/views/JoinView";
 import TestView from "@/views/TestView";
-import Test2View from "@/views/register/test2View";
+import teamProfileView from "@/views/TeamProfileView";
+import playerProfileView from "@/views/PlayerProfileView";
 
 Vue.use(VueRouter)
 
@@ -20,11 +21,11 @@ const routes = [
     name: 'test',
     component: TestView
   },
-{
-    path: '/test2',
-    name: 'test2',
-    component: Test2View
-  },
+// {
+//     path: '/test2',
+//     name: 'test2',
+//     component: Test2View
+//   },
 
   {
     path: '/login',
@@ -35,6 +36,16 @@ const routes = [
     path: '/user-profile',
     name: 'userProfileRoute',
     component: userProfileView
+  },
+  {
+    path: '/team-profile',
+    name: 'teamProfileRoute',
+    component: teamProfileView
+  },
+  {
+    path: '/player-profile',
+    name: 'playerProfileRoute',
+    component: playerProfileView
   },
   {
     path: '/about',

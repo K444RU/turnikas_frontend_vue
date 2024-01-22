@@ -1,52 +1,50 @@
 <template>
-  <div class="login-page-background">
-    <Header/>
-    <div class="container text-center">
-      <div class="row align-items-center">
-        <div class="col">
-        </div>
-
-
-        <div class="col">
-          <div class="kdCHyh ">
-            <form @submit.prevent="login">
-              <div class="input-container ">
-                <h2 class="sign-up-font">
-                  Sign in
-                </h2>
-                <input v-model="email"
-                       type="text"
-                       placeholder="Email"
-                       class="rounded-input">
-                <input v-model="password"
-                       type="password"
-                       placeholder="Password"
-                       class="rounded-input">
-              </div>
-              <button
-                  v-on:click="login"
-                  type="submit">Sign In
-              </button>
-            </form>
+    <div class="login-page-background">
+      <Header/>
+      <div class="container text-center">
+        <div class="row align-items-center">
+          <div class="col">
           </div>
-        </div>
 
 
-        <div class="col">
+          <div class="col">
+            <div class="kdCHyh ">
+              <form @submit.prevent="login">
+                <div class="input-container ">
+                  <h2 class="sign-up-font">
+                    Sign in
+                  </h2>
+                  <input v-model="email"
+                         type="text"
+                         placeholder="Email"
+                         class="rounded-input">
+                  <input v-model="password"
+                         type="password"
+                         placeholder="Password"
+                         class="rounded-input">
+                </div>
+                <button
+                    v-on:click="login"
+                    type="submit">Sign In
+                </button>
+              </form>
+            </div>
+          </div>
+          <div class="col">
+          </div>
         </div>
       </div>
     </div>
-    <Footer/>
-  </div>
 </template>
 
 <script>
-import Header from "@/components/Header";
+import Header from "@/components/common/Header";
+import Footer from "@/components/common/Footer"
 
 
 export default {
   name: 'LogInView',
-  components: {Header},
+  components: {Header, Footer},
   data() {
     return {
       email: '',
@@ -66,10 +64,10 @@ export default {
             password: this.password,
           })
           .then((response) => {
-            const {id: userId, roleCode } = response.data;
+            const {id: userId, roleCode} = response.data;
             sessionStorage.setItem("userId", userId);
             sessionStorage.setItem("roleCode", roleCode);
-            this.$router.push({ name: "userProfileRoute" });
+            this.$router.push({name: "userProfileRoute"});
           })
           .catch((error) => {
             console.log(error);
@@ -85,6 +83,7 @@ export default {
   background-color: #181818;
   color: #FFFFFF;
 }
+
 .sign-up-font {
   font-family: 'Bebas Neue', 'Open Sans', 'Permanent Marker', 'Smooch', sans-serif;
   font-size: 40px;

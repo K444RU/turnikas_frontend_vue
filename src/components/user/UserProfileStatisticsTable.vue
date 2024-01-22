@@ -2,7 +2,6 @@
   <table class="table table-dark table-hover">
     <thead>
     <tr>
-      <th scope="col">#</th>
       <th scope="col">Played</th>
       <th scope="col">Won</th>
       <th scope="col">Lost</th>
@@ -13,7 +12,6 @@
     </thead>
     <tbody>
     <tr>
-      <th scope="row">#</th>
       <td>{{ teamStatsResponse.played }}</td>
       <td>{{ teamStatsResponse.won }}</td>
       <td>{{ teamStatsResponse.lost }}</td>

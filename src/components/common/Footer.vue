@@ -3,7 +3,7 @@
     <div class="w-row">
       <div class="footer-column w-clearfix w-col w-col-4">
 <!--        <img src="src/assets/images/photo_2023-02-22_11-55-37.jpg" alt="" width="40" class="failory-logo-image">-->
-        <img src="..//assets/images/photo_2023-02-22_11-55-37.jpg" width="70" class="logo">
+        <img src="../../assets/images/LOGOPNG.png" class="logo">
         <h3 class="footer-failory-name">Turnikas</h3>
         <p class="footer-description-failory">Your leading competitive gaming platform
           <br></p>
@@ -38,6 +38,9 @@
 div.footer-column a {
   text-decoration: none;
   color: #FFFFFF;
+  font-family: 'Bebas Neue', 'Open Sans', 'Permanent Marker', 'Smooch', sans-serif;
+  font-size: 20px;
+
 }
 
 div.footer-column a:hover {
@@ -141,7 +144,7 @@ h3.footer-failory-name {
   box-sizing: border-box;
   color: #FFFFFF;
   display: block;
-  font-family: Lato, sans-serif;
+  font-family: 'Bebas Neue', 'Open Sans', 'Permanent Marker', 'Smooch', sans-serif;
   font-size: 20px;
   font-weight: 900;
   line-height: 1.1em;
@@ -154,13 +157,13 @@ p.footer-description-failory {
   box-sizing: border-box;
   color: rgba(255, 255, 255, 0.8);
   display: block;
-  font-family: Lato, sans-serif;
-  font-size: 17px;
   font-weight: 300;
   letter-spacing: .5px;
   line-height: 1.5em;
   margin-bottom: 16px;
   margin-top: 15px;
+  font-family: 'Bebas Neue', 'Open Sans', 'Permanent Marker', 'Smooch', sans-serif;
+  font-size: 20px;
 }
 
 br {
@@ -201,7 +204,7 @@ h3.footer-titles {
   box-sizing: border-box;
   color: #FFFFFF;
   display: block;
-  font-family: Lato, sans-serif;
+  font-family: 'Bebas Neue', 'Open Sans', 'Permanent Marker', 'Smooch', sans-serif;
   font-size: 20px;
   font-weight: 900;
   line-height: 1.1em;
@@ -319,13 +322,13 @@ p.footer-description {
   box-sizing: border-box;
   color: rgba(255, 255, 255, 0.8);
   display: block;
-  font-family: Lato, sans-serif;
-  font-size: 17px;
   font-weight: 300;
   letter-spacing: .5px;
   line-height: 1.5em;
   margin-bottom: 16px;
   margin-top: 15px;
+  font-family: 'Bebas Neue', 'Open Sans', 'Permanent Marker', 'Smooch', sans-serif;
+  font-size: 20px;
 }
 
 strong.link-email-footer {

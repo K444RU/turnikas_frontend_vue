@@ -6,18 +6,29 @@
 
         <div id="carouselExampleIndicators" class="carousel slide">
           <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button
+                type="button"
+                data-bs-target="#carouselExampleIndicators"
+                data-bs-slide-to="0"
+                class="active"
+                aria-current="true"
+                aria-label="Slide 1"></button>
+            <button
+                type="button"
+                data-bs-target="#carouselExampleIndicators"
+                data-bs-slide-to="1"
+                aria-label="Slide 2"></button>
           </div>
           <div class="carousel-inner">
             <div class="carousel-item active">
               <div v-on:click="$router.push('join')" href="#" class="col YourMagicComponent-background-col-1">
-                Team tournaments
+                <h1 class="carousel-font">Team Tournaments</h1>
               </div>
             </div>
             <div class="carousel-item">
               <div href="#" class="col YourMagicComponent-background-col-2">
-                Solo tournaments
+                <h1 class="carousel-font">Solo Tournaments</h1>
+
               </div>
             </div>
 
@@ -43,6 +54,10 @@ export default {
 </script>
 
 <style>
+.carousel-font{
+  font-family: 'Bebas Neue', 'Open Sans', 'Permanent Marker', 'Smooch', sans-serif;
+  font-size: 80px;
+}
 
 .browse-tournament{
   font-family: 'Bebas Neue', 'Open Sans', 'Permanent Marker', 'Smooch', sans-serif;
@@ -80,7 +95,7 @@ export default {
   margin-top: 10px;
   text-shadow: 3px 3px 0px black;
   -webkit-text-stroke: 2px black;
-  background-image: url("../assets/images/footballteam.jpg");
+  background-image: url("../../assets/images/footballteam.jpg");
   background-size: cover;
 }
 .YourMagicComponent-background-col-1:hover {
@@ -103,7 +118,7 @@ export default {
   margin-top: 10px;
   text-shadow: 3px 3px 0px black;
   -webkit-text-stroke: 2px black;
-  background-image: url("../assets/images/soloplayer.jpg");
+  background-image: url("../../assets/images/soloplayer.jpg");
   background-size: cover;
 }
 .YourMagicComponent-background-col-2:hover {

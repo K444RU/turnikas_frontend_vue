@@ -14,10 +14,8 @@
                aria-expanded="false" @click="openEditProfileModal(userId)">
               {{ userContactInfoResponse.firstName }} {{ userContactInfoResponse.lastName }}
             </a>
-
             <ul class="dropdown-menu">
               <li><a v-on:click="$router.push({name: 'home'})" class="dropdown-item" href="#">Home Page</a></li>
-              <li><a class="dropdown-item" href="#">Log Out</a></li>
               <li>
                 <form>
                   <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -25,47 +23,14 @@
                   </a>
                 </form>
               </li>
+              <li><a class="dropdown-item" href="#">Log Out</a></li>
             </ul>
           </div>
         </div>
         <!-- Scrollable modal for user contact information change -->
-
-        <div class="modal fade" ref="exampleModal" id="exampleModal"
-             tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">EDIT PROFILE</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <div class="input-group mb-3">
-                  <input v-model="formFirstName" type="text" class="rounded-input2" aria-label="First Name">
-                </div>
-                <div class="input-group mb-3">
-                  <input v-model="formLastName" type="text" class="rounded-input2" aria-label="Last Name">
-                </div>
-                <div class="input-group mb-3">
-                  <input
-                      v-model="formDateOfBirth"
-                      class="calendar2"
-                      type="date"
-                      id="birthday"
-                      name="birthday">
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="close-changes-button" data-bs-dismiss="modal">Close</button>
-                <button id="btnSave" @click="saveChangesToDataBase"
-                        type="button"
-                        class="save-changes-button">Save changes
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <UserContactInformationChangeModal :form-date-of-birth="formDateOfBirth" :form-first-name="formFirstName"
+                      :form-last-name="formLastName" :save-changes-to-data-base="saveChangesToDataBase"/>
       </div>
-
 
       <div class="row">
         <div class="col-sm profile-box-1">
@@ -82,7 +47,6 @@
               <p class="user-profile-font">Age: {{ calculateAge(userContactInfoResponse.dateOfBirth) }}</p>
             </div>
           </div>
-
         </div>
         <div class="col-sm profile-box-2 user-profile-font">
           <div class="container text-center">
@@ -102,7 +66,7 @@
               </div>
             </div>
           </div>
-          <UserProfileStatisticsTable  :team-stats-response="teamStatsResponse"/>
+          <UserProfileStatisticsTable :team-stats-response="teamStatsResponse"/>
         </div>
       </div>
       <div class="row">
@@ -133,6 +97,23 @@
                 </ul>
               </div>
             </div>
+            <div class="offcanvas-body">
+              <div>
+                SELECT TEAM
+              </div>
+              <div class="dropdown mt-3">
+                <button  class="btn btn-secondary dropdown-toggle offcanvas-button"
+                        type="button"
+                        data-bs-toggle="dropdown">
+                  Dropdown button
+                </button>
+                <ul class="dropdown-menu mt-3">
+                  <li v-for="team in teamInfoResponse" :key="team.teamId">
+                    <a class="dropdown-item" href="#">{{ team.teamName }}</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
 
           <font-awesome-icon data-bs-toggle="offcanvas"
@@ -148,7 +129,6 @@
                              :icon="['fas', 'square-plus']"/>
 
           <!-- Team list by userID -->
-
           <table class="table table-dark table-hover user-profile-font">
             <thead>
             <tr>
@@ -158,6 +138,7 @@
               <th scope="col">Category</th>
               <th scope="col">Team Coach</th>
               <th scope="col"></th>
+              <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -165,17 +146,73 @@
               <th scope="row">{{ team.sequenceNumber }}</th>
               <td>{{ team.teamLogo }} <img src="../assets/images/photo_2023-02-22_11-55-37.jpg"
                                            style="height: 70px; border-radius: 20px" alt=""></td>
-              <td>{{ team.teamName }}</td>
+              <td style="cursor: pointer" @click="navigateToTeamPage(team.teamId)">{{ team.teamName }}</td>
               <td>{{ team.categoryCode }}</td>
               <td>{{ team.teamCoachName }}</td>
               <td>
-                <font-awesome-icon @click="changeTeamStatus(team.teamId)" :icon="['fas', 'square-minus']"/>
+                <font-awesome-icon @click="openTeamEditModal(team.teamId)"
+                                   data-bs-toggle="modal"
+                                   data-bs-target="#teamEditStaticBackDrop"
+                                   type="button"
+                                   :icon="['fas', 'pen']" />
+              </td>
+              <td>
+                <font-awesome-icon @click="deleteTeam(team.teamId)"
+                                   type="button"
+                                   :icon="['fas', 'square-minus']"/>
               </td>
             </tr>
-
             </tbody>
           </table>
-
+          <!--Scrollable modal for team information change-->
+          <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal fade" id="teamEditStaticBackDrop"
+                 data-bs-backdrop="static"
+                 data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">EDIT TEAM INFORMATION</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="input-group mb-3">
+                      <input v-model="formTeamName" type="text" class="rounded-input2" aria-label="First Name">
+                    </div>
+                    <div class="input-group mb-3">
+                      <input v-model="formCoachName" type="text" class="rounded-input2"
+                             aria-label="Last Name">
+                    </div>
+                    <div class="input-group mb-3">
+                      <select v-model="formCategoryCode" class=" amount-of-players"
+                              aria-label="Default select example">
+                        <option selected>Amount of players</option>
+                        <option value="1">1</option>
+                        <option value="2">11</option>
+                      </select>
+                    </div>
+                    <div class="input-group mb-3">
+                    </div>
+                    <div class="input-group mb-3">
+                      <button
+                          v-model="formTeamLogo"
+                          type="button"
+                          class="tt btn btn-dark"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="right"
+                          title="Tooltip on right"
+                      >Upload file
+                      </button>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="close-changes-button" data-bs-dismiss="modal">Close</button>
+                    <button @click="saveTeamChangesToDatabase" type="button" class="save-changes-button">Save team</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <!-- Scrollable modal for team registration -->
           <div class="modal-dialog modal-dialog-scrollable">
@@ -237,20 +274,22 @@
 </template>
 
 <script>
-import UserProfileStatisticsTable from "@/views/UserProfileStatisticsTable";
+import UserProfileStatisticsTable from "@/components/user/UserProfileStatisticsTable";
+import UserContactInformationChangeModal from "@/components/user/UserContactInformationChangeModal";
 
 
 export default {
   name: 'userProfileRoute',
   components: {
+    UserContactInformationChangeModal,
     UserProfileStatisticsTable,
   },
 
   data() {
     return {
       userId: Number(sessionStorage.getItem('userId')),
-      teamId: Number(sessionStorage.getItem('teamId')),
       selectedCategory: 0,
+      selectedTeamId: 0,
 
       ageCategoryResponse: {
         categoryCode: 0,
@@ -264,6 +303,7 @@ export default {
         categoryCode: 0,
         teamLogo: ''
       },
+
       teamStatsResponse: {
         played: 0,
         won: 0,
@@ -278,8 +318,11 @@ export default {
         teamCoachName: '',
         categoryCode: 0,
         teamLogo: '',
-        teamId: Number(sessionStorage.getItem('teamId'))
       },
+      formTeamName: '',
+      formCoachName: '',
+      formCategoryCode: 0,
+      formTeamLogo: '',
 
       userContactInfoResponse: {
         firstName: '',
@@ -292,6 +335,59 @@ export default {
     }
   },
   methods: {
+    navigateToTeamPage(teamId) {
+      console.log("Navigating to team profile with teamId:", teamId);
+
+      this.$router.push({
+        name: 'teamProfileRoute',
+        query: {
+          teamId: teamId,
+        }
+      });
+    },
+    //Opens up team Edit Modal
+    openTeamEditModal(teamId){
+      this.selectedTeamId = teamId;
+      this.getTeamInformation(this.selectedTeamId)
+      const selectedTeam = this.teamInfoResponse.find(team => team.teamId === teamId);
+      this.formTeamName = selectedTeam.teamName;
+      this.formCoachName = selectedTeam.teamCoachName;
+      this.formCategoryCode = selectedTeam.categoryCode;
+      this.formTeamLogo = selectedTeam.teamLogo;
+      const modal = new bootstrap.Modal(document.getElementById('teamEditStaticBackDrop'));
+      modal.show();
+    },
+//Update team information
+    saveTeamChangesToDatabase() {
+      if (
+          this.formTeamName !== this.teamInfoResponse.teamName ||
+          this.formCoachName !== this.teamInfoResponse.teamCoachName ||
+          this.formTeamLogo !== this.teamInfoResponse.teamLogo ||
+          this.formCategoryCode !== this.teamInfoResponse.categoryCode
+      ) {
+        const updatedTeam = {
+          teamName: this.formTeamName,
+          teamCoachName: this.formCoachName,
+          categoryCode: this.formCategoryCode,
+          teamLogo: this.formTeamLogo
+        };
+        this.$http.put(`/team/update/${this.selectedTeamId}`, updatedTeam)
+            .then(response => {
+              console.log('Changes saved to the database');
+              this.getTeamInformation(this.userId);
+              this.$refs.teamEditstaticBackDrop.classList.remove('show');
+              const backdrop = document.querySelector('.moodal-backdrop');
+              if (backdrop) {
+                backdrop.remove();
+              }
+            })
+            .catch(error => {
+              console.error('Error while saving', error);
+            });
+      } else {
+        console.log('No changes detected');
+      }
+    },
 
     updateSelectedCategory(categoryCode) {
       this.selectedCategory = categoryCode;
@@ -302,17 +398,21 @@ export default {
       this.$http.get("/team/category/filter", {
         params: {
           userId: this.userId,
-          categoryCode: categoryCode,
+          categoryCode: categoryCode
         }
       })
           .then(response => {
-            this.teamInfoResponse = response.data;
+            this.teamInfoResponse = response.data.map(team => ({
+              ...team,
+              teamId: team.id,
+            }));
+            this.$router.push({ name: 'userProfileRoute' });
             this.addSequenceNumbers();
-            console.log(response.data)
+            console.log(response.data);
           })
           .catch(error => {
-            console.log(error)
-          })
+            console.log(error);
+          });
     },
 
     getTeamStats(teamId) {
@@ -323,19 +423,6 @@ export default {
           }
       ).then(response => {
         this.teamStatsResponse = response.data;
-        console.log(response.data)
-      }).catch(error => {
-        console.log(error)
-      })
-    },
-
-    changeTeamStatus() {
-      this.$http.put("/update/status", {
-            params: {
-              teamId: this.teamId,
-            }
-          }
-      ).then(response => {
         console.log(response.data)
       }).catch(error => {
         console.log(error)
@@ -365,22 +452,18 @@ export default {
     },
 
     deleteTeam(teamId) {
-      console.log('TEAM ID HERE IS: ' + teamId)
       if (confirm('Are you sure you want to delete this Team?')) {
         this.$http
-            .delete(`/team/delete`) // Make sure to pass the teamId in the URL
+            .delete(`/team/delete?teamId=${teamId}`)
             .then(response => {
               console.log(`Team with ID ${teamId} deleted successfully`);
-              this.getTeamInformation(); // Refresh the team list after deletion
+              this.getTeamInformation();
             })
             .catch(error => {
               console.error('Error deleting team:', error);
-              // Handle any errors that occur during deletion
             });
       }
     },
-
-
 
     addSequenceNumbers: function () {
       let counter = 1;
@@ -397,25 +480,28 @@ export default {
         }
       })
           .then(response => {
-            this.teamInfoResponse = response.data.map(team => ({
+            this.teamInfoResponse = response.data.map((team, index) => ({
               ...team,
               teamId: team.id,
+              originalOrder: index,
             }));
             this.addSequenceNumbers();
-            console.log(response.data)
+            console.log(response.data);
           })
           .catch(error => {
-            console.log(error)
-          })
+            console.error(error);
+          });
     },
-
     saveNewTeamToDataBase() {
+      const originalUserId = this.teamRequest.userId;
       this.$http.post("/team/register", this.teamRequest)
           .then(response => {
             const {id: teamId} = response.data;
             sessionStorage.setItem("teamId", teamId);
             this.resetForm();
+            this.teamRequest.userId = originalUserId;
             this.getTeamInformation();
+            this.addSequenceNumbers();
             $('#staticBackdrop').modal('hide');
             this.$router.push({name: "userProfileRoute"});
           })
@@ -441,6 +527,8 @@ export default {
       this.userId = userId;
       this.getUserContactInfoByUserId(userId);
     },
+
+
     //Update user contact information
     saveChangesToDataBase() {
       if (
@@ -503,11 +591,11 @@ export default {
 
   beforeMount() {
     this.getUserContactInfoByUserId()
-    this.getTeamInformation()
     this.getCategoryNameByCategoryCode()
   },
   mounted() {
     this.getAgeCategories()
+    this.getTeamInformation()
   },
 
 
@@ -726,16 +814,6 @@ export default {
   background-repeat: no-repeat;
 }
 
-
-.calendar2 {
-  border-radius: 5px; /* Adjust the radius as needed */
-  background-color: #181818;
-  color: rgb(255, 255, 255);
-  width: 250px;
-  height: 40px;
-  font-family: 'Bebas Neue', 'Open Sans', 'Permanent Marker', 'Smooch', sans-serif;
-  font-size: 20px;
-}
 
 .save-changes-button {
   border-radius: 10px;
