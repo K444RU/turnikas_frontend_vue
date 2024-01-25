@@ -13,8 +13,8 @@
         <font-awesome-icon :icon="['fab', 'square-instagram']" />
         <font-awesome-icon :icon="['fab', 'square-facebook']" />
         <p>Date of birth: </p>
-        <p>Name: </p>
-        <p>Last Name: </p>
+        <p>Name: {{ teamPlayerResponse.firstName }}</p>
+        <p>Last Name: {{ teamPlayerResponse.lastName }}</p>
       </div>
 
 
@@ -48,9 +48,38 @@ export default {
   name: 'playerProfileRoute',
   components: {TeamProfileHeader, Footer},
   data() {
-    return {}
+    return {
+      playerId: this.$route.params.playerId,
+
+      teamPlayerResponse: {
+        id: 0,
+        teamId: 0,
+        firstName: '',
+        lastName: ''
+      },
+    }
   },
-  methods: {}
+  methods: {
+    getTeamPlayerInformationByPlayerId() {
+      this.$http
+          .get(`team/player/info`, {
+            params: {
+              playerId: this.playerId
+            },
+          })
+          .then((response) => {
+            console.log('API response:', response.data);
+            this.teamPlayerResponse = response.data;
+          })
+          .catch((error) => {
+            console.error('API error:', error);
+          });
+    },
+  },
+  mounted() {
+    console.log("PLAYER ID from route: " + this.$route.query.playerId);
+    this.getTeamPlayerInformationByPlayerId();
+  }
 
 }
 </script>
@@ -115,6 +144,8 @@ export default {
   align-items: center;
   justify-content: center;
   background-color: darkseagreen;
+  background-image: url("https://images.unsplash.com/photo-1602472097151-72eeec7a3185?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+
 }
 
 .player-profile-image {

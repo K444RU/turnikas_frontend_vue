@@ -28,8 +28,9 @@
           </div>
         </div>
         <!-- Scrollable modal for user contact information change -->
-        <UserContactInformationChangeModal :form-date-of-birth="formDateOfBirth" :form-first-name="formFirstName"
-                      :form-last-name="formLastName" :save-changes-to-data-base="saveChangesToDataBase"/>
+        <UserContactInfo rmationChangeModal :form-date-of-birth="formDateOfBirth" :form-first-name="formFirstName"
+                                           :form-last-name="formLastName"
+                                           :save-changes-to-data-base="saveChangesToDataBase"/>
       </div>
 
       <div class="row">
@@ -102,7 +103,7 @@
                 SELECT TEAM
               </div>
               <div class="dropdown mt-3">
-                <button  class="btn btn-secondary dropdown-toggle offcanvas-button"
+                <button class="btn btn-secondary dropdown-toggle offcanvas-button"
                         type="button"
                         data-bs-toggle="dropdown">
                   Dropdown button
@@ -144,8 +145,14 @@
             <tbody>
             <tr v-for="team in teamInfoResponse" :key="team.teamId">
               <th scope="row">{{ team.sequenceNumber }}</th>
-              <td>{{ team.teamLogo }} <img src="../assets/images/photo_2023-02-22_11-55-37.jpg"
-                                           style="height: 70px; border-radius: 20px" alt=""></td>
+              <td v-if="!team.teamLogo">{{ team.teamLogo }}
+                <img @click="navigateToTeamPage(team.teamId)" src="../assets/images/defaultTeamLogo.png"
+                     style="height: 70px; border-radius: 20px; cursor: pointer" alt="">
+              </td>
+              <td v-else>
+                <img @click="navigateToTeamPage(team.teamId)" :src="team.teamLogo"
+                     style="height: 70px; border-radius: 20px; cursor: pointer" alt="">
+              </td>
               <td style="cursor: pointer" @click="navigateToTeamPage(team.teamId)">{{ team.teamName }}</td>
               <td>{{ team.categoryCode }}</td>
               <td>{{ team.teamCoachName }}</td>
@@ -154,7 +161,7 @@
                                    data-bs-toggle="modal"
                                    data-bs-target="#teamEditStaticBackDrop"
                                    type="button"
-                                   :icon="['fas', 'pen']" />
+                                   :icon="['fas', 'pen']"/>
               </td>
               <td>
                 <font-awesome-icon @click="deleteTeam(team.teamId)"
@@ -207,7 +214,8 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="close-changes-button" data-bs-dismiss="modal">Close</button>
-                    <button @click="saveTeamChangesToDatabase" type="button" class="save-changes-button">Save team</button>
+                    <button @click="saveTeamChangesToDatabase" type="button" class="save-changes-button">Save team
+                    </button>
                   </div>
                 </div>
               </div>
@@ -248,15 +256,23 @@
                       <p>Upload your team logo</p>
                     </div>
                     <div class="input-group mb-3">
-                      <button
-                          v-model="teamRequest.teamLogo"
-                          type="button"
-                          class="tt btn btn-dark"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="right"
-                          title="Tooltip on right"
-                      >Upload file
-                      </button>
+                      <input
+                             type="file"
+                             @change="handleImage"
+                             ref="fileInput"
+                             @pictureInputSuccess="setPicture"
+                             accept="image/x-png,image/jpeg">
+
+<!--                      <button-->
+<!--                          v-model="teamRequest.teamLogo"-->
+<!--                          type="button"-->
+<!--                          class="tt btn btn-dark"-->
+<!--                          data-bs-toggle="tooltip"-->
+<!--                          data-bs-placement="right"-->
+<!--                          title="Tooltip on right"-->
+<!--                          @click="$refs.fileInput.click()"-->
+<!--                      >Upload file-->
+<!--                      </button>-->
                     </div>
                   </div>
                   <div class="modal-footer">
@@ -270,12 +286,14 @@
         </div>
       </div>
     </div>
+    <Footer/>
   </div>
 </template>
 
 <script>
 import UserProfileStatisticsTable from "@/components/user/UserProfileStatisticsTable";
 import UserContactInformationChangeModal from "@/components/user/UserContactInformationChangeModal";
+import Footer from "@/components/common/Footer";
 
 
 export default {
@@ -283,6 +301,7 @@ export default {
   components: {
     UserContactInformationChangeModal,
     UserProfileStatisticsTable,
+    Footer
   },
 
   data() {
@@ -335,6 +354,26 @@ export default {
     }
   },
   methods: {
+    setPicture(picture) {
+      this.teamRequest.teamLogo = picture;
+    },
+    handleImage(event) {
+      const selectedImage = event.target.files[0];
+      this.createBase64Image(selectedImage);
+      console.log("File Name:", selectedImage.name);
+    },
+    createBase64Image(fileObject) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.pictureDataBase64 = reader.result;
+        console.log("Base64 Image:", this.pictureDataBase64);
+        this.$emit('pictureInputSuccess', this.pictureDataBase64);
+      };
+      reader.onerror = function (error) {
+        alert(error);
+      }
+      reader.readAsDataURL(fileObject);
+    },
     navigateToTeamPage(teamId) {
       console.log("Navigating to team profile with teamId:", teamId);
 
@@ -346,7 +385,7 @@ export default {
       });
     },
     //Opens up team Edit Modal
-    openTeamEditModal(teamId){
+    openTeamEditModal(teamId) {
       this.selectedTeamId = teamId;
       this.getTeamInformation(this.selectedTeamId)
       const selectedTeam = this.teamInfoResponse.find(team => team.teamId === teamId);
@@ -406,7 +445,7 @@ export default {
               ...team,
               teamId: team.id,
             }));
-            this.$router.push({ name: 'userProfileRoute' });
+            this.$router.push({name: 'userProfileRoute'});
             this.addSequenceNumbers();
             console.log(response.data);
           })
@@ -496,10 +535,13 @@ export default {
       const originalUserId = this.teamRequest.userId;
       this.$http.post("/team/register", this.teamRequest)
           .then(response => {
+            console.log('Team registration successful:', response.data);
+            console.log('TEAM REQUEST: ' + this.teamRequest)
+            console.log('TEAM REQUEST PHOTO DATA: ' + this.teamRequest.teamLogo)
             const {id: teamId} = response.data;
             sessionStorage.setItem("teamId", teamId);
-            this.resetForm();
             this.teamRequest.userId = originalUserId;
+            this.resetForm();
             this.getTeamInformation();
             this.addSequenceNumbers();
             $('#staticBackdrop').modal('hide');

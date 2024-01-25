@@ -83,7 +83,7 @@
         <img v-if="player.image" :src="player.image" alt="Player Image" />
         <img v-else src="@/assets/images/jersey.png" alt="Default Player Image" />
         <div class="buttons">
-          <button>Profile</button>
+          <button @click="navigateToTeamPlayerProfile(player.id)">Profile</button>
           <button>Edit</button>
         </div>
         {{ player.firstName }} {{ player.lastName }}
@@ -144,6 +144,13 @@ export default {
   },
 
   methods: {
+    navigateToTeamPlayerProfile(playerId){
+      this.$router.push({
+        name: 'playerProfileRoute',
+        params: { playerId }
+      })
+      console.log('Players ID is: ' + playerId)
+    },
     navigateToUserProfile() {
       // Replace this with your actual navigation logic to the user profile
       this.$router.push({
