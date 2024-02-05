@@ -41,7 +41,48 @@ export default {
     formDateOfBirth: {},
     formFirstName: {},
     formLastName: {},
-    saveChangesToDataBase: {}
+    userContactInfoResponse: {}
+  },
+  data(){
+    return {
+      userId: Number(sessionStorage.getItem('userId'))
+
+    }
+  },
+  methods: {
+    //Update user contact information
+    saveChangesToDataBase() {
+      console.log("form fristname: " + this.formFirstName)
+      console.log("form fristname 2 : " + this.userContactInfoResponse.firstName)
+      if (
+          this.formFirstName !== this.userContactInfoResponse.firstName ||
+          this.formLastName !== this.userContactInfoResponse.lastName ||
+          this.formDateOfBirth !== this.userContactInfoResponse.dateOfBirth
+      ) {
+        const updatedContact = {
+          firstName: this.formFirstName,
+          lastName: this.formLastName,
+          dateOfBirth: this.formDateOfBirth
+        };
+
+        this.$http.put(`/user/update/${this.userId}`, updatedContact)
+            .then(response => {
+              console.log('Changes saved to the database');
+              // this.getUserContactInfoByUserId();
+              this.$emit('getUserContactInfoByUserId')
+              this.$refs.exampleModal.classList.remove('show');
+              const backdrop = document.querySelector('.modal-backdrop');
+              if (backdrop) {
+                backdrop.remove();
+              }
+            })
+            .catch(error => {
+              console.error('Error while saving', error);
+            });
+      } else {
+        console.log('No changes detected');
+      }
+    }
   }
 }
 </script>

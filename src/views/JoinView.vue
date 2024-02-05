@@ -99,25 +99,16 @@ export default {
     registerNewUser() {
       this.$http.post("/user/register", this.userRequest)
           .then(response => {
-            const {id: userId, roleCode } = response.data
+            const {id: userId, roleCode} = response.data
             sessionStorage.setItem("userId", userId);
             sessionStorage.setItem("roleCode", roleCode);
             console.log(response.data);
-            this.resetForm();
-            this.$router.push({ name: "userProfileRoute" });
+            this.$router.push({name: "userProfileRoute"});
           })
           .catch(error => {
             console.log(error);
           });
-    },
-    resetForm() {
-      this.userRequest = {
-        roleCode: 0,
-        email: '',
-        password: '',
-        passwordRepeat: ''
-      };
-    },
+    }
   }
 }
 </script>

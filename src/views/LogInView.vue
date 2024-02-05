@@ -57,7 +57,7 @@ export default {
     }
   },
   methods: {
-    login: function () {
+    login() {
       this.$http
           .post("/user/login", {
             email: this.email,
@@ -72,9 +72,9 @@ export default {
           .catch((error) => {
             console.log(error);
           });
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style>
