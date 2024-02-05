@@ -28,9 +28,12 @@
           </div>
         </div>
         <!-- Scrollable modal for user contact information change -->
-        <UserContactInfo rmationChangeModal :form-date-of-birth="formDateOfBirth" :form-first-name="formFirstName"
+        <UserContactInformationChangeModal :form-date-of-birth="formDateOfBirth"
+                                           :form-first-name="formFirstName"
                                            :form-last-name="formLastName"
-                                           :save-changes-to-data-base="saveChangesToDataBase"/>
+                                           :user-contact-info-response="userContactInfoResponse"
+                                           @getUserContactInfoByUserId="getUserContactInfoByUserId"
+        />
       </div>
 
       <div class="row">
@@ -76,12 +79,11 @@
           <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
                aria-labelledby="offcanvasExampleLabel">
             <div class="offcanvas-header">
-              <h5 class="offcanvas-title" id="offcanvasExampleLabel">TEAM SELECTION</h5>
               <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
               <div>
-                SELECT TEAM CATEGORY
+                <h1>SELECT TEAM CATEGORY</h1>
               </div>
               <div class="dropdown mt-3">
                 <button v-on:click="getAgeCategories()" class="btn btn-secondary dropdown-toggle offcanvas-button"
@@ -94,27 +96,36 @@
                     <a @click="updateSelectedCategory(category.categoryCode)"
                        class="dropdown-item" href="#">{{ category.categoryName }}</a>
                   </li>
+                </ul>
+              </div>
+              <div class="offcanvas-body">
+                <div>
+                  <h1>SELECT TEAM</h1>
+                </div>
+                <div class="dropdown mt-3">
+                  <button class="btn btn-secondary dropdown-toggle offcanvas-button"
+                          type="button"
+                          data-bs-toggle="dropdown">
+                    Dropdown button
+                  </button>
+                  <ul class="dropdown-menu mt-3">
+                    <li v-for="team in teamInfoResponse" :key="team.teamId">
+                      <a class="dropdown-item" href="#">{{ team.teamName }}</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <br>
+              <div class="offcanvas-body">
+                <div>
+                  <h1>TOURNAMENTS</h1>
+                </div>
+                <div class="dropdown mt-3">
+                  <button @click="navigateToTournamentsListPage" style="width: 200px" class="btn btn-secondary" type="button">CHECK</button>
+                </div>
+              </div>
+            </div>
 
-                </ul>
-              </div>
-            </div>
-            <div class="offcanvas-body">
-              <div>
-                SELECT TEAM
-              </div>
-              <div class="dropdown mt-3">
-                <button class="btn btn-secondary dropdown-toggle offcanvas-button"
-                        type="button"
-                        data-bs-toggle="dropdown">
-                  Dropdown button
-                </button>
-                <ul class="dropdown-menu mt-3">
-                  <li v-for="team in teamInfoResponse" :key="team.teamId">
-                    <a class="dropdown-item" href="#">{{ team.teamName }}</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
           </div>
 
           <font-awesome-icon data-bs-toggle="offcanvas"
@@ -354,6 +365,12 @@ export default {
     }
   },
   methods: {
+    navigateToTournamentsListPage(){
+      this.$router.push({
+        name: 'tournamentListRoute'
+      })
+    },
+
     setPicture(picture) {
       this.teamRequest.teamLogo = picture;
     },
@@ -535,13 +552,10 @@ export default {
       const originalUserId = this.teamRequest.userId;
       this.$http.post("/team/register", this.teamRequest)
           .then(response => {
-            console.log('Team registration successful:', response.data);
-            console.log('TEAM REQUEST: ' + this.teamRequest)
-            console.log('TEAM REQUEST PHOTO DATA: ' + this.teamRequest.teamLogo)
             const {id: teamId} = response.data;
             sessionStorage.setItem("teamId", teamId);
-            this.teamRequest.userId = originalUserId;
             this.resetForm();
+            this.teamRequest.userId = originalUserId;
             this.getTeamInformation();
             this.addSequenceNumbers();
             $('#staticBackdrop').modal('hide');
@@ -572,35 +586,37 @@ export default {
 
 
     //Update user contact information
-    saveChangesToDataBase() {
-      if (
-          this.formFirstName !== this.userContactInfoResponse.firstName ||
-          this.formLastName !== this.userContactInfoResponse.lastName ||
-          this.formDateOfBirth !== this.userContactInfoResponse.dateOfBirth
-      ) {
-        const updatedContact = {
-          firstName: this.formFirstName,
-          lastName: this.formLastName,
-          dateOfBirth: this.formDateOfBirth
-        };
-
-        this.$http.put(`/user/update/${this.userId}`, updatedContact)
-            .then(response => {
-              console.log('Changes saved to the database');
-              this.getUserContactInfoByUserId();
-              this.$refs.exampleModal.classList.remove('show');
-              const backdrop = document.querySelector('.modal-backdrop');
-              if (backdrop) {
-                backdrop.remove();
-              }
-            })
-            .catch(error => {
-              console.error('Error while saving', error);
-            });
-      } else {
-        console.log('No changes detected');
-      }
-    },
+    // saveChangesToDataBase() {
+    //   console.log("form fristname: " + this.formFirstName)
+    //   console.log("form fristname 2 : " + this.userContactInfoResponse.firstName)
+    //   if (
+    //       this.formFirstName !== this.userContactInfoResponse.firstName ||
+    //       this.formLastName !== this.userContactInfoResponse.lastName ||
+    //       this.formDateOfBirth !== this.userContactInfoResponse.dateOfBirth
+    //   ) {
+    //     const updatedContact = {
+    //       firstName: this.formFirstName,
+    //       lastName: this.formLastName,
+    //       dateOfBirth: this.formDateOfBirth
+    //     };
+    //
+    //     this.$http.put(`/user/update/${this.userId}`, updatedContact)
+    //         .then(response => {
+    //           console.log('Changes saved to the database');
+    //           this.getUserContactInfoByUserId();
+    //           this.$refs.exampleModal.classList.remove('show');
+    //           const backdrop = document.querySelector('.modal-backdrop');
+    //           if (backdrop) {
+    //             backdrop.remove();
+    //           }
+    //         })
+    //         .catch(error => {
+    //           console.error('Error while saving', error);
+    //         });
+    //   } else {
+    //     console.log('No changes detected');
+    //   }
+    // },
     //Calucalte the age from date of birth
     calculateAge(dateOfBirth) {
       const dob = new Date(dateOfBirth);
