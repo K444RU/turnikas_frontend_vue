@@ -121,7 +121,7 @@
                           </div>
                         </div>
                         <div class="tournament-right-info-box-body">
-                          
+                          <h2>AAAAAAAAA</h2>
 
                         </div>
                       </div>
@@ -147,37 +147,157 @@
                           <table class="table-dark">
                             <thead>
                             <tr>
-                              <font-awesome-icon style="color:goldenrod" :icon="['fas', 'trophy']" /> 1
+                              <font-awesome-icon style="color:goldenrod" :icon="['fas', 'trophy']"/>
+                              1
 
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
-                              <font-awesome-icon style="color: silver" :icon="['fas', 'trophy']" /> 2
+                              <font-awesome-icon style="color: silver" :icon="['fas', 'trophy']"/>
+                              2
 
                             </tr>
                             <tr>
-                              <font-awesome-icon style="color: saddlebrown" :icon="['fas', 'trophy']" /> 3
-
+                              <font-awesome-icon style="color: saddlebrown" :icon="['fas', 'trophy']"/>
+                              3
                             </tr>
-
                             </tbody>
                           </table>
-
                         </div>
                       </div>
                     </div>
-
-
                   </div>
-
                 </div>
               </div>
             </div>
             <div class="tab-pane fade" id="groups-tab-pane" role="tabpanel" aria-labelledby="groups-tab" tabindex="0">
-              <h1>TOURNAMENT GROUPS</h1>
+              <h1 style="color: #1d2127; margin-top: -10px" class="team-profile-roster">GROUPS</h1>
+              <div class="test-tournament-list-body">
+                <div class="test-tournament-centre-nav-left-info">
+                  <div class="tournament-team-groups">
+                    <div class="tournament-team-groups-boxes">
+                      <div class="tournament-team-groups-header">
+                        GROUP A
+                      </div>
 
-            </div>
+                      <div class="tournament-team-groups-body">
+                        <table class="table-dark">
+
+                          <tbody>
+                          <tr>
+                            <th scope="row">1</th>
+                            <td><img  src="../assets/images/defaultTeamLogo.png"
+                                      style="height: 40px; cursor: pointer" alt=""></td>
+                            <td>*TEAM NAME*</td>
+                          </tr>
+                          <tr>
+                            <th scope="row">2</th>
+                            <td><img  src="../assets/images/defaultTeamLogo.png"
+                                      style="height: 40px; border-radius: 20px; cursor: pointer" alt=""></td>
+                            <td>*TEAM NAME*</td>
+                          </tr>
+                          <tr>
+                            <th scope="row">3</th>
+                            <td><img  src="../assets/images/defaultTeamLogo.png"
+                                      style="height: 40px; border-radius: 20px; cursor: pointer" alt=""></td>
+                            <td>*TEAM NAME*</td>
+                          </tr>
+                          <tr>
+                            <th scope="row">4</th>
+                            <td><img  src="../assets/images/defaultTeamLogo.png"
+                                      style="height: 40px; border-radius: 20px; cursor: pointer" alt=""></td>
+                            <td>*TEAM NAME*</td>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div class="tournament-team-groups-boxes">
+                      <div class="tournament-team-groups-header">
+                        GROUP B
+                      </div>
+
+                      <div class="tournament-team-groups-body">
+                        <table class="table-dark">
+
+                          <tbody>
+                          <tr>
+                            <th scope="row">1</th>
+                            <td><img  src="../assets/images/defaultTeamLogo.png"
+                                      style="height: 40px; border-radius: 20px; cursor: pointer" alt=""></td>
+                            <td>*TEAM NAME*</td>
+                          </tr>
+                          <tr>
+                            <th scope="row">2</th>
+                            <td><img  src="../assets/images/defaultTeamLogo.png"
+                                      style="height: 40px; border-radius: 20px; cursor: pointer" alt=""></td>
+                            <td>*TEAM NAME*</td>
+                          </tr>
+                          <tr>
+                            <th scope="row">3</th>
+                            <td><img  src="../assets/images/defaultTeamLogo.png"
+                                      style="height: 40px; border-radius: 20px; cursor: pointer" alt=""></td>
+                            <td>*TEAM NAME*</td>
+                          </tr>
+                          <tr>
+                            <th scope="row">4</th>
+                            <td><img  src="../assets/images/defaultTeamLogo.png"
+                                      style="height: 40px; border-radius: 20px; cursor: pointer" alt=""></td>
+                            <td>*TEAM NAME*</td>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div class="tournament-team-groups-boxes">
+                      <div class="tournament-team-groups-header">
+                        GROUP C
+                      </div>
+
+                      <div class="tournament-team-groups-body">
+
+                      </div>
+                    </div>
+                    <div class="tournament-team-groups-boxes">
+                      <div class="tournament-team-groups-header">
+                        GROUP D
+                      </div>
+
+                      <div class="tournament-team-groups-body">
+
+                      </div>
+                    </div>
+                    <div class="tournament-team-groups-boxes">
+                      <div class="tournament-team-groups-header">
+                        GROUP E
+                      </div>
+
+                      <div class="tournament-team-groups-body">
+
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <div class="test-tournament-centre-nav-right-info">
+                  <h1>TEAMS</h1>
+                </div>
+              </div>
+              <div style="margin-top: -100px">
+                <h1>Group Stage in Football Tournaments</h1>
+                <p>The group stage is a pivotal phase in football tournaments,
+                  serving as the initial round where participating teams are organized into distinct groups.
+                  This format is widely employed in major football competitions,
+                  such as the FIFA World Cup and UEFA Champions League.
+                  The primary objective of the group stage is to determine
+                  which teams advance to the knockout rounds based on their performance
+                  within their assigned groups.</p>
+              </div>
+              </div>
+
             <div class="tab-pane fade" id="bracket-tab-pane" role="tabpanel" aria-labelledby="bracket-tab" tabindex="0">
               <h1>TOURNAMENT BRACKETS</h1>
 
@@ -283,6 +403,8 @@ export default {
   margin-top: 40px;
   display: flex;
   margin-bottom: 300px;
+  /*border: 1px solid white;*/
+
 }
 
 .test-tournament-centre-nav {
@@ -297,14 +419,62 @@ export default {
 
 .test-tournament-centre-nav-left-info {
   flex: 0 0 70%; /* Initial, no grow, fixed 60% width */
-  /*border: solid 1px white;*/
+  border: solid 1px white;
   min-height: 100vh;
 }
 
 .test-tournament-centre-nav-right-info {
-  flex: 0 0 30%; /* Initial, no grow, fixed 40% width */
+  flex: 0 0 25%; /* Initial, no grow, fixed 40% width */
   min-height: 100vh;
-  margin-left: 50px;
+  margin-left: 30px;
+  border: solid 1px white;
+}
+
+
+.tournament-team-groups {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tournament-team-groups-boxes {
+  position: relative;
+  flex: 0 0 32%;
+  box-sizing: border-box;
+  padding: 10px; /* Adjust padding as needed */
+  height: 300px;
+  overflow: hidden;
+  border: 2px solid #1d2127;
+  margin-bottom: 10px;
+  margin-right: 5px;
+  margin-left: 5px;
+  border-radius: 10px;
+}
+.tournament-team-groups-boxes:hover{
+  background-color: #1d2127;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 2px solid white;
+}
+
+.tournament-team-groups-header {
+  flex-direction: column;
+  height: 15%;
+  border-bottom: 2px solid #1d2127;
+  flex: 0 0 50%;
+}
+
+.tournament-team-groups-body {
+  flex-direction: column;
+  height: 85%;
+  border-radius: 10px;
+  flex: 0 0 50%;
+  font-family: 'Bebas Neue', 'Open Sans', 'Permanent Marker', 'Smooch', sans-serif;
+  font-size: 20px;
+}
+.row:hover {
+  background-color: #1d2127;
+  border-radius: 20px;
+  cursor: pointer;
 }
 
 
