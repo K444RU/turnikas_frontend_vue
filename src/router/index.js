@@ -9,6 +9,8 @@ import teamProfileView from "@/views/TeamProfileView";
 import playerProfileView from "@/views/PlayerProfileView";
 import tournamentListView from "@/views/TournamentListView";
 import tournamentView from "@/views/TournamentView";
+import TournamentRegistrationView from "@/views/TournamentRegistrationView"
+import tournamentRegistrationView from "@/views/TournamentRegistrationView";
 
 Vue.use(VueRouter)
 
@@ -58,6 +60,11 @@ const routes = [
     path: '/tournament',
     name: 'tournamentRoute',
     component: tournamentView
+  },
+  {
+    path: '/tournament-registration',
+    name: 'tournamentRegistrationRoute',
+    component: tournamentRegistrationView
   },
   {
     path: '/about',
