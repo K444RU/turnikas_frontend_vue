@@ -3,13 +3,13 @@
     <div class="tournament-profile-header tournament-profile-background-image">
       <div class="left-tournament-profile-header-info" style="color: white;">
         <div class="left-tournament-header-text">
-          <h1 style="font-size: 4.0rem">Tournament name</h1>
-          <p>Tournament start date</p>
+          <h1 style="font-size: 4.0rem">{{ tournamentInfoResponse.name }}</h1>
+          <p>Tournament start date: {{ tournamentInfoResponse.startDate }}</p>
         </div>
       </div>
       <div class="right-tournament-profile-header-info" style="color: white;">
         <div class="right-tournament-header-text">
-          <p>Starts in: </p>
+
         </div>
       </div>
       <div class="team-profile-logo">
@@ -18,7 +18,6 @@
     </div>
     <div class="tournament-list-body">
       <div class="tournament-left-nav">
-
       </div>
       <div class="tournament-centre-nav">
         <div class="centre-nav-tabs">
@@ -61,7 +60,9 @@
               <div class="test-tournament-list-body">
                 <div class="test-tournament-centre-nav">
                   <div class="test-tournament-centre-nav-left-info">
+
                     <h2>Format</h2>
+
                     <div class="tournament-left-info-grid">
                       <div class="tournament-left-info-cell">
                         <font-awesome-icon :icon="['fas', 'ranking-star']"/>
@@ -73,15 +74,33 @@
                         <h2>Team size: 11 players</h2>
                       </div>
                       <div class="tournament-left-info-cell">
-                        <font-awesome-icon :icon="['fas', 'trophy']"/>
-                        <h2>Prize pool: 200$</h2>
+                        <font-awesome-icon :icon="['fas', 'city']"/>
+                        <h2>City: {{ tournamentInfoResponse.cityName }}</h2>
+                      </div>
+                      <div class="tournament-left-info-cell">
+                        <font-awesome-icon :icon="['fas', 'map-pin']"/>
+                        <h2>Stadium: {{ tournamentInfoResponse.stadiumName }}</h2>
+                      </div>
+                      <div class="tournament-left-info-cell">
+                        <font-awesome-icon :icon="['fas', 'people-group']"/>
+                        <h2>Slots Available: {{tournamentInfoResponse.amountName}} </h2>
+                      </div>
+                      <div class="tournament-left-info-cell">
+                        <font-awesome-icon :icon="['fas', 'people-group']"/>
+                        <h2>Age Category: {{ tournamentInfoResponse.categoryName}} </h2>
                       </div>
                       <div class="tournament-left-info-cell">
                         <font-awesome-icon :icon="['fas', 'trophy']"/>
-                        <h2>Prize pool: 200$</h2>
+                        <h2>Prize pool: {{ tournamentInfoResponse.prize }}</h2>
+                      </div>
+                      <div class="tournament-left-info-cell">
+                        <font-awesome-icon :icon="['fas', 'coins']"/>
+                        <h2>Participation prise: {{ tournamentInfoResponse.participationPrise }}€</h2>
                       </div>
                     </div>
                     <h1 style="color: #1d2127" class="team-profile-roster">TOURNAMENT</h1>
+                    <h1>Additional information: {{ tournamentInfoResponse.additionalInfo }}</h1>
+                    <br>
                     <h1>Tournament info: </h1>
                     <p>Overview:
                       Welcome to the Championship Cup 2024, a premier football tournament that brings together
@@ -117,7 +136,7 @@
                           </div>
                           <div class="tournament-right-info-box-header-cols">
                             <h3>Free slots: </h3>
-                            <p>28</p>
+                            <p>{{ tournamentInfoResponse.amountName }}</p>
                           </div>
                         </div>
                         <div class="tournament-right-info-box-body">
@@ -139,7 +158,7 @@
                             </h2>
                           </div>
                           <div class="tournament-right-info-box-header-cols">
-                            <h3>Prize: </h3>
+                            <h3>Prize: {{ tournamentInfoResponse.prize }}</h3>
                           </div>
                         </div>
 
@@ -172,7 +191,6 @@
               </div>
             </div>
             <div class="tab-pane fade" id="groups-tab-pane" role="tabpanel" aria-labelledby="groups-tab" tabindex="0">
-              <h1 style="color: #1d2127; margin-top: -10px" class="team-profile-roster">GROUPS</h1>
               <div class="test-tournament-list-body">
                 <div class="test-tournament-centre-nav-left-info">
                   <div class="tournament-team-groups">
@@ -187,26 +205,26 @@
                           <tbody>
                           <tr>
                             <th scope="row">1</th>
-                            <td><img  src="../assets/images/defaultTeamLogo.png"
-                                      style="height: 40px; cursor: pointer" alt=""></td>
+                            <td><img src="../assets/images/defaultTeamLogo.png"
+                                     style="height: 40px; cursor: pointer" alt=""></td>
                             <td>*TEAM NAME*</td>
                           </tr>
                           <tr>
                             <th scope="row">2</th>
-                            <td><img  src="../assets/images/defaultTeamLogo.png"
-                                      style="height: 40px; border-radius: 20px; cursor: pointer" alt=""></td>
+                            <td><img src="../assets/images/defaultTeamLogo.png"
+                                     style="height: 40px; border-radius: 20px; cursor: pointer" alt=""></td>
                             <td>*TEAM NAME*</td>
                           </tr>
                           <tr>
                             <th scope="row">3</th>
-                            <td><img  src="../assets/images/defaultTeamLogo.png"
-                                      style="height: 40px; border-radius: 20px; cursor: pointer" alt=""></td>
+                            <td><img src="../assets/images/defaultTeamLogo.png"
+                                     style="height: 40px; border-radius: 20px; cursor: pointer" alt=""></td>
                             <td>*TEAM NAME*</td>
                           </tr>
                           <tr>
                             <th scope="row">4</th>
-                            <td><img  src="../assets/images/defaultTeamLogo.png"
-                                      style="height: 40px; border-radius: 20px; cursor: pointer" alt=""></td>
+                            <td><img src="../assets/images/defaultTeamLogo.png"
+                                     style="height: 40px; border-radius: 20px; cursor: pointer" alt=""></td>
                             <td>*TEAM NAME*</td>
                           </tr>
                           </tbody>
@@ -224,26 +242,26 @@
                           <tbody>
                           <tr>
                             <th scope="row">1</th>
-                            <td><img  src="../assets/images/defaultTeamLogo.png"
-                                      style="height: 40px; border-radius: 20px; cursor: pointer" alt=""></td>
+                            <td><img src="../assets/images/defaultTeamLogo.png"
+                                     style="height: 40px; border-radius: 20px; cursor: pointer" alt=""></td>
                             <td>*TEAM NAME*</td>
                           </tr>
                           <tr>
                             <th scope="row">2</th>
-                            <td><img  src="../assets/images/defaultTeamLogo.png"
-                                      style="height: 40px; border-radius: 20px; cursor: pointer" alt=""></td>
+                            <td><img src="../assets/images/defaultTeamLogo.png"
+                                     style="height: 40px; border-radius: 20px; cursor: pointer" alt=""></td>
                             <td>*TEAM NAME*</td>
                           </tr>
                           <tr>
                             <th scope="row">3</th>
-                            <td><img  src="../assets/images/defaultTeamLogo.png"
-                                      style="height: 40px; border-radius: 20px; cursor: pointer" alt=""></td>
+                            <td><img src="../assets/images/defaultTeamLogo.png"
+                                     style="height: 40px; border-radius: 20px; cursor: pointer" alt=""></td>
                             <td>*TEAM NAME*</td>
                           </tr>
                           <tr>
                             <th scope="row">4</th>
-                            <td><img  src="../assets/images/defaultTeamLogo.png"
-                                      style="height: 40px; border-radius: 20px; cursor: pointer" alt=""></td>
+                            <td><img src="../assets/images/defaultTeamLogo.png"
+                                     style="height: 40px; border-radius: 20px; cursor: pointer" alt=""></td>
                             <td>*TEAM NAME*</td>
                           </tr>
                           </tbody>
@@ -277,51 +295,160 @@
 
                       </div>
                     </div>
-
+                    <div style="margin-top: 100px">
+                      <h1>Group Stage in Football Tournaments</h1>
+                      <p>The group stage is a pivotal phase in football tournaments,
+                        serving as the initial round where participating teams are organized into distinct groups.
+                        This format is widely employed in major football competitions,
+                        such as the FIFA World Cup and UEFA Champions League.
+                        The primary objective of the group stage is to determine
+                        which teams advance to the knockout rounds based on their performance
+                        within their assigned groups.</p>
+                    </div>
                   </div>
-
                 </div>
-
                 <div class="test-tournament-centre-nav-right-info">
-                  <h1>TEAMS</h1>
+                  <h1 class="rotate-font">GROUPS</h1>
                 </div>
               </div>
-              <div style="margin-top: -100px">
-                <h1>Group Stage in Football Tournaments</h1>
-                <p>The group stage is a pivotal phase in football tournaments,
-                  serving as the initial round where participating teams are organized into distinct groups.
-                  This format is widely employed in major football competitions,
-                  such as the FIFA World Cup and UEFA Champions League.
-                  The primary objective of the group stage is to determine
-                  which teams advance to the knockout rounds based on their performance
-                  within their assigned groups.</p>
-              </div>
-              </div>
+            </div>
 
             <div class="tab-pane fade" id="bracket-tab-pane" role="tabpanel" aria-labelledby="bracket-tab" tabindex="0">
               <h1>TOURNAMENT BRACKETS</h1>
+              <div class="test-tournament-list-body">
+                <div>
 
+                </div>
+              </div>
             </div>
             <div class="tab-pane fade" id="matches-tab-pane" role="tabpanel" aria-labelledby="matches-tab" tabindex="0">
-              <h1>TOURNAMENT MATCHES</h1>
+              <div class="test-tournament-list-body">
+                <div>
+
+                </div>
+              </div>
 
             </div>
             <div class="tab-pane fade" id="teams-tab-pane" role="tabpanel" aria-labelledby="teams-tab" tabindex="0">
               <h1>TOURNAMENT TEAMS</h1>
 
+              <div class="test-tournament-list-body">
+                <div class="test-tournament-centre-nav">
+                  <div class="test-tournament-centre-nav-left-info">
+                    <div class="tournament-teams-box">
+                      <div class="team-image">
+                        <img style="height: 90px" src="../assets/images/defaultTeamLogo.png" alt="">
+                      </div>
+                      <div class="team-name">
+                        <h1>TEAM NAME</h1>
+                      </div>
+                      <div class="team-button">
+                        <font-awesome-icon :icon="['fas', 'ellipsis']"/>
+                      </div>
+                    </div>
+                    <div class="tournament-teams-box">
+                      <div class="team-image">
+                        <img style="height: 90px" src="../assets/images/defaultTeamLogo.png" alt="">
+                      </div>
+                      <div class="team-name">
+                        <h1>TEAM NAME</h1>
+                      </div>
+                      <div class="team-button">
+                        <font-awesome-icon :icon="['fas', 'ellipsis']"/>
+                      </div>
+                    </div>
+                    <div class="tournament-teams-box">
+                      <div class="team-image">
+                        <img style="height: 90px" src="../assets/images/defaultTeamLogo.png" alt="">
+                      </div>
+                      <div class="team-name">
+                        <h1>TEAM NAME</h1>
+                      </div>
+                      <div class="team-button">
+                        <font-awesome-icon :icon="['fas', 'ellipsis']"/>
+                      </div>
+                    </div>
+                    <div class="tournament-teams-box">
+                      <div class="team-image">
+                        <img style="height: 90px" src="../assets/images/defaultTeamLogo.png" alt="">
+                      </div>
+                      <div class="team-name">
+                        <h1>TEAM NAME</h1>
+                      </div>
+                      <div class="team-button">
+                        <font-awesome-icon :icon="['fas', 'ellipsis']"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="test-tournament-centre-nav-right-info">
+                    <h1 class="rotate-font">TEAMS</h1>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="tab-pane fade" id="prizes-tab-pane" role="tabpanel" aria-labelledby="prizes-tab" tabindex="0">
               <h1>TOURNAMENT PRIZES</h1>
-
+              <div class="test-tournament-list-body">
+                <div class="test-tournament-centre-nav">
+                  <div class="test-tournament-centre-nav-left-info">
+                    <div class="tournament-teams-box">
+                      <div class="team-image">
+                        #
+                      </div>
+                      <div class="team-name">
+                        <h2>TEAM NAME</h2>
+                      </div>
+                      <div class="team-button">
+                        <h2>PRIZE</h2>
+                      </div>
+                    </div>
+                    <div class="tournament-teams-box">
+                      <div class="team-image">
+                        <font-awesome-icon style="color: darkgoldenrod;" :icon="['fas', 'trophy']"/>
+                        1
+                      </div>
+                      <div class="team-name">
+                        <h2>TEAM NAME To be decided</h2>
+                      </div>
+                      <div class="team-button">
+                        <h2>100€</h2>
+                      </div>
+                    </div>
+                    <div class="tournament-teams-box">
+                      <div class="team-image">
+                        <font-awesome-icon style="color: silver;" :icon="['fas', 'trophy']"/>
+                        2
+                      </div>
+                      <div class="team-name">
+                        <h2>TEAM NAME To be decided</h2>
+                      </div>
+                      <div class="team-button">
+                        <h2>50€</h2>
+                      </div>
+                    </div>
+                    <div class="tournament-teams-box">
+                      <div class="team-image">
+                        <font-awesome-icon style="color: saddlebrown;" :icon="['fas', 'trophy']"/>
+                        3
+                      </div>
+                      <div class="team-name">
+                        <h2>TEAM NAME To be decided</h2>
+                      </div>
+                      <div class="team-button">
+                        <h2>25€</h2>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="test-tournament-centre-nav-right-info">
+                    <h1 class="rotate-font">PRIZES</h1>
+                  </div>
+                </div>
+              </div>
             </div>
-
           </div>
         </div>
-
       </div>
-
       <div class="tournament-right-nav">
-
       </div>
     </div>
     <Footer/>
@@ -337,13 +464,136 @@ export default {
   name: 'tournamentRoute',
   components: {TeamProfileHeader, Footer},
   data() {
-    return {};
+    return {
+      tournamentId: this.$route.query.tournamentId,
+      tournamentInfoResponse: {
+        cityName: '',
+        stadiumName: '',
+        categoryName: '',
+        amountName: '',
+        id: 0,
+        categoryCode: 0,
+        playerAmountCode: 0,
+        cityId: 0,
+        stadiumId: 0,
+        name: '',
+        startDate: Date,
+        endDate: Date,
+        participationPrise: 0,
+        prize: '',
+        additionalInfo: ''
+      }
+    };
   },
-  methods: {},
+  methods: {
+    async getTournamentInformationByTournamentId() {
+      try {
+        const response = await this.$http.get("/tournament/info", {
+          params: {
+            tournamentId: this.tournamentId,
+          },
+        });
+        this.tournamentInfoResponse = response.data;
+        await this.getCityNameByCityId(this.tournamentInfoResponse.cityId);
+        await this.getStadiumNameByCityId(this.tournamentInfoResponse.cityId);
+        await this.getAgeCategoryByCode(this.tournamentInfoResponse.categoryCode);
+        await this.getPlayerAmountById(this.tournamentInfoResponse.playerAmountCode);
+        this.$forceUpdate();
+        console.log("Response City Name:", this.tournamentInfoResponse.cityName);
+        console.log("Response Stadium Name:", this.tournamentInfoResponse.stadiumName);
+        console.log("Response Age Category:", this.tournamentInfoResponse.ageCategory);
+        console.log("Response Player Amount:", this.tournamentInfoResponse.amountName);
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    async getCityNameByCityId(cityId) {
+      try {
+        const response = await this.$http.get("/tournament/city/info", {
+          params: {
+            cityId: cityId,
+          },
+        });
+        console.log("City API Response:", response.data);
+        this.tournamentInfoResponse.cityName = response.data.cityName;
+        console.log("City Name:", this.tournamentInfoResponse.cityName);
+      } catch (error) {
+        console.log("Error fetching City data:", error);
+      }
+    },
+
+    async getStadiumNameByCityId(cityId) {
+      try {
+        const response = await this.$http.get("/tournament/city/stadium", {
+          params: {
+            cityId: cityId,
+          },
+        });
+        if (response.data.length > 0) {
+          this.tournamentInfoResponse.stadiumName = response.data[0].name;
+          console.log("Stadium Name:", this.tournamentInfoResponse.stadiumName);
+        } else {
+          console.error("Stadium data is empty.");
+        }
+        console.log("Stadium Name:", response.data.name);
+        console.log("Stadium Name:", this.tournamentInfoResponse.stadiumName);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getAgeCategoryByCode(ageCategoryCode) {
+      try {
+        const response = await this.$http.get("/tournament/age-category", {
+          params: {
+            ageCategoryCode: ageCategoryCode,
+          },
+        });
+        const ageCategoryData = response.data;
+        this.tournamentInfoResponse.ageCategory = ageCategoryData.categoryName;
+        this.tournamentInfoResponse.categoryName = ageCategoryData.categoryName;
+        console.log("Age Category:", this.tournamentInfoResponse.ageCategory);
+        console.log("Category Name:", this.tournamentInfoResponse.categoryName);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getPlayerAmountById(amountCode) {
+      try {
+        const response = await this.$http.get("/tournament/player/amount/info", {
+          params: {
+            amountCode: amountCode,
+          },
+        });
+        const playerAmountData = response.data;
+        this.tournamentInfoResponse.playerAmount = playerAmountData.amountName;
+        this.tournamentInfoResponse.amountName = playerAmountData.amountName;
+        console.log("Player Amount:", this.tournamentInfoResponse.playerAmount);
+        console.log("Amount Name:", this.tournamentInfoResponse.amountName);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
+
+  async mounted() {
+    console.log("Mounting to tournament profile with tournamentId:", this.tournamentId)
+    await this.getTournamentInformationByTournamentId()
+  }
 };
 </script>
 
 <style>
+.rotate-font {
+  color: #1d2127;
+  transform: rotate(270deg);
+  margin-top: 200px;
+  margin-left: -100px; /* Adjust the margin to fit within the div */
+  font-family: 'Bebas Neue', 'Open Sans', 'Permanent Marker', 'Smooch', sans-serif;
+  font-size: 200px; /* Adjust the font size as needed */
+}
+
 .tournament-right-info-box-header-cols {
   float: left;
   width: 33.33%;
@@ -403,8 +653,8 @@ export default {
   margin-top: 40px;
   display: flex;
   margin-bottom: 300px;
-  /*border: 1px solid white;*/
-
+  border: 1px solid white;
+  min-height: 100vh;
 }
 
 .test-tournament-centre-nav {
@@ -449,7 +699,8 @@ export default {
   margin-left: 5px;
   border-radius: 10px;
 }
-.tournament-team-groups-boxes:hover{
+
+.tournament-team-groups-boxes:hover {
   background-color: #1d2127;
   border-radius: 10px;
   cursor: pointer;
@@ -471,12 +722,6 @@ export default {
   font-family: 'Bebas Neue', 'Open Sans', 'Permanent Marker', 'Smooch', sans-serif;
   font-size: 20px;
 }
-.row:hover {
-  background-color: #1d2127;
-  border-radius: 20px;
-  cursor: pointer;
-}
-
 
 .tournament-profile-background {
   background-color: black;
@@ -537,7 +782,7 @@ export default {
 .right-tournament-header-text {
   position: absolute;
   margin-top: 410px;
-  left: 85%;
+  left: 75%;
   font-family: 'Bebas Neue', 'Open Sans', 'Permanent Marker', 'Smooch', sans-serif;
   font-size: 20px;
 }
@@ -594,5 +839,67 @@ export default {
   color: white !important;
   border: none !important;
 }
+
+
+.tournament-teams-box {
+  display: grid;
+  grid-template-columns: 20% 70% 10%;
+  width: 100%;
+  height: 100px;
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+
+}
+
+.tournament-teams-box:hover {
+  background-color: #1d2127;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.team-image {
+  border-radius: 20px 0 0 20px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.team-name {
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.team-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 0 20px 20px 0;
+  color: white;
+
+}
+
+.team-button button {
+  color: white;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+}
+
+.team-button:hover {
+  color: black;
+}
+
+/*!* Responsive layout - makes the columns stack on top of each other instead of next to each other *!*/
+/*@media screen and (max-width: 600px) {*/
+/*  .tournament-left-nav, .tournament-right-nav, .tournament-centre-nav {*/
+/*    width: 100%;*/
+/*    position: relative;*/
+/*    margin-left: 0;*/
+/*    margin-right: 0;*/
+/*  }*/
+/*}*/
 </style>
 

@@ -16,9 +16,9 @@
         <div v-for="tournament in tournamentInfoResponse" :key="tournament.id" class="tournament-box">
           <div class="tournament-left-column"></div>
           <div class="tournament-right-column">
-            <p style="color: greenyellow ">Tournament date: {{ tournament.startDate }}</p>
-            <p style="color: #4CAF50;">Tournament name: {{ tournament.name }}</p>
-            <p style="color: cyan">
+            <p @click="navigateToTournamentPage(tournament.id)" style="color: greenyellow ">Tournament date: {{ tournament.startDate }}</p>
+            <p @click="navigateToTournamentPage(tournament.id)" style="color: #4CAF50;">Tournament name: {{ tournament.name }}</p>
+            <p @click="navigateToTournamentPage(tournament.id)" style="color: cyan">
               More Information: Tournament status • Tournament category • {{ tournament.playerAmountCode }}/32
               • Tournament City • {{ tournament.prize }}€
             </p>
@@ -109,6 +109,15 @@ export default {
             console.log(error)
           })
     },
+    navigateToTournamentPage(tournamentId){
+      console.log("Navigating to tournament page with tournamentId: ", tournamentId)
+      this.$router.push({
+        name: 'tournamentRoute',
+        query: {
+          tournamentId: tournamentId,
+        }
+      })
+    }
 
   },
   beforeMount() {
