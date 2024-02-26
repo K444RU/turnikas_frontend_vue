@@ -23,22 +23,6 @@
                        type="date"
                        id="birthday"
                        name="birthday">
-                <div class="control">
-                  <p>Choose Role</p>
-                  <label class="radio">
-                    <input v-model="userRequest.roleCode"
-                           value="1" type="radio"
-                           name="answer">
-                    Solo player
-                  </label>
-                  <label class="radio">
-                    <input v-model="userRequest.roleCode"
-                           value="2" type="radio"
-                           name="answer">
-                    Role two Example
-                  </label>
-                </div>
-                <br>
                 <br>
                 <p>What's your email?</p>
                 <input v-model="userRequest.email"
@@ -84,7 +68,6 @@ export default {
         lastName: '',
         dateOfBirth: Date,
         email: '',
-        roleCode: 0,
         password: '',
         passwordRepeat: ''
 
@@ -103,7 +86,7 @@ export default {
             sessionStorage.setItem("userId", userId);
             sessionStorage.setItem("roleCode", roleCode);
             console.log(response.data);
-            this.$router.push({name: "userProfileRoute"});
+            this.$router.push({name: "newUserProfileRoute"});
           })
           .catch(error => {
             console.log(error);
