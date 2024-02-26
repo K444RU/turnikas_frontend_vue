@@ -1,40 +1,37 @@
 <template>
-    <div class="login-page-background">
-      <Header/>
-      <div class="container text-center">
-        <div class="row align-items-center">
-          <div class="col">
+  <div class="login-page-background">
+    <Header/>
+    <div class="container text-center">
+      <div class="row align-items-center">
+        <div class="col">
+        </div>
+        <div class="col">
+          <div class="kdCHyh ">
+            <form @submit.prevent="login">
+              <div class="input-container ">
+                <h2 class="sign-up-font">
+                  Sign in
+                </h2>
+                <input v-model="email"
+                       type="text"
+                       placeholder="Email"
+                       class="rounded-input">
+                <input v-model="password"
+                       type="password"
+                       placeholder="Password"
+                       class="rounded-input">
+              </div>
+              <button v-on:click="login"
+                      type="submit">Sign in test
+              </button>
+            </form>
           </div>
-
-
-          <div class="col">
-            <div class="kdCHyh ">
-              <form @submit.prevent="login">
-                <div class="input-container ">
-                  <h2 class="sign-up-font">
-                    Sign in
-                  </h2>
-                  <input v-model="email"
-                         type="text"
-                         placeholder="Email"
-                         class="rounded-input">
-                  <input v-model="password"
-                         type="password"
-                         placeholder="Password"
-                         class="rounded-input">
-                </div>
-                <button
-                    v-on:click="login"
-                    type="submit">Sign In
-                </button>
-              </form>
-            </div>
-          </div>
-          <div class="col">
-          </div>
+        </div>
+        <div class="col">
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -58,16 +55,23 @@ export default {
   },
   methods: {
     login() {
+      // Check if the user is already on the new user profile route
+      if (this.$route.name === 'newUserProfileRoute') {
+        return;
+      }
+
       this.$http
           .post("/user/login", {
             email: this.email,
             password: this.password,
           })
           .then((response) => {
-            const {id: userId, roleCode} = response.data;
+            const {id: userId} = response.data;
             sessionStorage.setItem("userId", userId);
-            sessionStorage.setItem("roleCode", roleCode);
-            this.$router.push({name: "userProfileRoute"});
+            // Check again before navigating to avoid redundancy
+            if (this.$route.name !== 'newUserProfileRoute') {
+              this.$router.push({name: 'newUserProfileRoute'});
+            }
           })
           .catch((error) => {
             console.log(error);

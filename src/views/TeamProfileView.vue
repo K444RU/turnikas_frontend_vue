@@ -66,17 +66,6 @@
       </div>
     </div>
 
-
-    <div class="team-profile-stats-container">
-      <div class="team-profile-stats-column">
-        <h1 class="team-profile-stats-profile">STATS</h1>
-      </div>
-    </div>
-    <div class="team-profile-stats-container">
-      <div class="team-profile-stats-column stats-container">
-        <UserProfileStatisticsTable class="team-profile-stats-table" :team-stats-response="teamStatsResponse"/>
-      </div>
-    </div>
     <h1 class="team-profile-roster">ROSTER</h1>
     <div style="color: #FFFFFF" class="team-players-container">
       <div v-for="(player, index) in teamPlayerResponse" :key="player.id" class="box">

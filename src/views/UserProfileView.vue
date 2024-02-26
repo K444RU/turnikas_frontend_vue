@@ -165,7 +165,7 @@
                      style="height: 70px; border-radius: 20px; cursor: pointer" alt="">
               </td>
               <td style="cursor: pointer" @click="navigateToTeamPage(team.teamId)">{{ team.teamName }}</td>
-              <td>{{ team.categoryCode }}</td>
+              <td>{{ getCategoryNameByCategoryCode(team.categoryCode) }}</td>
               <td>{{ team.teamCoachName }}</td>
               <td>
                 <font-awesome-icon @click="openTeamEditModal(team.teamId)"
@@ -255,12 +255,23 @@
                              aria-label="Last Name">
                     </div>
                     <div class="input-group mb-3">
-                      <p>Choose amount of players in team</p>
+                      <p>Choose team age category</p>
                       <select v-model="teamRequest.categoryCode" class=" amount-of-players"
                               aria-label="Default select example">
-                        <option selected>Amount of players</option>
-                        <option value="1">1</option>
-                        <option value="2">11</option>
+                        <option selected>Select team age category</option>
+                        <option selected disabled value="0">Select category: </option>
+                        <option v-for="category in ageCategoryResponse"
+                                :value="category.categoryCode">{{ category.categoryName }}</option>
+                      </select>
+                    </div>
+                    <div class="input-group mb-3">
+                      <p>Select amount of players</p>
+                      <select v-model="teamRequest.roleCode" class=" amount-of-players"
+                              aria-label="Default select example">
+                        <option selected>Select amount of players</option>
+                        <option selected disabled value="0">Select amount: </option>
+                        <option v-for="role in filteredRoles"
+                                :value="role.roleCode">{{ role.roleName }}</option>
                       </select>
                     </div>
                     <div class="input-group mb-3">
@@ -268,22 +279,11 @@
                     </div>
                     <div class="input-group mb-3">
                       <input
-                             type="file"
-                             @change="handleImage"
-                             ref="fileInput"
-                             @pictureInputSuccess="setPicture"
-                             accept="image/x-png,image/jpeg">
-
-<!--                      <button-->
-<!--                          v-model="teamRequest.teamLogo"-->
-<!--                          type="button"-->
-<!--                          class="tt btn btn-dark"-->
-<!--                          data-bs-toggle="tooltip"-->
-<!--                          data-bs-placement="right"-->
-<!--                          title="Tooltip on right"-->
-<!--                          @click="$refs.fileInput.click()"-->
-<!--                      >Upload file-->
-<!--                      </button>-->
+                          type="file"
+                          @change="handleImage"
+                          ref="fileInput"
+                          @pictureInputSuccess="setPicture"
+                          accept="image/x-png,image/jpeg">
                     </div>
                   </div>
                   <div class="modal-footer">
@@ -321,9 +321,11 @@ export default {
       selectedCategory: 0,
       selectedTeamId: 0,
 
-      ageCategoryResponse: {
-        categoryCode: 0,
-        categoryName: ''
+      ageCategoryResponse: [],
+
+      roleResponse: {
+        roleCode: 0,
+        roleName: ''
       },
 
       teamRequest: {
@@ -331,6 +333,7 @@ export default {
         teamName: '',
         teamCoachName: '',
         categoryCode: 0,
+        roleCode: 0,
         teamLogo: ''
       },
 
@@ -347,6 +350,7 @@ export default {
         teamName: '',
         teamCoachName: '',
         categoryCode: 0,
+        roleCode: 0,
         teamLogo: '',
       },
       formTeamName: '',
@@ -364,7 +368,33 @@ export default {
       formDateOfBirth: ''
     }
   },
+  computed:{
+    filteredRoles() {
+      return this.roleResponse.filter(role => role.roleCode === 2 || role.roleCode ===3);
+    }
+  },
   methods: {
+
+    getAllTeamRoles() {
+      this.$http.get("/team/role")
+          .then(response => {
+            this.roleResponse = response.data
+            console.log(response.data)
+          })
+          .catch(error => {
+            console.log(error)
+          })
+    },
+    getAllTeamAgeCategories() {
+      this.$http.get("/team/all/age/category")
+          .then(response => {
+            this.ageCategoryResponse = response.data
+            console.log(response.data)
+          })
+          .catch(error => {
+            console.log(error)
+          })
+    },
     navigateToTournamentsListPage(){
       this.$router.push({
         name: 'tournamentListRoute'
@@ -485,15 +515,11 @@ export default {
       })
     },
 
-    getCategoryNameByCategoryCode() {
-      this.$http.get("/team/age/category")
-          .then(response => {
-            this.ageCategoryResponse = response.data
-            console.log(response.data)
-          })
-          .catch(error => {
-            console.log(error)
-          })
+    getCategoryNameByCategoryCode(categoryCode) {
+      console.log('Input categoryCode:', categoryCode);
+      const category = this.ageCategoryResponse.find(cat => cat.categoryCode === categoryCode);
+      console.log('Category found:', category);
+      return category ? category.categoryName : 'Unknown';
     },
 
     getAgeCategories() {
@@ -650,6 +676,8 @@ export default {
   beforeMount() {
     this.getUserContactInfoByUserId()
     this.getCategoryNameByCategoryCode()
+    this.getAllTeamAgeCategories()
+    this.getAllTeamRoles()
   },
   mounted() {
     this.getAgeCategories()

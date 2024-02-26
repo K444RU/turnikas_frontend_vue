@@ -581,7 +581,7 @@ export default {
     console.log("Mounting to tournament profile with tournamentId:", this.tournamentId)
     await this.getTournamentInformationByTournamentId()
   }
-};
+}
 </script>
 
 <style>
@@ -814,7 +814,6 @@ export default {
   width: 100%;
   margin-left: 5%;
   margin-right: 5%;
-  min-height: auto;
 }
 
 .centre-nav-tabs {
