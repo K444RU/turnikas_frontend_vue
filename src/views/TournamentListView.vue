@@ -16,13 +16,19 @@
         <div v-for="tournament in tournamentInfoResponse" :key="tournament.id" class="tournament-box">
           <div class="tournament-left-column"></div>
           <div class="tournament-right-column">
-            <p @click="navigateToTournamentPage(tournament.id)" style="color: greenyellow ">Tournament date: {{ tournament.startDate }}</p>
-            <p @click="navigateToTournamentPage(tournament.id)" style="color: #4CAF50;">Tournament name: {{ tournament.name }}</p>
-            <p @click="navigateToTournamentPage(tournament.id)" style="color: cyan">
-              More Information: Tournament status • Tournament category • {{ tournament.playerAmountCode }}/32
-              • Tournament City • {{ tournament.prize }}€
+            <p @click="navigateToTournamentPage(tournament.id)" style="color: greenyellow ">
+              Tournament date: {{ tournament.startDate }}
             </p>
-            <!-- Additional dynamic content for the right column goes here -->
+            <p @click="navigateToTournamentPage(tournament.id)" style="color: #4CAF50;">
+              Tournament name: {{ tournament.name }}
+            </p>
+            <p @click="navigateToTournamentPage(tournament.id)" style="color: cyan">
+              More Information: Tournament status
+              • Tournament category: {{getCategoryNameByCategoryCode2(tournament.categoryCode)}}
+              • Tournament available slots: {{ getPlayerAmountNames(tournament.playerAmountCode) }}
+              • Tournament city: {{ getCityNames(tournament.cityId) }}
+              • {{ tournament.prize }}€
+            </p>
           </div>
         </div>
 
@@ -77,53 +83,108 @@ import Footer from "@/components/common/Footer";
 
 export default {
   name: 'tournamentListRoute',
-  components: {Footer, TeamProfileHeader},
+  components: { Footer, TeamProfileHeader },
   data() {
     return {
-      tournamentInfoResponse: {
-        id: 0,
-        ageCategoryCode: 0,
-        playerAmountCode: 0,
-        cityId: 0,
-        stadiumId: 0,
-        name: '',
-        startDate: Date,
-        endDate: Date,
-        participationPrise: 0,
-        prize: '',
-        additionalInfo: ''
-      }
-    }
+      tournamentInfoResponse: [],
+      ageCategoryResponse: [],
+      playerAmountResponse:[],
+      cityNameResponse:[],
+      cityNames: {},
+    };
   },
   methods: {
     getTournamentsInformation() {
       this.$http.get("/tournament/all")
           .then(response => {
-            console.log(response.data)
-            this.tournamentInfoResponse = response.data.map((tournament) => ({
+            console.log(response.data);
+            this.tournamentInfoResponse = response.data.map(tournament => ({
               ...tournament,
               tournamentId: tournament.id
             }));
           })
           .catch(error => {
-            console.log(error)
-          })
+            console.log(error);
+          });
     },
-    navigateToTournamentPage(tournamentId){
-      console.log("Navigating to tournament page with tournamentId: ", tournamentId)
+    getCityName(cityId) {
+      if (this.cityNames[cityId]) {
+        return this.cityNames[cityId];
+      }
+
+      this.$http.get(`/tournament/city/info?cityId=${cityId}`)
+          .then(response => {
+            const cityName = response.data.cityName || 'City Not Found';
+            this.$set(this.cityNames, cityId, cityName);
+          })
+          .catch(error => {
+            console.log(error);
+            this.$set(this.cityNames, cityId, 'City Not Found');
+          });
+
+      return this.cityNames[cityId] || 'Loading...';
+    },
+    navigateToTournamentPage(tournamentId) {
+      console.log("Navigating to tournament page with tournamentId: ", tournamentId);
       this.$router.push({
         name: 'tournamentRoute',
         query: {
           tournamentId: tournamentId,
-        }
-      })
-    }
-
+        },
+      });
+    },
+    getAllTournamentCities() {
+      this.$http.get("/tournament/city")
+          .then(response => {
+            this.cityNameResponse = response.data
+            console.log(response.data)
+          })
+          .catch(error => {
+            console.log(error)
+          })
+    },
+    getCityNames(cityId){
+      const city = this.cityNameResponse.find(c => c.id === cityId);
+      return city ? city.cityName : 'Unknown';
+    },
+    getAllPlayerAmounts() {
+      this.$http.get("/tournament/player/amount")
+          .then(response => {
+            this.playerAmountResponse = response.data
+            console.log(response.data)
+          })
+          .catch(error => {
+            console.log(error)
+          })
+    },
+    getPlayerAmountNames(amountCode){
+      const amount = this.playerAmountResponse.find(a => a.amountCode === amountCode);
+      return amount ? amount.amountName : 'Unknown';
+    },
+    getAgeCategories() {
+      this.$http.get("/team/all/age/category")
+          .then(response => {
+            this.ageCategoryResponse = response.data
+            console.log(response.data)
+          })
+          .catch(error => {
+            console.log(error)
+          })
+    },
+    getCategoryNameByCategoryCode2(categoryCode) {
+      const category = this.ageCategoryResponse.find(cat => cat.categoryCode === categoryCode);
+      return category ? category.categoryName : 'Unknown';
+    },
   },
   beforeMount() {
     this.getTournamentsInformation()
+  },
+  mounted() {
+    this.getAgeCategories()
+    this.getAllPlayerAmounts()
+    this.getAllTournamentCities()
   }
-}
+};
 </script>
 
 <style>

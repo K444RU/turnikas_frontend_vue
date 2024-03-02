@@ -1,3 +1,4 @@
+<!--new user profile-->
 <template>
   <div class="new-user-profile-background" id="newUserProfile">
     <div class="new-user-profile-header new-user-profile-background-image">
@@ -131,53 +132,89 @@
 
             </div>
             <div class="tab-pane fade" id="teams-tab-pane" role="tabpanel" aria-labelledby="teams-tab" tabindex="0">
-              <table class="table table-dark table-hover user-profile-font">
-                <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Team Logo</th>
-                  <th scope="col">Team Name</th>
-                  <th scope="col">Category</th>
-                  <th scope="col">Team Coach</th>
-                  <th scope="col">
-                    <button @click="openNewTeamRegistrationModal(userId)"
-                            type="button"
-                            data-bs-toggle="modal"
-                            data-bs-target="#staticBackdrop"
-                            title="Add"
-                            class="cssbuttons-io-button">
-                      <svg height="25" width="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M0 0h24v24H0z" fill="none"></path>
-                        <path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z" fill="currentColor"></path>
-                      </svg>
-                      <span>Add</span>
+              <div class="full-team-tab">
+                <div class="dropdown mt-3">
+                  <div class="team-filter">
+                    <div class="team-filter-column">
+                      <button style="border: 2px solid black" v-on:click="getAgeCategories()"
+                              class="btn btn-secondary dropdown-toggle offcanvas-button"
+                              type="button"
+                              data-bs-toggle="dropdown">
+                        By age category
+                      </button>
+                      <ul class="dropdown-menu offcanvas-button">
+                        <li v-for="category in ageCategoryResponse" :key="category.categoryCode">
+                          <a @click="updateSelectedCategory(category.categoryCode)"
+                             class="dropdown-item" href="#">{{ category.categoryName }}</a>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <button style="border: 2px solid black" @click="updateTeamsByRoleCode(role.roleCode)"
+                            v-for="role in roleResponse"
+                            :key="role.roleCode" type="button" class="btn btn-secondary">
+                      {{ role.roleName }}
                     </button>
-                  </th>
-                  <th scope="col"></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="team in teamInfoResponse" :key="team.teamId">
-                  <th scope="row">{{ team.sequenceNumber }}</th>
-                  <td v-if="!team.teamLogo">{{ team.teamLogo }}
-                    <img @click="navigateToTeamPage(team.teamId)" src="../assets/images/defaultTeamLogo.png"
-                         style="height: 70px; border-radius: 20px; cursor: pointer" alt="">
-                  </td>
-                  <td v-else>
-                    <img @click="navigateToTeamPage(team.teamId)" :src="team.teamLogo"
-                         style="height: 70px; border-radius: 20px; cursor: pointer" alt="">
-                  </td>
-                  <td style="cursor: pointer" @click="navigateToTeamPage(team.teamId)">{{ team.teamName }}</td>
-                  <td>{{ getCategoryNameByCategoryCode2(team.categoryCode) }}</td>
-                  <td>{{ team.teamCoachName }}</td>
-                  <td>
-                    <button @click="openTeamEditModal(team.teamId)"
-                            data-bs-toggle="modal"
-                            data-bs-target="#teamEditStaticBackDrop"
-                            type="button" class="edit-button">
-                      <svg class="edit-svgIcon" viewBox="0 0 512 512">
-                        <path
-                            d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4
+
+                    <div class="team-filter-column">
+                      <button style="border: 2px solid black" @click="getAllTeamsByUserId" type="button"
+                              class="btn btn-secondary">clear filters
+                      </button>
+
+                    </div>
+
+
+                  </div>
+
+                </div>
+
+                <table class="table table-dark table-hover user-profile-font">
+                  <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Team Logo</th>
+                    <th scope="col">Team Name</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Team Coach</th>
+                    <th scope="col">
+                      <button @click="openNewTeamRegistrationModal(userId)"
+                              type="button"
+                              data-bs-toggle="modal"
+                              data-bs-target="#staticBackdrop"
+                              title="Add"
+                              class="cssbuttons-io-button">
+                        <svg height="25" width="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M0 0h24v24H0z" fill="none"></path>
+                          <path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z" fill="currentColor"></path>
+                        </svg>
+                        <span>Add</span>
+                      </button>
+                    </th>
+                    <th scope="col"></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr v-for="team in teamInfoResponse" :key="team.teamId">
+                    <th scope="row">{{ team.sequenceNumber }}</th>
+                    <td v-if="!team.teamLogo">{{ team.teamLogo }}
+                      <img @click="navigateToTeamPage(team.teamId)" src="../assets/images/defaultTeamLogo.png"
+                           style="height: 70px; border-radius: 20px; cursor: pointer" alt="">
+                    </td>
+                    <td v-else>
+                      <img @click="navigateToTeamPage(team.teamId)" :src="team.teamLogo"
+                           style="height: 70px; border-radius: 20px; cursor: pointer" alt="">
+                    </td>
+                    <td style="cursor: pointer" @click="navigateToTeamPage(team.teamId)">{{ team.teamName }}</td>
+                    <td>{{ getCategoryNameByCategoryCode2(team.categoryCode) }}</td>
+                    <td>{{ team.teamCoachName }}</td>
+                    <td>
+                      <button @click="openTeamEditModal(team.teamId)"
+                              data-bs-toggle="modal"
+                              data-bs-target="#teamEditStaticBackDrop"
+                              type="button" class="edit-button">
+                        <svg class="edit-svgIcon" viewBox="0 0 512 512">
+                          <path
+                              d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4
                              10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7
                              6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4
                              3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16
@@ -185,21 +222,23 @@
                              22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144
                              144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0
                              22.6z">
-                        </path>
-                      </svg>
-                    </button>
-                  </td>
-                  <td>
-                    <button @click="deleteTeam(team.teamId)" type="button" class="delete-button">
-                      <svg class="delete-svgIcon" viewBox="0 0 448 512">
-                        <path
-                            d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path>
-                      </svg>
-                    </button>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
+                          </path>
+                        </svg>
+                      </button>
+                    </td>
+                    <td>
+                      <button @click="deleteTeam(team.teamId)" type="button" class="delete-button">
+                        <svg class="delete-svgIcon" viewBox="0 0 448 512">
+                          <path
+                              d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path>
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+
+              </div>
 
             </div>
             <div class="tab-pane fade" id="stats-tab-pane" role="tabpanel" aria-labelledby="stats-tab" tabindex="0">
@@ -273,7 +312,62 @@
             </div>
             <div class="tab-pane fade" id="tournaments-tab-pane" role="tabpanel" aria-labelledby="tournaments-tab"
                  tabindex="0">
-              ...
+              <div class="team-filter">
+                <div class="team-filter-column">
+                  <button style="border: 2px solid black" v-on:click="getAgeCategories()"
+                          class="btn btn-secondary dropdown-toggle offcanvas-button"
+                          type="button"
+                          data-bs-toggle="dropdown">
+                    By age category
+                  </button>
+                  <ul class="dropdown-menu offcanvas-button">
+                    <li v-for="category in ageCategoryResponse" :key="category.categoryCode">
+                      <a @click="updateSelectedCategory(category.categoryCode)"
+                         class="dropdown-item" href="#">{{ category.categoryName }}</a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="team-filter-column">
+                  <button style="border: 2px solid black" v-on:click="getAllPlayerAmounts()"
+                          class="btn btn-secondary dropdown-toggle offcanvas-button"
+                          type="button"
+                          data-bs-toggle="dropdown">
+                    By age category
+                  </button>
+                  <ul class="dropdown-menu offcanvas-button">
+                    <li v-for="amount in playerAmountResponse" :key="amount.playerAmountCode">
+                      <a @click="updatePlayerAmount(amount.playerAmountCode)"
+                         class="dropdown-item" href="#">{{ amount.amountName }}</a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="team-filter-column">
+                  <button @click="getAllTournaments">Clear filters</button>
+                </div>
+                <div class="team-filter-column">
+                  <button @click="navigateToTournamentsListPage()">View all tournaments</button>
+                </div>
+
+              </div>
+              <div class="full-team-tournaments-body">
+                <div v-for="tournament in tournamentInfoResponse" :key="tournament.id" class="tournaments-tabs-rows">
+                  <div class="tournaments-tabs-rows-left-column">
+                    <img @click="navigateToTournamentPage(tournament.id)" src="../assets/images/tournamentDeafault.jpg"
+                         style="
+                         width: 100%;
+                         height: 100%;
+                         object-fit: cover;">
+                  </div>
+                  <div class="tournaments-tabs-rows-right-column">
+                    <div class="tournaments-tabs-rows-right-column-rows">
+                      <h2 @click="navigateToTournamentPage(tournament.id)">Tournament name: {{ tournament.name }}</h2>
+                    </div>
+                    <div class="tournaments-tabs-rows-right-column-rows">
+                      <h2>Tournament city: {{ tournament.cityId ? getCityName(tournament.cityId) : 'City Not Found' }}</h2>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -403,16 +497,33 @@ export default {
   data() {
     return {
       userId: Number(sessionStorage.getItem('userId')),
+      selectedRole: 0,
       selectedCategory: 0,
       selectedTeamId: 0,
       selectedTeamRoleCode: 0,
 
       ageCategoryResponse: [],
+      playerAmountResponse:[],
 
       roleResponse: {
         roleCode: 0,
         roleName: ''
       },
+      tournamentInfoResponse: {
+        id: 0,
+        ageCategoryCode: 0,
+        playerAmountCode: 0,
+        cityId: 0,
+        stadiumId: 0,
+        name: '',
+        startDate: Date,
+        endDate: Date,
+        participationPrise: 0,
+        prize: '',
+        additionalInfo: ''
+      },
+
+      cityNames: {},
 
       teamRequest: {
         userId: Number(sessionStorage.getItem('userId')),
@@ -460,6 +571,177 @@ export default {
   },
 
   methods: {
+    getAllTournaments() {
+      this.$http.get("/tournament/all")
+          .then(response => {
+            this.tournamentInfoResponse = response.data.map(tournament => ({
+              ...tournament,
+              tournamentId: tournament.id,
+            }));
+            this.$router.push({name: 'newUserProfileRoute'}).catch(() => {
+            });
+            console.log(response.data);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+    },
+    getTournamentsInformation2() {
+      this.$http.get("/tournament/all")
+          .then(response => {
+            console.log(response.data)
+            this.tournamentInfoResponse = response.data.map((tournament) => ({
+              ...tournament,
+              tournamentId: tournament.id
+            }));
+          })
+          .catch(error => {
+            console.log(error)
+          })
+    },
+
+    getCityName(cityId) {
+      if (this.cityNames[cityId]){
+        return this.cityNames[cityId];
+      }
+
+      this.$http.get(`/tournament/city/info?cityId=${cityId}`)
+          .then(response =>{
+            const cityName = response.data.cityName
+            this.$set(this.cityNames, cityId, cityName);
+          })
+          .catch(error => {
+            console.log(error);
+            this.$set(this.cityNames, cityId, 'City Not Found');
+          });
+      return this.cityNames[cityId];
+    },
+    navigateToTournamentPage(tournamentId) {
+      console.log("Navigating to tournament page with tournamentId: ", tournamentId)
+      this.$router.push({
+        name: 'tournamentRoute',
+        query: {
+          tournamentId: tournamentId,
+        }
+      })
+    },
+    navigateToTournamentsListPage(){
+      this.$router.push({
+        name: 'tournamentListRoute'
+      })
+    },
+    getAllTeamsByUserId() {
+      this.$http.get("/team/info", {
+            params: {
+              userId: this.userId,
+            }
+          }
+      ).then(response => {
+        this.teamInfoResponse = response.data.map(team => ({
+          ...team,
+          teamId: team.id,
+        }));
+        this.$router.push({name: 'newUserProfileRoute'}).catch(() => {
+        });
+        this.addSequenceNumbers();
+        console.log(response.data);
+      })
+          .catch(error => {
+            console.log(error);
+          });
+    },
+    updateTeamsByRoleCode(roleCode) {
+      this.selectedRole = roleCode;
+      this.filterTeamsByRoleCode(roleCode)
+    },
+    updateSelectedCategory(categoryCode) {
+      this.selectedCategory = categoryCode;
+      this.filterTeamsByCategory(categoryCode);
+      this.filterTournamentsByCategory(categoryCode);
+    },
+    updatePlayerAmount(playerAmountCode){
+      this.filterTournamentsByPlayersAmount(playerAmountCode)
+    },
+    filterTeamsByCategory(categoryCode) {
+      this.$http.get("/team/category/filter", {
+        params: {
+          userId: this.userId,
+          categoryCode: categoryCode
+        }
+      })
+          .then(response => {
+            this.teamInfoResponse = response.data.map(team => ({
+              ...team,
+              teamId: team.id,
+            }));
+            this.$router.push({name: 'newUserProfileRoute'}).catch(() => {
+            });
+            this.addSequenceNumbers();
+            console.log(response.data);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+    },
+    filterTournamentsByPlayersAmount(playerAmountCode) {
+      this.$http.get("/player-amount-code/filter", {
+            params: {
+              playerAmountCode: playerAmountCode
+            }
+          }
+      ).then(response => {
+        this.tournamentInfoResponse = response.data.map(tournament => ({
+          ...tournament,
+          tournamentId: tournament.id,
+        }));
+        this.$router.push({name: 'newUserProfileRoute'}).catch(() => {
+        });
+        console.log(response.data);
+      })
+          .catch(error => {
+            console.log(error);
+          });
+    },
+    filterTournamentsByCategory(categoryCode){
+      this.$http.get("/tournament/age-category/filter", {
+        params: {
+          categoryCode: categoryCode
+        }
+      })
+          .then(response => {
+            this.tournamentInfoResponse = response.data.map(tournament => ({
+              ...tournament,
+              tournamentId: tournament.id,
+            }));
+            this.$router.push({name: 'newUserProfileRoute'}).catch(() => {
+            });
+            console.log(response.data);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+    },
+    filterTeamsByRoleCode(roleCode) {
+      this.$http.get("/team/role/filter", {
+            params: {
+              userId: this.userId,
+              roleCode: roleCode
+            }
+          }
+      ).then(response => {
+        this.teamInfoResponse = response.data.map(team => ({
+          ...team,
+          teamId: team.id,
+        }));
+        this.$router.push({name: 'newUserProfileRoute'}).catch(() => {
+        });
+        this.addSequenceNumbers();
+        console.log(response.data);
+      })
+          .catch(error => {
+            console.log(error);
+          });
+    },
     getAllTeamRoles() {
       this.$http.get("/team/role")
           .then(response => {
@@ -557,6 +839,17 @@ export default {
         console.log(error)
       })
     },
+    getAllPlayerAmounts() {
+      this.$http.get("/tournament/player/amount")
+          .then(response => {
+            this.playerAmountResponse = response.data
+            console.log(response.data)
+          })
+          .catch(error => {
+            console.log(error)
+          })
+    },
+
     getAllTeamAgeCategories() {
       this.$http.get("/team/all/age/category")
           .then(response => {
@@ -699,6 +992,7 @@ export default {
     this.getCategoryNameByCategoryCode2()
     this.getAllTeamAgeCategories()
     this.getAllTeamRoles()
+    this.getTournamentsInformation2()
   },
   mounted() {
     this.getAgeCategories()
@@ -871,7 +1165,7 @@ export default {
   border: 1px solid white;
   width: 100%;
   height: 600px;
-  background-color: #1D2127;
+  background-color: black;
   border-radius: 20px;
 }
 
@@ -887,10 +1181,11 @@ export default {
 .full-team-stats-body {
   border: 1px solid white;
   width: 95%;
-  height: 400px;
+  height: 500px;
   margin-top: 20px;
   margin-left: 10px;
   flex-direction: row;
+  background-color: #1d2127;
 }
 
 .full-team-stats-body-row1 {
@@ -1078,5 +1373,94 @@ export default {
   opacity: 1;
   transform: translateY(0px);
   transition-duration: 0.3s;
+}
+
+.full-team-tab {
+  border: 1px solid white;
+  width: 100%;
+  min-height: 650px;
+  background-color: black;
+  border-radius: 20px;
+}
+
+.team-filter {
+  margin: 40px;
+  display: flex;
+  justify-content: space-between; /* Adjust as needed: space-around, space-evenly */
+  box-sizing: border-box;
+  border: 1px solid white;
+  color: white;
+  width: 90%;
+}
+
+.team-filter-column {
+  align-items: center;
+  text-align: center;
+  width: 33.33%;
+  padding: 10px;
+  box-sizing: border-box;
+  height: 100%;
+  border: 1px solid white;
+  color: white;
+}
+
+/*TOURNAMENTS TAB*/
+
+.full-team-tournaments-body {
+  border: 1px solid white;
+  width: 100%;
+  height: 600px; /* or height: auto; */
+  background-color: black;
+  border-radius: 20px;
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.tournaments-tabs-rows {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal columns */
+  height: 120px;
+  width: 99%;
+  border: 1px solid white;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.tournaments-tabs-rows:hover {
+  background-color: #1d2127;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.tournaments-tabs-rows-left-column {
+  flex: 1;
+  box-sizing: border-box;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 20px;
+  height: 90%;
+  margin-top: 5px;
+  margin-left: 5px;
+  border: 1px solid white;
+  width: 30%;
+  overflow: hidden; /* Ensure the image doesn't overflow the container */
+}
+
+.tournaments-tabs-rows-right-column {
+  flex: 1;
+  box-sizing: border-box;
+  border: 1px solid white;
+  margin-left: -65%;
+  border-radius: 20px;
+  height: 90%;
+  margin-top: 5px;
+  display: grid;
+}
+
+.tournaments-tabs-rows-right-column-rows {
+  flex: 1;
+  border: 1px solid white;
+  margin: 5px;
+  color: #FFFFFF;
 }
 </style>
