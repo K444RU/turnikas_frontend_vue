@@ -54,9 +54,9 @@
                        class="rounded-input"
                        type="password"
                        placeholder="Repeat Password"
-                       :class="{'error-border': errors.passwordRepeat}">
+                       :class="{'error-border': errors.passwordRepeat || errors.passwordMismatch}">
                 <span v-if="errors.passwordRepeat" class="error-message">Please complete this required field.</span>
-
+                <span v-if="errors.passwordMismatch" class="error-message">Passwords do not match.</span>
                 <br>
                 <button v-on:click="registerNewUser" type="button" class="btn">JOIN</button>
               </div>
@@ -96,7 +96,8 @@ export default {
         email: false,
         emailFormat: false,
         password: false,
-        passwordRepeat: false
+        passwordRepeat: false,
+        passwordMismatch: false
       },
       userResponse: {
         id: 0,
@@ -142,6 +143,9 @@ export default {
       if (!this.userRequest.passwordRepeat) {
         this.errors.passwordRepeat = true;
         hasError = true;
+      } else if (this.userRequest.password !== this.userRequest.passwordRepeat) {
+        this.errors.passwordMismatch = true;
+        hasError = true
       }
 
       if (hasError) {
@@ -168,7 +172,8 @@ export default {
         email: false,
         emailFormat: false,
         password: false,
-        passwordRepeat: false
+        passwordRepeat: false,
+        passwordMismatch: false
       };
     }
   }
