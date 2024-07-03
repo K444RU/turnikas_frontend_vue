@@ -37,8 +37,9 @@
                        class="rounded-input"
                        type="text"
                        placeholder="Email"
-                       :class="{'error-border': errors.email}">
+                       :class="{'error-border': errors.email || errors.emailFormat}">
                 <span v-if="errors.email" class="error-message">Please complete this required field.</span>
+                <span v-if="errors.emailFormat" class="error-message">Email must be formatted correctly.</span>
 
                 <p>Enter password</p>
                 <input v-model="userRequest.password"
@@ -93,6 +94,7 @@ export default {
         lastName: false,
         dateOfBirth: false,
         email: false,
+        emailFormat: false,
         password: false,
         passwordRepeat: false
       },
@@ -103,6 +105,12 @@ export default {
     }
   },
   methods: {
+    validateEmail(email) {
+      return email.match(
+          /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+    },
+
     registerNewUser() {
       this.clearErrors();
 
@@ -122,6 +130,9 @@ export default {
       }
       if (!this.userRequest.email) {
         this.errors.email = true;
+        hasError = true;
+      } else if (!this.validateEmail(this.userRequest.email)) {
+        this.errors.emailFormat = true;
         hasError = true;
       }
       if (!this.userRequest.password) {
@@ -155,6 +166,7 @@ export default {
         lastName: false,
         dateOfBirth: false,
         email: false,
+        emailFormat: false,
         password: false,
         passwordRepeat: false
       };
