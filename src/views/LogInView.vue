@@ -15,14 +15,18 @@
                 <input v-model="email"
                        type="text"
                        placeholder="Email"
-                       class="rounded-input">
+                       class="rounded-input"
+                       :class="{'error-border' : errors.email}">
+                <span v-if="errors.email" class="error-message">Please enter a valid email.</span>
                 <input v-model="password"
                        type="password"
                        placeholder="Password"
-                       class="rounded-input">
+                       class="rounded-input"
+                       :class="{'error-border' : errors.password}">
+                <span v-if="errors.password" class="error-message">Please enter a valid password.</span>
               </div>
               <button v-on:click="login"
-                      type="submit">Sign in test
+                      type="submit">Sign in
               </button>
             </form>
           </div>
@@ -33,6 +37,7 @@
     </div>
   </div>
 </template>
+
 
 <script>
 import Header from "@/components/common/Header";
@@ -46,7 +51,10 @@ export default {
     return {
       email: '',
       password: '',
-
+      errors: {
+        email: false,
+        password: false
+      },
       loginResponse: {
         id: 0,
         roleCode: 0
@@ -57,6 +65,24 @@ export default {
     login() {
       // Check if the user is already on the new user profile route
       if (this.$route.name === 'newUserProfileRoute') {
+        return;
+      }
+
+      this.clearErrors();
+
+      let hasError = false;
+
+      if (!this.email) {
+        this.errors.email = true;
+        hasError = true;
+      }
+
+      if (!this.password) {
+        this.errors.password = true;
+        hasError = true;
+      }
+
+      if (hasError) {
         return;
       }
 
@@ -76,6 +102,12 @@ export default {
           .catch((error) => {
             console.log(error);
           });
+    },
+    clearErrors() {
+      this.errors = {
+        email: false,
+        password: false,
+      };
     }
   }
 }
@@ -144,6 +176,14 @@ export default {
   height: 100%;
   background-image: url('../assets/images/LoginPage.jpg');
   background-size: cover;
+}
+.error-message {
+  color: #e7234c;
+  font-size: 12px;
+}
+
+.kdCHyh input.error-border {
+  border: 2px solid #e7234c;
 }
 
 </style>
