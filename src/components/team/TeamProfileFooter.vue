@@ -19,7 +19,6 @@ export default {
   name: 'TeamProfileFooter',
   props: {
     teamId: Number,
-
   },
   data() {
     return {
