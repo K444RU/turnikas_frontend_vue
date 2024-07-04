@@ -12,6 +12,9 @@
                 <h2 class="sign-up-font">
                   Sign in
                 </h2>
+                <div v-if="errors.general" class="alert alert-danger" role="alert">
+                  {{ errors.general }}
+                </div>
                 <input v-model="email"
                        type="text"
                        placeholder="Email"
@@ -53,7 +56,8 @@ export default {
       password: '',
       errors: {
         email: false,
-        password: false
+        password: false,
+        general: ''
       },
       loginResponse: {
         id: 0,
@@ -94,12 +98,16 @@ export default {
           .then((response) => {
             const {id: userId} = response.data;
             sessionStorage.setItem("userId", userId);
-            // Check again before navigating to avoid redundancy
             if (this.$route.name !== 'newUserProfileRoute') {
               this.$router.push({name: 'newUserProfileRoute'});
             }
           })
           .catch((error) => {
+            if (error.response && error.response.data && error.response.data.error) {
+              this.errors.general = error.response.data.error;
+            } else {
+              this.errors.general = 'An unexpected error occurred. Please try again.';
+            }
             console.log(error);
           });
     },
@@ -107,6 +115,7 @@ export default {
       this.errors = {
         email: false,
         password: false,
+        general: ''
       };
     }
   }
