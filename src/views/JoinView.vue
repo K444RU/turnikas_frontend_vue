@@ -59,6 +59,9 @@
                 <span v-if="errors.passwordMismatch" class="error-message">Passwords do not match.</span>
                 <br>
                 <button v-on:click="registerNewUser" type="button" class="btn">JOIN</button>
+                <div v-if="errors.general" class="alert alert-danger" role="alert">
+                  {{ errors.general }}
+                </div>
               </div>
             </div>
           </div>
@@ -97,7 +100,8 @@ export default {
         emailFormat: false,
         password: false,
         passwordRepeat: false,
-        passwordMismatch: false
+        passwordMismatch: false,
+        general: ''
       },
       userResponse: {
         id: 0,
@@ -160,7 +164,12 @@ export default {
             console.log(response.data);
             this.$router.push({name: "newUserProfileRoute"});
           })
-          .catch(error => {
+          .catch((error) => {
+            if (error.response && error.response.data && error.response.data.error) {
+              this.errors.general = error.response.data.error;
+            } else {
+              this.errors.general = 'An unexpected error occurred. Please try again.';
+            }
             console.log(error);
           });
     },
@@ -173,7 +182,8 @@ export default {
         emailFormat: false,
         password: false,
         passwordRepeat: false,
-        passwordMismatch: false
+        passwordMismatch: false,
+        general: ''
       };
     }
   }
