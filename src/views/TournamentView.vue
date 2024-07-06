@@ -9,7 +9,13 @@
       </div>
       <div class="right-tournament-profile-header-info" style="color: white;">
         <div class="right-tournament-header-text">
-
+          <button @click="openTeamTournamentRegistrationModal(tournamentId)"
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#staticBackdrop"
+                  title="Join"
+                  class="join-tournament-button">join tournament
+          </button>
         </div>
       </div>
       <div class="team-profile-logo">
@@ -83,11 +89,11 @@
                       </div>
                       <div class="tournament-left-info-cell">
                         <font-awesome-icon :icon="['fas', 'people-group']"/>
-                        <h2>Slots Available: {{tournamentInfoResponse.amountName}} </h2>
+                        <h2>Slots Available: {{ tournamentInfoResponse.amountName }} </h2>
                       </div>
                       <div class="tournament-left-info-cell">
                         <font-awesome-icon :icon="['fas', 'people-group']"/>
-                        <h2>Age Category: {{ tournamentInfoResponse.categoryName}} </h2>
+                        <h2>Age Category: {{ tournamentInfoResponse.categoryName }} </h2>
                       </div>
                       <div class="tournament-left-info-cell">
                         <font-awesome-icon :icon="['fas', 'trophy']"/>
@@ -450,6 +456,38 @@
       </div>
       <div class="tournament-right-nav">
       </div>
+
+
+      <!--Scrollable modal for join tournament-->
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal fade" id="staticBackdrop"
+             data-bs-backdrop="static"
+             data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Select team to register</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="input-group mb-3">
+                  <select v-model="selectedTeamId" class="form-select amount-of-players" aria-label="Default select example">
+                    <option selected disabled value="0">Select team to register</option>
+                    <option v-for="team in teamInfoResponse" :key="team.teamId" :value="team.teamId">
+                      {{ team.teamName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="close-changes-button" data-bs-dismiss="modal">Close</button>
+                <button @click="saveTeamToTournament" type="button" class="save-changes-button">Join Tournament</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
     <Footer/>
   </div>
@@ -466,6 +504,7 @@ export default {
   data() {
     return {
       tournamentId: this.$route.query.tournamentId,
+      userId: this.$route.query.userId,
       tournamentInfoResponse: {
         cityName: '',
         stadiumName: '',
@@ -482,10 +521,60 @@ export default {
         participationPrise: 0,
         prize: '',
         additionalInfo: ''
+      },
+      teamInfoResponse: {
+        teamName: '',
+        teamCoachName: '',
+        categoryCode: 0,
+        teamLogo: '',
+      },
+      selectedTeamId: null,
+      participationRequest : {
+        teamId: 0,
+        tournamentId: 0
       }
     };
   },
   methods: {
+    saveTeamToTournament() {
+      if (this.selectedTeamId) {
+        const participationRequest = {
+          teamId: this.selectedTeamId,
+          tournamentId: this.tournamentId
+        };
+
+        this.$http.post("/participation", participationRequest)
+            .then(response => {
+              console.log(response.data);
+            })
+            .catch(error => {
+              console.log(error)
+            });
+      } else {
+        console.log("No team selected.");
+      }
+    },
+
+    getAllTeamsByUserId() {
+      this.$http.get("/team/info", {
+            params: {
+              userId: this.userId,
+            }
+          }
+      ).then(response => {
+        this.teamInfoResponse = response.data.map(team => ({
+          ...team,
+          teamId: team.id,
+        }));
+      })
+          .catch(error => {
+            console.log(error);
+          });
+    },
+    openTeamTournamentRegistrationModal(tournamentId) {
+      this.tournamentId = tournamentId;
+    },
+
     async getTournamentInformationByTournamentId() {
       try {
         const response = await this.$http.get("/tournament/info", {
@@ -580,6 +669,8 @@ export default {
   async mounted() {
     console.log("Mounting to tournament profile with tournamentId:", this.tournamentId)
     await this.getTournamentInformationByTournamentId()
+    console.log("Mounting to tournament profile with userId: ", this.userId)
+    await this.getAllTeamsByUserId()
   }
 }
 </script>
@@ -762,6 +853,7 @@ export default {
   margin-left: 20px;
   width: 100%;
   height: 400px;
+  border: solid 1px white;
 }
 
 .left-tournament-header-text {
@@ -771,12 +863,14 @@ export default {
   margin-left: -50%;
   font-family: 'Bebas Neue', 'Open Sans', 'Permanent Marker', 'Smooch', sans-serif;
   font-size: 20px;
+  border: solid 1px white;
 }
 
 .right-tournament-profile-header-info {
   margin-right: -10px;
   width: 100%;
   height: 400px;
+  border: solid 1px white;
 }
 
 .right-tournament-header-text {
@@ -785,6 +879,7 @@ export default {
   left: 75%;
   font-family: 'Bebas Neue', 'Open Sans', 'Permanent Marker', 'Smooch', sans-serif;
   font-size: 20px;
+  border: solid 1px white;
 }
 
 
