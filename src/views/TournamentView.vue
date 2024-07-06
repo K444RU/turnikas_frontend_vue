@@ -133,7 +133,7 @@
                         <div class="tournament-right-info-box-header">
                           <div class="tournament-right-info-box-header-cols">
                             <h3>Registered: </h3>
-                            <p>4</p>
+                            <p>{{ registeredTeams.length }}</p>
                           </div>
                           <div class="tournament-right-info-box-header-cols">
                             <h2>
@@ -146,8 +146,9 @@
                           </div>
                         </div>
                         <div class="tournament-right-info-box-body">
-                          <h2>AAAAAAAAA</h2>
-
+                          <div v-for="team in registeredTeams" :key="team.id">
+                            <h2>{{ team.teamName }}</h2>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -529,13 +530,27 @@ export default {
         teamLogo: '',
       },
       selectedTeamId: null,
+      registeredTeams: [],
       participationRequest : {
         teamId: 0,
+        tournamentId: 0
+      },
+      participationResponse: {
+        teamId :0,
         tournamentId: 0
       }
     };
   },
   methods: {
+    async getRegisteredTeamsByTournamentId() {
+      try {
+        const response = await this.$http.get(`/participation/tournament/${this.tournamentId}/teams`);
+        this.registeredTeams = response.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
     saveTeamToTournament() {
       if (this.selectedTeamId) {
         const participationRequest = {
@@ -671,6 +686,7 @@ export default {
     await this.getTournamentInformationByTournamentId()
     console.log("Mounting to tournament profile with userId: ", this.userId)
     await this.getAllTeamsByUserId()
+    await this.getRegisteredTeamsByTournamentId();
   }
 }
 </script>
