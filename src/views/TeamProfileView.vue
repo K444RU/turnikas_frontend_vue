@@ -143,7 +143,7 @@ export default {
     navigateToUserProfile() {
       // Replace this with your actual navigation logic to the user profile
       this.$router.push({
-        name: 'userProfileRoute',
+        name: 'newUserProfileRoute',
         params: { userId: this.userId },
       });
     },

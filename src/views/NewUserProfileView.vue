@@ -617,13 +617,19 @@ export default {
       return this.cityNames[cityId];
     },
     navigateToTournamentPage(tournamentId) {
-      console.log("Navigating to tournament page with tournamentId: ", tournamentId)
-      this.$router.push({
-        name: 'tournamentRoute',
-        query: {
-          tournamentId: tournamentId,
-        }
-      })
+      const userId = Number(sessionStorage.getItem('userId'));
+      if (userId) {
+        console.log("Navigating to tournament page with tournamentId: ", tournamentId, " and userId: ", userId);
+        this.$router.push({
+          name: 'tournamentRoute',
+          query: {
+            tournamentId: tournamentId,
+            userId: userId,
+          }
+        });
+      } else {
+        console.error('User ID is not found in sessionStorage.');
+      }
     },
     navigateToTournamentsListPage(){
       this.$router.push({
