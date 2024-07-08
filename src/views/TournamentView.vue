@@ -342,45 +342,13 @@
               <div class="test-tournament-list-body">
                 <div class="test-tournament-centre-nav">
                   <div class="test-tournament-centre-nav-left-info">
-                    <div class="tournament-teams-box">
+                    <div v-for="team in registeredTeams" :key="team.id" class="tournament-teams-box">
                       <div class="team-image">
-                        <img style="height: 90px" src="../assets/images/defaultTeamLogo.png" alt="">
+                        <img v-if="team.teamLogo" :src="team.teamLogo" style="height: 90px" alt="Team Logo">
+                        <img v-else src="../assets/images/defaultTeamLogo.png" style="height: 90px" alt="Default Team Logo">
                       </div>
                       <div class="team-name">
-                        <h1>TEAM NAME</h1>
-                      </div>
-                      <div class="team-button">
-                        <font-awesome-icon :icon="['fas', 'ellipsis']"/>
-                      </div>
-                    </div>
-                    <div class="tournament-teams-box">
-                      <div class="team-image">
-                        <img style="height: 90px" src="../assets/images/defaultTeamLogo.png" alt="">
-                      </div>
-                      <div class="team-name">
-                        <h1>TEAM NAME</h1>
-                      </div>
-                      <div class="team-button">
-                        <font-awesome-icon :icon="['fas', 'ellipsis']"/>
-                      </div>
-                    </div>
-                    <div class="tournament-teams-box">
-                      <div class="team-image">
-                        <img style="height: 90px" src="../assets/images/defaultTeamLogo.png" alt="">
-                      </div>
-                      <div class="team-name">
-                        <h1>TEAM NAME</h1>
-                      </div>
-                      <div class="team-button">
-                        <font-awesome-icon :icon="['fas', 'ellipsis']"/>
-                      </div>
-                    </div>
-                    <div class="tournament-teams-box">
-                      <div class="team-image">
-                        <img style="height: 90px" src="../assets/images/defaultTeamLogo.png" alt="">
-                      </div>
-                      <div class="team-name">
-                        <h1>TEAM NAME</h1>
+                        <h1>{{ team.teamName }}</h1>
                       </div>
                       <div class="team-button">
                         <font-awesome-icon :icon="['fas', 'ellipsis']"/>
@@ -392,6 +360,8 @@
                   </div>
                 </div>
               </div>
+
+
             </div>
             <div class="tab-pane fade" id="prizes-tab-pane" role="tabpanel" aria-labelledby="prizes-tab" tabindex="0">
               <h1>TOURNAMENT PRIZES</h1>
