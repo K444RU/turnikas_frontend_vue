@@ -142,7 +142,7 @@
                           </div>
                           <div class="tournament-right-info-box-header-cols">
                             <h3>Free slots: </h3>
-                            <p>{{ tournamentInfoResponse.amountName }}</p>
+                            <p>{{ remainingSlots }}</p>
                           </div>
                         </div>
                         <div class="tournament-right-info-box-body">
@@ -528,6 +528,11 @@ export default {
       registeredTeams: [],
       eligibleTeams: [],
     };
+  },
+  computed: {
+    remainingSlots() {
+      return this.tournamentInfoResponse.amountName - this.registeredTeams.length;
+    }
   },
   methods: {
     saveTeamToTournament: async function() {
