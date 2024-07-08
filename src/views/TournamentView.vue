@@ -461,10 +461,10 @@
 
       <!--Scrollable modal for join tournament-->
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal fade" id="staticBackdrop"
+        <div ref="modal" class="modal fade" id="staticBackdrop"
              data-bs-backdrop="static"
              data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-          <div class="modal-dialog">
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
               <div class="modal-header">
                 <h1 class="modal-title fs-5" id="staticBackdropLabel">Select team to register</h1>
@@ -474,7 +474,7 @@
                 <div class="input-group mb-3">
                   <select v-model="selectedTeamId" class="form-select amount-of-players" aria-label="Default select example">
                     <option selected disabled value="0">Select team to register</option>
-                    <option v-for="team in eligibleTeams" :key="team.teamId" :value="team.teamId">
+                    <option v-for="team in eligibleTeams" :key="team.id" :value="team.id">
                       {{ team.teamName }}
                     </option>
                   </select>
@@ -530,15 +530,6 @@ export default {
     };
   },
   methods: {
-    async getRegisteredTeamsByTournamentId() {
-      try {
-        const response = await this.$http.get(`/participation/tournament/${this.tournamentId}/teams`);
-        this.registeredTeams = response.data;
-      } catch (error) {
-        console.log(error);
-      }
-    },
-
     saveTeamToTournament: async function() {
       if (this.selectedTeamId) {
         const participationRequest = {
@@ -549,11 +540,27 @@ export default {
         try {
           const response = await this.$http.post('/participation', participationRequest);
           console.log(response.data);
+
+          await this.getRegisteredTeamsByTournamentId();
+          await this.getEligibleTeamsForTournamentRegistration();
+
+          $(this.$refs.modal).modal('hide');
+
         } catch (error) {
           console.log(error);
         }
       } else {
         console.log('No team selected');
+      }
+    },
+
+
+    async getRegisteredTeamsByTournamentId() {
+      try {
+        const response = await this.$http.get(`/participation/tournament/${this.tournamentId}/teams`);
+        this.registeredTeams = response.data;
+      } catch (error) {
+        console.log(error);
       }
     },
 
@@ -564,6 +571,7 @@ export default {
             userId: this.userId
           }
         });
+        console.log('Eligible Teams Response:', response.data);
         this.eligibleTeams = response.data.map(team => ({
           ...team,
           teamId: team.id
