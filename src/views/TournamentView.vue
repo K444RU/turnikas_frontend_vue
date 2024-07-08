@@ -474,7 +474,7 @@
                 <div class="input-group mb-3">
                   <select v-model="selectedTeamId" class="form-select amount-of-players" aria-label="Default select example">
                     <option selected disabled value="0">Select team to register</option>
-                    <option v-for="team in teamInfoResponse" :key="team.teamId" :value="team.teamId">
+                    <option v-for="team in eligibleTeams" :key="team.teamId" :value="team.teamId">
                       {{ team.teamName }}
                     </option>
                   </select>
@@ -523,22 +523,10 @@ export default {
         prize: '',
         additionalInfo: ''
       },
-      teamInfoResponse: {
-        teamName: '',
-        teamCoachName: '',
-        categoryCode: 0,
-        teamLogo: '',
-      },
+      teamInfoResponse: [],
       selectedTeamId: null,
       registeredTeams: [],
-      participationRequest : {
-        teamId: 0,
-        tournamentId: 0
-      },
-      participationResponse: {
-        teamId :0,
-        tournamentId: 0
-      }
+      eligibleTeams: [],
     };
   },
   methods: {
@@ -551,22 +539,37 @@ export default {
       }
     },
 
-    saveTeamToTournament() {
+    saveTeamToTournament: async function() {
       if (this.selectedTeamId) {
         const participationRequest = {
           teamId: this.selectedTeamId,
           tournamentId: this.tournamentId
         };
 
-        this.$http.post("/participation", participationRequest)
-            .then(response => {
-              console.log(response.data);
-            })
-            .catch(error => {
-              console.log(error)
-            });
+        try {
+          const response = await this.$http.post('/participation', participationRequest);
+          console.log(response.data);
+        } catch (error) {
+          console.log(error);
+        }
       } else {
-        console.log("No team selected.");
+        console.log('No team selected');
+      }
+    },
+
+    async getEligibleTeamsForTournamentRegistration() {
+      try {
+        const response = await this.$http.get(`/participation/tournament/${this.tournamentId}/eligible-teams`, {
+          params: {
+            userId: this.userId
+          }
+        });
+        this.eligibleTeams = response.data.map(team => ({
+          ...team,
+          teamId: team.id
+        }));
+      } catch (error) {
+        console.log(error);
       }
     },
 
@@ -685,7 +688,7 @@ export default {
     console.log("Mounting to tournament profile with tournamentId:", this.tournamentId)
     await this.getTournamentInformationByTournamentId()
     console.log("Mounting to tournament profile with userId: ", this.userId)
-    await this.getAllTeamsByUserId()
+    await this.getEligibleTeamsForTournamentRegistration()
     await this.getRegisteredTeamsByTournamentId();
   }
 }
