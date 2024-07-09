@@ -97,7 +97,7 @@ export default {
           })
           .then((response) => {
             const {id: userId} = response.data;
-            sessionStorage.setItem("userId", userId);
+            localStorage.setItem("userId", userId);
             if (this.$route.name !== 'newUserProfileRoute') {
               this.$router.push({name: 'newUserProfileRoute'});
             }
