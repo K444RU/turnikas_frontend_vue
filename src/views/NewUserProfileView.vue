@@ -1,6 +1,7 @@
 <!--new user profile-->
 <template>
   <div class="new-user-profile-background" id="newUserProfile">
+    <UserProfileHeader/>
     <div class="new-user-profile-header new-user-profile-background-image">
       <div class="new-user-profile-header-info">
         {{ userContactInfoResponse.firstName }}'s USER PROFILE
@@ -8,7 +9,7 @@
     </div>
 
     <div class="new-user-profile-body">
-      <div class="new-user-left-nav">LEVO</div>
+      <div class="new-user-left-nav"></div>
 
       <div class="new-user-centre-nav">
         <div class="new-user-centre-tabs">
@@ -372,7 +373,7 @@
           </div>
         </div>
       </div>
-      <div class="new-user-right-nav">PRAVO</div>
+      <div class="new-user-right-nav"></div>
     </div>
 
     <!--Scrollable modal for team information change-->
@@ -489,14 +490,14 @@
 </template>
 
 <script>
-
+import UserProfileHeader from "@/components/user/UserProfileHeader";
 
 export default {
   name: 'newUserProfileRoute',
-  components: {},
+  components: {UserProfileHeader},
   data() {
     return {
-      userId: Number(sessionStorage.getItem('userId')),
+      userId: Number(localStorage.getItem('userId')),
       selectedRole: 0,
       selectedCategory: 0,
       selectedTeamId: 0,
@@ -526,7 +527,7 @@ export default {
       cityNames: {},
 
       teamRequest: {
-        userId: Number(sessionStorage.getItem('userId')),
+        userId: Number(localStorage.getItem('userId')),
         teamName: '',
         teamCoachName: '',
         categoryCode: 0,
@@ -617,7 +618,7 @@ export default {
       return this.cityNames[cityId];
     },
     navigateToTournamentPage(tournamentId) {
-      const userId = Number(sessionStorage.getItem('userId'));
+      const userId = Number(localStorage.getItem('userId'));
       if (userId) {
         console.log("Navigating to tournament page with tournamentId: ", tournamentId, " and userId: ", userId);
         this.$router.push({
@@ -1041,7 +1042,7 @@ export default {
 }
 
 .new-user-profile-header-info {
-  border: 1px solid white;
+  /*border: 1px solid white;*/
   width: 83%;
   height: 200px;
   display: flex;
@@ -1055,7 +1056,7 @@ export default {
 .new-user-profile-body {
   display: flex;
   height: auto;
-  border: 1px solid white;
+  /*border: 1px solid white;*/
   overflow: hidden;
 }
 
@@ -1063,14 +1064,14 @@ export default {
   width: 10%;
   display: flex;
   height: auto;
-  border: 1px solid white;
+  /*border: 1px solid white;*/
 }
 
 .new-user-right-nav {
   width: 10%;
   display: flex;
   height: auto;
-  border: 1px solid white;
+  /*border: 1px solid white;*/
 }
 
 .new-user-centre-nav {
@@ -1080,7 +1081,7 @@ export default {
   justify-content: flex-start;
   width: 100%;
   min-height: auto;
-  border: 1px solid white;
+  /*border: 1px solid white;*/
 }
 
 .new-user-centre-tabs {
@@ -1088,7 +1089,7 @@ export default {
   margin-top: 20px;
   font-family: 'Bebas Neue', 'Open Sans', 'Permanent Marker', 'Smooch', sans-serif;
   font-size: 25px;
-  border: 1px solid white;
+  /*border: 1px solid white;*/
 }
 
 .user-overview-row {
@@ -1117,7 +1118,7 @@ export default {
   border-radius: 20px;
   height: 500px;
   margin: 10px;
-  border: 1px solid white;
+  /*border: 1px solid white;*/
   color: white;
 }
 
@@ -1125,7 +1126,7 @@ export default {
   flex-direction: column;
   height: 15%;
   flex: 0 0 50%;
-  border-bottom: 1px solid white;
+  /*border-bottom: 1px solid white;*/
 }
 
 .user-overview-right {
@@ -1134,7 +1135,7 @@ export default {
   border-radius: 20px;
   height: 500px;
   margin: 10px;
-  border: 1px solid white;
+  /*border: 1px solid white;*/
   color: white;
 }
 
@@ -1144,7 +1145,7 @@ export default {
   padding: 10px;
   box-sizing: border-box;
   height: 100%;
-  border: 1px solid white;
+  /*border: 1px solid white;*/
   color: white;
 }
 
@@ -1168,7 +1169,7 @@ export default {
 /*Stats CSS*/
 
 .full-team-stats {
-  border: 1px solid white;
+  /*border: 1px solid white;*/
   width: 100%;
   height: 600px;
   background-color: black;
@@ -1176,7 +1177,7 @@ export default {
 }
 
 .full-team-stats-body-header {
-  border: 1px solid white;
+  /*border: 1px solid white;*/
   width: 95%;
   height: 50px;
   margin-top: 20px;
@@ -1185,7 +1186,7 @@ export default {
 }
 
 .full-team-stats-body {
-  border: 1px solid white;
+  /*border: 1px solid white;*/
   width: 95%;
   height: 500px;
   margin-top: 20px;
@@ -1195,7 +1196,7 @@ export default {
 }
 
 .full-team-stats-body-row1 {
-  border: 1px solid white;
+  /*border: 1px solid white;*/
   height: 50px;
 }
 
@@ -1204,7 +1205,7 @@ export default {
   width: 5%;
   box-sizing: border-box;
   height: 100%;
-  border: 1px solid white;
+  /*border: 1px solid white;*/
 }
 
 .full-team-stats-body-row1-team-name-cols {
@@ -1212,12 +1213,12 @@ export default {
   width: 30%;
   box-sizing: border-box;
   height: 100%;
-  border: 1px solid white;
+  /*border: 1px solid white;*/
   color: #FFFFFF;
 }
 
 .full-team-stats-body-row2 {
-  border: 1px solid white;
+  /*border: 1px solid white;*/
   height: 450px;
   color: #FFFFFF;
 }
@@ -1382,7 +1383,7 @@ export default {
 }
 
 .full-team-tab {
-  border: 1px solid white;
+  /*border: 1px solid white;*/
   width: 100%;
   min-height: 650px;
   background-color: black;
@@ -1394,7 +1395,7 @@ export default {
   display: flex;
   justify-content: space-between; /* Adjust as needed: space-around, space-evenly */
   box-sizing: border-box;
-  border: 1px solid white;
+  /*border: 1px solid white;*/
   color: white;
   width: 90%;
 }
@@ -1406,14 +1407,14 @@ export default {
   padding: 10px;
   box-sizing: border-box;
   height: 100%;
-  border: 1px solid white;
+  /*border: 1px solid white;*/
   color: white;
 }
 
 /*TOURNAMENTS TAB*/
 
 .full-team-tournaments-body {
-  border: 1px solid white;
+  /*border: 1px solid white;*/
   width: 100%;
   height: 600px; /* or height: auto; */
   background-color: black;
@@ -1426,7 +1427,7 @@ export default {
   grid-template-columns: 1fr 1fr; /* Two equal columns */
   height: 120px;
   width: 99%;
-  border: 1px solid white;
+  /*border: 1px solid white;*/
   margin-bottom: 10px;
   margin-left: 10px;
   margin-right: 10px;
@@ -1447,7 +1448,7 @@ export default {
   height: 90%;
   margin-top: 5px;
   margin-left: 5px;
-  border: 1px solid white;
+  /*border: 1px solid white;*/
   width: 30%;
   overflow: hidden; /* Ensure the image doesn't overflow the container */
 }
@@ -1455,7 +1456,7 @@ export default {
 .tournaments-tabs-rows-right-column {
   flex: 1;
   box-sizing: border-box;
-  border: 1px solid white;
+  /*border: 1px solid white;*/
   margin-left: -65%;
   border-radius: 20px;
   height: 90%;
@@ -1465,7 +1466,7 @@ export default {
 
 .tournaments-tabs-rows-right-column-rows {
   flex: 1;
-  border: 1px solid white;
+  /*border: 1px solid white;*/
   margin: 5px;
   color: #FFFFFF;
 }

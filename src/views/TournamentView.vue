@@ -18,8 +18,8 @@
           </button>
         </div>
       </div>
-      <div class="team-profile-logo">
-        <TeamProfileHeader class="logo-container"/>
+      <div class="team-profile-logo" v-if="userIsLoggedIn">
+        <UserProfileHeader @navigate-to-user-profile="navigateToUserProfile"/>
       </div>
     </div>
     <div class="tournament-list-body">
@@ -170,7 +170,7 @@
                         </div>
 
                         <div class="tournament-right-info-box-body">
-                          <table class="table-dark">
+                          <table class="custom-table">
                             <thead>
                             <tr>
                               <font-awesome-icon style="color:goldenrod" :icon="['fas', 'trophy']"/>
@@ -207,7 +207,7 @@
                       </div>
 
                       <div class="tournament-team-groups-body">
-                        <table class="table-dark">
+                        <table class="custom-table">
 
                           <tbody>
                           <tr>
@@ -244,7 +244,7 @@
                       </div>
 
                       <div class="tournament-team-groups-body">
-                        <table class="table-dark">
+                        <table class="custom-table">
 
                           <tbody>
                           <tr>
@@ -467,11 +467,12 @@
 <script>
 import TeamProfileHeader from "@/components/team/TeamProfileHeader";
 import Footer from "@/components/common/Footer";
+import UserProfileHeader from "@/components/user/UserProfileHeader";
 
 
 export default {
   name: 'tournamentRoute',
-  components: {TeamProfileHeader, Footer},
+  components: {TeamProfileHeader, Footer, UserProfileHeader},
   data() {
     return {
       tournamentId: this.$route.query.tournamentId,
@@ -497,14 +498,28 @@ export default {
       selectedTeamId: null,
       registeredTeams: [],
       eligibleTeams: [],
+      userLoggedIn: false
     };
   },
   computed: {
     remainingSlots() {
       return this.tournamentInfoResponse.amountName - this.registeredTeams.length;
+    },
+    userIsLoggedIn() {
+      return !!localStorage.getItem('userId');
+    },
+    currentUserId() {
+      return localStorage.getItem('userId');
     }
   },
   methods: {
+    checkIfLoggedIn() {
+      const userId = localStorage.getItem("userId");
+      if (userId) {
+        this.$router.push()
+      }
+    },
+
     saveTeamToTournament: async function() {
       if (this.selectedTeamId) {
         const participationRequest = {
@@ -665,6 +680,15 @@ export default {
         console.log(error);
       }
     },
+
+    navigateToUserProfile() {
+      if (this.userIsLoggedIn) {
+        this.$router.push({
+          name: 'newUserProfileRoute',
+          params: { userId: this.currentUserId }
+        });
+      }
+    },
   },
 
   async mounted() {
@@ -738,7 +762,7 @@ export default {
   margin-bottom: 10px;
   margin-left: 5px;
   margin-right: 5px;
-  border: 1px solid white;
+  /*border: 1px solid white;*/
 }
 
 
@@ -746,7 +770,7 @@ export default {
   margin-top: 40px;
   display: flex;
   margin-bottom: 300px;
-  border: 1px solid white;
+  /*border: 1px solid white;*/
   min-height: 100vh;
 }
 
@@ -762,7 +786,7 @@ export default {
 
 .test-tournament-centre-nav-left-info {
   flex: 0 0 70%; /* Initial, no grow, fixed 60% width */
-  border: solid 1px white;
+  /*border: solid 1px white;*/
   min-height: 100vh;
 }
 
@@ -770,7 +794,7 @@ export default {
   flex: 0 0 25%; /* Initial, no grow, fixed 40% width */
   min-height: 100vh;
   margin-left: 30px;
-  border: solid 1px white;
+  /*border: solid 1px white;*/
 }
 
 
@@ -797,7 +821,7 @@ export default {
   background-color: #1d2127;
   border-radius: 10px;
   cursor: pointer;
-  border: 2px solid white;
+  /*border: 2px solid white;*/
 }
 
 .tournament-team-groups-header {
@@ -855,7 +879,7 @@ export default {
   margin-left: 20px;
   width: 100%;
   height: 400px;
-  border: solid 1px white;
+  /*border: solid 1px white;*/
 }
 
 .left-tournament-header-text {
@@ -865,14 +889,14 @@ export default {
   margin-left: -50%;
   font-family: 'Bebas Neue', 'Open Sans', 'Permanent Marker', 'Smooch', sans-serif;
   font-size: 20px;
-  border: solid 1px white;
+  /*border: solid 1px white;*/
 }
 
 .right-tournament-profile-header-info {
   margin-right: -10px;
   width: 100%;
   height: 400px;
-  border: solid 1px white;
+  /*border: solid 1px white;*/
 }
 
 .right-tournament-header-text {
@@ -881,7 +905,7 @@ export default {
   left: 75%;
   font-family: 'Bebas Neue', 'Open Sans', 'Permanent Marker', 'Smooch', sans-serif;
   font-size: 20px;
-  border: solid 1px white;
+  /*border: solid 1px white;*/
 }
 
 
@@ -942,8 +966,8 @@ export default {
   grid-template-columns: 20% 70% 10%;
   width: 100%;
   height: 100px;
-  border-top: 1px solid white;
-  border-bottom: 1px solid white;
+  /*border-top: 1px solid white;*/
+  /*border-bottom: 1px solid white;*/
 
 }
 
