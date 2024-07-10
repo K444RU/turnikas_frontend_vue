@@ -52,7 +52,7 @@
                 <div class="user-overview-middle">
                   <div class="user-overview-middle-header ">
                     <div class="user-overview-right-header-cols">
-                      <h2>TEAMS</h2>
+                      <h2>TEAMS: {{teamInfoResponse.length}}</h2>
                     </div>
                     <div class="user-overview-right-header-cols">
                     </div>
@@ -69,7 +69,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="team in teamInfoResponse" :key="team.teamId">
+                    <tr v-for="team in displayedTeams" :key="team.teamId">
                       <th style="color:white;" scope="row">{{ team.sequenceNumber }}</th>
                       <td style="color:white;" v-if="!team.teamLogo">{{ team.teamLogo }}
                         <img @click="navigateToTeamPage(team.teamId)" src="../assets/images/defaultTeamLogo.png"
@@ -83,8 +83,8 @@
                           @click="navigateToTeamPage(team.teamId)">
                         {{ team.teamName }}
                       </td>
-
                     </tr>
+                    <h2 v-if="teamInfoResponse.length > 5" type="button" style="color: #FFFFFF" @click="viewAllTeams">...</h2>
                     </tbody>
                   </table>
                 </div>
@@ -568,6 +568,9 @@ export default {
   computed: {
     filteredRoles() {
       return Object.values(this.roleResponse).filter(role => role.roleCode === 2 || role.roleCode === 3);
+    },
+    displayedTeams() {
+      return this.teamInfoResponse.slice(0, 5);
     }
   },
 
@@ -992,6 +995,13 @@ export default {
         teamLogo: ''
       }
     },
+
+    viewAllTeams() {
+      const userProfileTeamsTabButton = document.getElementById('teams-tab');
+      if (userProfileTeamsTabButton) {
+        userProfileTeamsTabButton.click();
+      }
+    }
 
   },
   beforeMount() {
