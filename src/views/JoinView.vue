@@ -159,8 +159,8 @@ export default {
       this.$http.post("/user/register", this.userRequest)
           .then(response => {
             const {id: userId, roleCode} = response.data
-            sessionStorage.setItem("userId", userId);
-            sessionStorage.setItem("roleCode", roleCode);
+            localStorage.setItem("userId", userId);
+            localStorage.setItem("roleCode", roleCode);
             console.log(response.data);
             this.$router.push({name: "newUserProfileRoute"});
           })
