@@ -56,9 +56,9 @@ export default {
 
     logout() {
       if(confirm('Sure you want to log out?')) {
-        localStorage.getItem('userId');
+        localStorage.removeItem('userId');
         this.userIsLoggedIn = false;
-        this.$router.push('/')
+        this.$router.push('/');
       }
     },
 
