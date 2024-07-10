@@ -146,9 +146,10 @@
                           </div>
                         </div>
                         <div class="tournament-right-info-box-body">
-                          <div v-for="team in registeredTeams" :key="team.id">
+                          <div v-for="team in displayedTeams" :key="team.id">
                             <h2>{{ team.teamName }}</h2>
                           </div>
+                          <button v-if="registeredTeams.length > 3" @click="viewAllTeams">View All</button>
                         </div>
                       </div>
                     </div>
@@ -345,7 +346,8 @@
                     <div v-for="team in registeredTeams" :key="team.id" class="tournament-teams-box">
                       <div class="team-image">
                         <img v-if="team.teamLogo" :src="team.teamLogo" style="height: 90px" alt="Team Logo">
-                        <img v-else src="../assets/images/defaultTeamLogo.png" style="height: 90px" alt="Default Team Logo">
+                        <img v-else src="../assets/images/defaultTeamLogo.png" style="height: 90px"
+                             alt="Default Team Logo">
                       </div>
                       <div class="team-name">
                         <h1>{{ team.teamName }}</h1>
@@ -442,7 +444,8 @@
               </div>
               <div class="modal-body">
                 <div class="input-group mb-3">
-                  <select v-model="selectedTeamId" class="form-select amount-of-players" aria-label="Default select example">
+                  <select v-model="selectedTeamId" class="form-select amount-of-players"
+                          aria-label="Default select example">
                     <option selected disabled value="0">Select team to register</option>
                     <option v-for="team in eligibleTeams" :key="team.id" :value="team.id">
                       {{ team.teamName }}
@@ -510,6 +513,9 @@ export default {
     },
     currentUserId() {
       return localStorage.getItem('userId');
+    },
+    displayedTeams() {
+      return this.registeredTeams.slice(0, 3);
     }
   },
   methods: {
@@ -520,7 +526,7 @@ export default {
       }
     },
 
-    saveTeamToTournament: async function() {
+    saveTeamToTournament: async function () {
       if (this.selectedTeamId) {
         const participationRequest = {
           teamId: this.selectedTeamId,
@@ -543,7 +549,6 @@ export default {
         console.log('No team selected');
       }
     },
-
 
     async getRegisteredTeamsByTournamentId() {
       try {
@@ -685,10 +690,17 @@ export default {
       if (this.userIsLoggedIn) {
         this.$router.push({
           name: 'newUserProfileRoute',
-          params: { userId: this.currentUserId }
+          params: {userId: this.currentUserId}
         });
       }
     },
+
+    viewAllTeams() {
+      const tournamentTeamsTabButton = document.getElementById('teams-tab');
+      if (tournamentTeamsTabButton) {
+        tournamentTeamsTabButton.click();
+      }
+    }
   },
 
   async mounted() {
