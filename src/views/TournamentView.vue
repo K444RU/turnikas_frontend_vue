@@ -447,7 +447,7 @@
                   <select v-model="selectedTeamId" class="form-select amount-of-players"
                           aria-label="Default select example">
                     <option selected disabled value="0">Select team to register</option>
-                    <option v-for="team in eligibleTeams" :key="team.id" :value="team.id">
+                    <option v-for="team in filteredEligibleTeams" :key="team.id" :value="team.id">
                       {{ team.teamName }}
                     </option>
                   </select>
@@ -516,6 +516,10 @@ export default {
     },
     displayedTeams() {
       return this.registeredTeams.slice(0, 3);
+    },
+    filteredEligibleTeams() {
+      return this.eligibleTeams.filter(team =>
+      !this.registeredTeams.some(registeredTeam => registeredTeam.id === team.id))
     }
   },
   methods: {
