@@ -11,6 +11,7 @@ import tournamentView from "@/views/TournamentView";
 import tournamentRegistrationView from "@/views/TournamentRegistrationView"
 import newUserProfileView from "@/views/NewUserProfileView";
 import UserProfileView from "@/views/UserProfileView";
+import AdminView from "@/views/AdminView";
 
 Vue.use(VueRouter)
 
@@ -70,6 +71,12 @@ const routes = [
         name: 'tournamentRegistrationRoute',
         component: tournamentRegistrationView
     },
+    {
+        path: '/admin',
+        name: 'adminRoute',
+        component: AdminView
+    },
+
     {
         path: '/about',
         name: 'about',
