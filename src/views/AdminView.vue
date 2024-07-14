@@ -54,9 +54,12 @@
                     Sort
                   </button>
                   <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    <li>
+                      <button class="dropdown-item" @click="getTournamentsInformation()">Last updated</button>
+                    </li>
+                    <li>
+                      <button class="dropdown-item" @click="filterTournamentsByStartDate()">Start Date</button>
+                    </li>
                   </ul>
                 </div>
                 <!--Add Tournament button-->
@@ -212,6 +215,16 @@ export default {
               console.log(error);
             });
       }
+    },
+    filterTournamentsByStartDate: function () {
+      this.$http.get("/tournament/start-date/filter")
+          .then(response => {
+            this.tournamentInfoResponse = response.data;
+            console.log(response.data)
+          })
+          .catch(error => {
+            console.log(error)
+          })
     },
     navigateToTournamentRegistration() {
       this.$router.push({name: 'tournamentRegistrationRoute'})
