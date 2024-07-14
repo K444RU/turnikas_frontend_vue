@@ -33,12 +33,18 @@
                 <div class="dropdown">
                   <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
                           aria-expanded="false">
-                    Type
+                    Age
                   </button>
                   <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    <li>
+                      <button class="dropdown-item" @click="filterTournamentsByAge(null)">All</button>
+                    </li>
+                    <li v-for="age in ageCategoryResponse" :key="age.categoryCode">
+                      <button
+                          @click="filterTournamentsByAge(age.categoryCode)"
+                          class="dropdown-item">{{ age.categoryName }}
+                      </button>
+                    </li>
                   </ul>
                 </div>
                 <!--Second filter dropdown of tournament to Filter by-->
@@ -60,7 +66,7 @@
                 </button>
               </div>
 
-              <div v-for="tournament in tournamentInfoResponse" :key="tournament.id" class="tournaments-list-body" >
+              <div v-for="tournament in tournamentInfoResponse" :key="tournament.id" class="tournaments-list-body">
                 <div class="tournament-info-box">
                   <div class="tournament-left-info">
                     <div class="tournament-name-and-type">
@@ -99,9 +105,10 @@ export default {
     return {
       tournamentInfoResponse: [],
       ageCategoryResponse: [],
-      playerAmountResponse:[],
-      cityNameResponse:[],
+      playerAmountResponse: [],
+      cityNameResponse: [],
       cityNames: {},
+      selectedAge: null
     };
   },
   computed: {
@@ -159,7 +166,7 @@ export default {
             console.log(error)
           })
     },
-    getCityNames(cityId){
+    getCityNames(cityId) {
       const city = this.cityNameResponse.find(c => c.id === cityId);
       return city ? city.cityName : 'Unknown';
     },
@@ -173,7 +180,7 @@ export default {
             console.log(error)
           })
     },
-    getPlayerAmountNames(amountCode){
+    getPlayerAmountNames(amountCode) {
       const amount = this.playerAmountResponse.find(a => a.amountCode === amountCode);
       return amount ? amount.amountName : 'Unknown';
     },
@@ -191,6 +198,21 @@ export default {
       const category = this.ageCategoryResponse.find(cat => cat.categoryCode === categoryCode);
       return category ? category.categoryName : 'Unknown';
     },
+    filterTournamentsByAge(categoryCode) {
+      this.selectedAge = categoryCode;
+
+      if (categoryCode === null) {
+        this.getTournamentsInformation();
+      } else {
+        this.$http.get(`/tournament/age-category/filter?categoryCode=${categoryCode}`)
+            .then(response => {
+              this.tournamentInfoResponse = response.data;
+            })
+            .catch(error => {
+              console.log(error);
+            });
+      }
+    }
   },
   beforeMount() {
     this.getTournamentsInformation()
