@@ -184,7 +184,7 @@ export default {
       this.$http.post("/tournament/register", this.tournamentRequest
       ).then(response => {
         const {id: tournamentId} = response.data
-        this.$router.push({name: 'tournamentListRoute'})
+        this.$router.push({name: 'adminRoute'})
         console.log(response.data)
       }).catch(error => {
         console.log(error)
@@ -202,15 +202,17 @@ export default {
 
 <style>
 .tournament-registration-background {
-  background-color: black;
+  background-color: #101720;
   background-position: center;
   background-size: cover;
   width: 100%;
   min-height: 100vh;
   position: relative;
   box-sizing: border-box;
-  text-align: center;
   display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  text-align: center;
 }
 
 .middle-panel {
@@ -222,9 +224,8 @@ export default {
   justify-content: center;
 }
 
-
 .tournament-registration-form {
-  width: 80%; /* Adjust the width as needed */
+  width: 80%;
   margin-top: 110px;
   margin-bottom: 10px;
   text-align: center;
@@ -278,7 +279,6 @@ export default {
   color: #808080FF; /* Initial color */
 }
 
-
 .tournament-registration-form-table input[type="date"]:focus,
 .tournament-registration-form-table input[type="date"]::placeholder {
   color: white;
@@ -289,5 +289,67 @@ export default {
   border-radius: 10px;
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
+  .middle-panel {
+    width: 100%;
+    margin: 20px auto;
+  }
+
+  .tournament-registration-form {
+    width: 100%;
+    margin-top: 50px;
+    margin-bottom: 10px;
+    margin-right: 17%;
+  }
+
+  .tournament-registration-form-table {
+    width: 100%;
+  }
+
+  .tournament-registration-form-table input,
+  .tournament-registration-form-table textarea,
+  .tournament-registration-form-table select {
+    width: calc(100% - 30px);
+    margin: 5px 10px;
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .tournament-registration-button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .middle-panel {
+    width: 100%;
+    margin: 20px auto;
+  }
+
+  .tournament-registration-form {
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    margin-right: 17%;
+  }
+
+  .tournament-registration-form-table input,
+  .tournament-registration-form-table textarea,
+  .tournament-registration-form-table select {
+    width: calc(100% - 20px);
+    margin: 5px;
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  .tournament-registration-button {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+  }
+}
 
 </style>

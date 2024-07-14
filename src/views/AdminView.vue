@@ -60,7 +60,7 @@
                   </ul>
                 </div>
                 <!--Add Tournament button-->
-                <button type="button" class="btn btn-success">
+                <button @click="navigateToTournamentRegistration" type="button" class="btn btn-success">
                   <font-awesome-icon :icon="['fas', 'plus']"/>
                   New
                 </button>
@@ -212,7 +212,10 @@ export default {
               console.log(error);
             });
       }
-    }
+    },
+    navigateToTournamentRegistration() {
+      this.$router.push({name: 'tournamentRegistrationRoute'})
+    },
   },
   beforeMount() {
     this.getTournamentsInformation()
