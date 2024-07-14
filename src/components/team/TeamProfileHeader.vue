@@ -1,11 +1,11 @@
 <!-- TransparentHeader.vue -->
 <template>
   <div class="transparent-header" :class="{ 'scrolling': isScrolling }">
-    <div class="toggle-menu-button" @click="toggleMenu">
-      <div class="bar1"></div>
-      <div class="bar2"></div>
-      <div class="bar3"></div>
-    </div>
+<!--    <div class="toggle-menu-button" @click="toggleMenu">-->
+<!--      <div class="bar1"></div>-->
+<!--      <div class="bar2"></div>-->
+<!--      <div class="bar3"></div>-->
+<!--    </div>-->
 
     <div class="side-nav" :class="{'open': isMenuOpen }">
       <a href="#">User Profile</a>

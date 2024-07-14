@@ -67,11 +67,6 @@ export default {
   },
   methods: {
     login() {
-      // Check if the user is already on the new user profile route
-      if (this.$route.name === 'newUserProfileRoute') {
-        return;
-      }
-
       this.clearErrors();
 
       let hasError = false;
@@ -98,8 +93,15 @@ export default {
           .then((response) => {
             const {id: userId} = response.data;
             localStorage.setItem("userId", userId);
-            if (this.$route.name !== 'newUserProfileRoute') {
-              this.$router.push({name: 'newUserProfileRoute'});
+            localStorage.setItem("email", this.email);
+            if (this.email === 'admin@turnikas.com') {
+              if (this.$route.name !== 'adminRoute') {
+                this.$router.push({name: 'adminRoute'});
+              }
+            } else {
+              if (this.$route.name !== 'newUserProfileRoute') {
+                this.$router.push({name: 'newUserProfileRoute'});
+              }
             }
           })
           .catch((error) => {
@@ -186,6 +188,7 @@ export default {
   background-image: url('../assets/images/LoginPage.jpg');
   background-size: cover;
 }
+
 .error-message {
   color: #e7234c;
   font-size: 12px;
