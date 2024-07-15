@@ -27,7 +27,8 @@ export default {
       isScrolling: false,
       isDropdownOpen: false,
       userIsLoggedIn: false,
-      userId: null
+      userId: null,
+      userEmail: null
     };
   },
   methods: {
@@ -43,20 +44,27 @@ export default {
 
     checkIfLoggedIn() {
       const userId = localStorage.getItem("userId");
+      const userEmail = localStorage.getItem("email");
       if (userId) {
         this.userIsLoggedIn = true;
         this.userId = userId;
+        this.userEmail = userEmail;
       }
     },
     handleLogoClick() {
       if (this.userIsLoggedIn) {
-        this.$emit('navigate-to-user-profile');
+        if (this.userEmail === 'admin@turnikas.com') {
+          this.$router.push({name: 'adminRoute'});
+        } else {
+          this.$emit('navigate-to-user-profile');
+        }
       }
     },
 
     logout() {
       if(confirm('Sure you want to log out?')) {
         localStorage.removeItem('userId');
+        localStorage.removeItem('email');
         this.userIsLoggedIn = false;
         this.$router.push('/');
       }
@@ -66,8 +74,7 @@ export default {
   mounted() {
     window.addEventListener('scroll', this.handleScroll);
     window.addEventListener('click', this.closeDropdown);
-    const userId = localStorage.getItem('userId');
-    this.userIsLoggedIn = !!userId;
+    this.checkIfLoggedIn();
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll);
