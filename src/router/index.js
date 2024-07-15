@@ -8,10 +8,11 @@ import teamProfileView from "@/views/TeamProfileView";
 import playerProfileView from "@/views/PlayerProfileView";
 import tournamentListView from "@/views/TournamentListView";
 import tournamentView from "@/views/TournamentView";
-import tournamentRegistrationView from "@/views/TournamentRegistrationView"
+import tournamentRegistrationView from "@/views/admin/TournamentRegistrationView"
 import newUserProfileView from "@/views/NewUserProfileView";
 import UserProfileView from "@/views/UserProfileView";
-import AdminView from "@/views/AdminView";
+import AdminView from "@/views/admin/AdminView";
+import adminTournamentView from "@/views/admin/AdminTournamentView";
 
 Vue.use(VueRouter)
 
@@ -75,6 +76,11 @@ const routes = [
         path: '/admin',
         name: 'adminRoute',
         component: AdminView
+    },
+    {
+        path: '/admin-tournament',
+        name: 'adminTournamentRoute',
+        component: adminTournamentView
     },
 
     {
