@@ -241,7 +241,7 @@ export default {
   padding: 10px;
   width: 100%;
   display: grid;
-  grid-template-columns: 50px auto 7% 9%;
+  grid-template-columns: 50px auto 9% 15%;
   gap: 5px;
   box-sizing: border-box;
   border-radius: 10px;
