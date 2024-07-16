@@ -74,7 +74,7 @@
                   <div class="tournament-left-info">
                     <div class="tournament-name-and-type">
                       <h3>
-                        <a class="tournament-name">{{ tournament.name }}</a>
+                        <a @click="navigateToAdminTournamentPage(tournament.id)" class="tournament-name">{{ tournament.name }}</a>
                         <span></span>
                         <span class="tournament-type">{{ getCategoryNameByCategoryCode2(tournament.categoryCode)}}</span>
                       </h3>
@@ -82,7 +82,7 @@
                     <div class="tournament-dates">{{ tournament.startDate }} - {{ tournament.endDate }}</div>
                   </div>
                   <div class="tournament-right-info">
-                    <button class="tournament-details-button">Details...</button>
+                    <button @click="navigateToAdminTournamentPage(tournament.id)" class="tournament-details-button">Details...</button>
                   </div>
                 </div>
               </div>
@@ -229,6 +229,16 @@ export default {
     navigateToTournamentRegistration() {
       this.$router.push({name: 'tournamentRegistrationRoute'})
     },
+
+    navigateToAdminTournamentPage(tournamentId) {
+      console.log("Navigating to admin tournament page with tournamentId: ", tournamentId);
+      this.$router.push({
+        name: 'adminTournamentRoute',
+        query: {
+          tournamentId: tournamentId,
+        }
+      });
+    }
   },
   beforeMount() {
     this.getTournamentsInformation()
