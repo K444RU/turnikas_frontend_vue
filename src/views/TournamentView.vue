@@ -201,118 +201,39 @@
             <div class="tab-pane fade" id="groups-tab-pane" role="tabpanel" aria-labelledby="groups-tab" tabindex="0">
               <div class="test-tournament-list-body">
                 <div class="test-tournament-centre-nav-left-info">
-                  <div class="tournament-team-groups">
-                    <div class="tournament-team-groups-boxes">
+                  <div class="tournament-team-groups" v-if="tournamentGroups.length > 0">
+                    <div v-for="group in tournamentGroups" :key="group.name" class="tournament-team-groups-boxes">
                       <div class="tournament-team-groups-header">
-                        GROUP A
+                        {{ group.name }}
                       </div>
-
                       <div class="tournament-team-groups-body">
                         <table class="custom-table">
-
                           <tbody>
-                          <tr>
-                            <th scope="row">1</th>
-                            <td><img src="../assets/images/defaultTeamLogo.png"
-                                     style="height: 40px; cursor: pointer" alt=""></td>
-                            <td>*TEAM NAME*</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">2</th>
-                            <td><img src="../assets/images/defaultTeamLogo.png"
-                                     style="height: 40px; border-radius: 20px; cursor: pointer" alt=""></td>
-                            <td>*TEAM NAME*</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">3</th>
-                            <td><img src="../assets/images/defaultTeamLogo.png"
-                                     style="height: 40px; border-radius: 20px; cursor: pointer" alt=""></td>
-                            <td>*TEAM NAME*</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">4</th>
-                            <td><img src="../assets/images/defaultTeamLogo.png"
-                                     style="height: 40px; border-radius: 20px; cursor: pointer" alt=""></td>
-                            <td>*TEAM NAME*</td>
+                          <tr v-for="(team, index) in group.teams" :key="team.id">
+                            <th scope="row">{{ index + 1 }}</th>
+                            <td>
+                              <img
+                                  v-if="team.teamLogo"
+                                  :src="`data:image/png;base64,${team.teamLogo}`"
+                                  style="height: 40px; cursor: pointer"
+                                  alt="Team Logo"
+                              />
+                              <img
+                                  v-else
+                                  src="../assets/images/defaultTeamLogo.png"
+                                  style="height: 40px; cursor: pointer"
+                                  alt="Default Team Logo"
+                              />
+                            </td>
+                            <td>{{ team.teamName }}</td>
                           </tr>
                           </tbody>
                         </table>
                       </div>
                     </div>
-                    <div class="tournament-team-groups-boxes">
-                      <div class="tournament-team-groups-header">
-                        GROUP B
-                      </div>
-
-                      <div class="tournament-team-groups-body">
-                        <table class="custom-table">
-
-                          <tbody>
-                          <tr>
-                            <th scope="row">1</th>
-                            <td><img src="../assets/images/defaultTeamLogo.png"
-                                     style="height: 40px; border-radius: 20px; cursor: pointer" alt=""></td>
-                            <td>*TEAM NAME*</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">2</th>
-                            <td><img src="../assets/images/defaultTeamLogo.png"
-                                     style="height: 40px; border-radius: 20px; cursor: pointer" alt=""></td>
-                            <td>*TEAM NAME*</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">3</th>
-                            <td><img src="../assets/images/defaultTeamLogo.png"
-                                     style="height: 40px; border-radius: 20px; cursor: pointer" alt=""></td>
-                            <td>*TEAM NAME*</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">4</th>
-                            <td><img src="../assets/images/defaultTeamLogo.png"
-                                     style="height: 40px; border-radius: 20px; cursor: pointer" alt=""></td>
-                            <td>*TEAM NAME*</td>
-                          </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                    <div class="tournament-team-groups-boxes">
-                      <div class="tournament-team-groups-header">
-                        GROUP C
-                      </div>
-
-                      <div class="tournament-team-groups-body">
-
-                      </div>
-                    </div>
-                    <div class="tournament-team-groups-boxes">
-                      <div class="tournament-team-groups-header">
-                        GROUP D
-                      </div>
-
-                      <div class="tournament-team-groups-body">
-
-                      </div>
-                    </div>
-                    <div class="tournament-team-groups-boxes">
-                      <div class="tournament-team-groups-header">
-                        GROUP E
-                      </div>
-
-                      <div class="tournament-team-groups-body">
-
-                      </div>
-                    </div>
-                    <div style="margin-top: 100px">
-                      <h1>Group Stage in Football Tournaments</h1>
-                      <p>The group stage is a pivotal phase in football tournaments,
-                        serving as the initial round where participating teams are organized into distinct groups.
-                        This format is widely employed in major football competitions,
-                        such as the FIFA World Cup and UEFA Champions League.
-                        The primary objective of the group stage is to determine
-                        which teams advance to the knockout rounds based on their performance
-                        within their assigned groups.</p>
-                    </div>
+                  </div>
+                  <div v-else>
+                    <p>No groups available for this tournament.</p>
                   </div>
                 </div>
                 <div class="test-tournament-centre-nav-right-info">
@@ -501,7 +422,8 @@ export default {
       selectedTeamId: null,
       registeredTeams: [],
       eligibleTeams: [],
-      userLoggedIn: false
+      userLoggedIn: false,
+      tournamentGroups: [],
     };
   },
   computed: {
@@ -523,6 +445,14 @@ export default {
     }
   },
   methods: {
+    async getTournamentGroups() {
+      try {
+        const response = await this.$http.get(`/participation/tournament/${this.tournamentId}/generated-groups`);
+        this.tournamentGroups = response.data;
+      } catch (error) {
+        console.log("Error fetching tournament groups.", error);
+      }
+    },
     checkIfLoggedIn() {
       const userId = localStorage.getItem("userId");
       if (userId) {
@@ -713,7 +643,9 @@ export default {
     console.log("Mounting to tournament profile with userId: ", this.userId)
     await this.getEligibleTeamsForTournamentRegistration()
     await this.getRegisteredTeamsByTournamentId();
-  }
+    await this.getTournamentGroups();
+  },
+
 }
 </script>
 
