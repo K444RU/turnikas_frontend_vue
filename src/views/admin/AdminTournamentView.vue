@@ -15,13 +15,13 @@
               <div class="tournament-info">
                 <!-- Future tournament info goes here -->
                 <ul>
-                  <li>City: {{tournamentInfoResponse.cityName}}</li>
-                  <li>Stadium: {{tournamentInfoResponse.stadiumName}}</li>
-                  <li>Prize pool: {{tournamentInfoResponse.prize}}</li>
-                  <li>Age Category: {{tournamentInfoResponse.categoryName}}</li>
-                  <li>Slots available: {{remainingSlots}} / {{tournamentInfoResponse.amountName}}</li>
+                  <li>City: {{ tournamentInfoResponse.cityName }}</li>
+                  <li>Stadium: {{ tournamentInfoResponse.stadiumName }}</li>
+                  <li>Prize pool: {{ tournamentInfoResponse.prize }}</li>
+                  <li>Age Category: {{ tournamentInfoResponse.categoryName }}</li>
+                  <li>Slots available: {{ remainingSlots }} / {{ tournamentInfoResponse.amountName }}</li>
                   <li>Tournament name: {{ tournamentInfoResponse.name }}</li>
-                  <li>Participation prise: {{tournamentInfoResponse.participationPrise}}$</li>
+                  <li>Participation prise: {{ tournamentInfoResponse.participationPrise }}$</li>
                   <li>Tournament format: Single elimination</li>
                 </ul>
               </div>
@@ -34,21 +34,37 @@
           <div class="admin-tournament-view-right-grid-col">
             <div class="tournament-action-tab">
               <div class="tournament-buttons">
-                <div class="shuffle-tournament-groups-button"><button class="shuffle-button">Shuffle groups</button></div>
-                <div class="start-tournament-button"><button class="start-button">Start tournament</button></div>
-                <div class="end-tournament-button"><button class="end-button">End tournament</button></div>
+                <div class="shuffle-tournament-groups-button">
+                  <button @click="shuffleTournamentGroups(tournamentId)" class="shuffle-button">Shuffle groups</button>
+                </div>
+                <div class="start-tournament-button">
+                  <button class="start-button">Start tournament</button>
+                </div>
+                <div class="end-tournament-button">
+                  <button class="end-button">End tournament</button>
+                </div>
               </div>
-              <div class="tournament-teams-list-name">Teams Registered: </div>
+              <div class="tournament-teams-list-name">Teams Registered:</div>
               <div v-for="team in registeredTeams" :key="team.id" class="tournament-teams-list">
                 <div class="admin-tournament-team-logo">
                   <img v-if="team.teamLogo" :src="team.teamLogo" alt="Team Logo">
                   <img v-else src="@/assets/images/defaultTeamLogo.png"
                        alt="Default Team Logo" class="image">
-<!--                  <img :src="require('@/assets/images/defaultTeamLogo.png')" alt="Tournament Image" class="image"/>-->
+                  <!--                  <img :src="require('@/assets/images/defaultTeamLogo.png')" alt="Tournament Image" class="image"/>-->
                 </div>
                 <div class="admin-tournament-team-name">{{ team.teamName }}</div>
-                <div class="admin-team-edit-button"><button class="admin-edit-button"><font-awesome-icon :icon="['fas', 'pen-to-square']" />Edit</button></div>
-                <div class="admin-team-remove-button"><button class="admin-remove-button"><font-awesome-icon :icon="['fas', 'square-minus']" /> Remove</button></div>
+                <div class="admin-team-edit-button">
+                  <button class="admin-edit-button">
+                    <font-awesome-icon :icon="['fas', 'pen-to-square']"/>
+                    Edit
+                  </button>
+                </div>
+                <div class="admin-team-remove-button">
+                  <button class="admin-remove-button">
+                    <font-awesome-icon :icon="['fas', 'square-minus']"/>
+                    Remove
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -95,7 +111,16 @@ export default {
     },
   },
   methods: {
-     async getTournamentInformationByTournamentId() {
+    shuffleTournamentGroups(tournamentId) {
+      this.$http.post(`/participation/tournament/${tournamentId}/groups`)
+          .then(response => {
+            console.log(response.data);
+          }).catch(error => {
+        console.log(error);
+      });
+    },
+
+    async getTournamentInformationByTournamentId() {
       try {
         const response = await this.$http.get("/tournament/info", {
           params: {
@@ -526,6 +551,7 @@ export default {
     margin: 0;
   }
 }
+
 /* Scrollbar styles for Webkit browsers (Chrome, Safari) */
 ::-webkit-scrollbar {
   width: 12px; /* Width of the entire scrollbar */
