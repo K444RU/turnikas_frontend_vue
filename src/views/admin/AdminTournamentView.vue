@@ -15,16 +15,14 @@
               <div class="tournament-info">
                 <!-- Future tournament info goes here -->
                 <ul>
-                  <li>City:</li>
-                  <li>Stadium:</li>
-                  <li>Team size:</li>
-                  <li>Prize pool:</li>
-                  <li>Age Category:</li>
-                  <li>Slots available:</li>
-                  <li>Tournament name:</li>
-                  <li>Participation prise:</li>
-                  <li>Tournament format:</li>
-                  <li>Additional information:</li>
+                  <li>City: {{tournamentInfoResponse.cityName}}</li>
+                  <li>Stadium: {{tournamentInfoResponse.stadiumName}}</li>
+                  <li>Prize pool: {{tournamentInfoResponse.prize}}</li>
+                  <li>Age Category: {{tournamentInfoResponse.categoryName}}</li>
+                  <li>Slots available: {{remainingSlots}} / {{tournamentInfoResponse.amountName}}</li>
+                  <li>Tournament name: {{ tournamentInfoResponse.name }}</li>
+                  <li>Participation prise: {{tournamentInfoResponse.participationPrise}}$</li>
+                  <li>Tournament format: Single elimination</li>
                 </ul>
               </div>
               <div class="tournament-edit-button">
@@ -41,10 +39,14 @@
                 <div class="end-tournament-button"><button class="end-button">End tournament</button></div>
               </div>
               <div class="tournament-teams-list-name">Teams Registered: </div>
-              <div class="tournament-teams-list">
-                <div class="admin-tournament-team-logo"><img :src="require('@/assets/images/defaultTeamLogo.png')" alt="Tournament Image" class="image"/>
+              <div v-for="team in registeredTeams" :key="team.id" class="tournament-teams-list">
+                <div class="admin-tournament-team-logo">
+                  <img v-if="team.teamLogo" :src="team.teamLogo" alt="Team Logo">
+                  <img v-else src="@/assets/images/defaultTeamLogo.png"
+                       alt="Default Team Logo" class="image">
+<!--                  <img :src="require('@/assets/images/defaultTeamLogo.png')" alt="Tournament Image" class="image"/>-->
                 </div>
-                <div class="admin-tournament-team-name">Team name</div>
+                <div class="admin-tournament-team-name">{{ team.teamName }}</div>
                 <div class="admin-team-edit-button"><button class="admin-edit-button"><font-awesome-icon :icon="['fas', 'pen-to-square']" />Edit</button></div>
                 <div class="admin-team-remove-button"><button class="admin-remove-button"><font-awesome-icon :icon="['fas', 'square-minus']" /> Remove</button></div>
               </div>
@@ -65,12 +67,139 @@ export default {
   name: 'adminTournamentRoute',
   components: {Home, UserProfileHeader},
   data() {
-    return {}
+    return {
+      tournamentId: this.$route.query.tournamentId,
+      tournamentInfoResponse: {
+        cityName: '',
+        stadiumName: '',
+        categoryName: '',
+        amountName: '',
+        id: 0,
+        categoryCode: 0,
+        playerAmountCode: 0,
+        cityId: 0,
+        stadiumId: 0,
+        name: '',
+        startDate: Date,
+        endDate: Date,
+        participationPrise: 0,
+        prize: '',
+        additionalInfo: ''
+      },
+      registeredTeams: [],
+    }
   },
-  computed: {},
-  methods: {},
-  mounted() {
+  computed: {
+    remainingSlots() {
+      return this.tournamentInfoResponse.amountName - this.registeredTeams.length;
+    },
+  },
+  methods: {
+     async getTournamentInformationByTournamentId() {
+      try {
+        const response = await this.$http.get("/tournament/info", {
+          params: {
+            tournamentId: this.tournamentId,
+          },
+        });
+        this.tournamentInfoResponse = response.data;
+        await this.getCityNameByCityId(this.tournamentInfoResponse.cityId);
+        await this.getStadiumNameByCityId(this.tournamentInfoResponse.cityId);
+        await this.getAgeCategoryByCode(this.tournamentInfoResponse.categoryCode);
+        await this.getPlayerAmountById(this.tournamentInfoResponse.playerAmountCode);
+        this.$forceUpdate();
+        console.log("Response City Name:", this.tournamentInfoResponse.cityName);
+        console.log("Response Stadium Name:", this.tournamentInfoResponse.stadiumName);
+        console.log("Response Age Category:", this.tournamentInfoResponse.ageCategory);
+        console.log("Response Player Amount:", this.tournamentInfoResponse.amountName);
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    },
 
+    async getCityNameByCityId(cityId) {
+      try {
+        const response = await this.$http.get("/tournament/city/info", {
+          params: {
+            cityId: cityId,
+          },
+        });
+        console.log("City API Response:", response.data);
+        this.tournamentInfoResponse.cityName = response.data.cityName;
+        console.log("City Name:", this.tournamentInfoResponse.cityName);
+      } catch (error) {
+        console.log("Error fetching City data:", error);
+      }
+    },
+    async getStadiumNameByCityId(cityId) {
+      try {
+        const response = await this.$http.get("/tournament/city/stadium", {
+          params: {
+            cityId: cityId,
+          },
+        });
+        if (response.data.length > 0) {
+          this.tournamentInfoResponse.stadiumName = response.data[0].name;
+          console.log("Stadium Name:", this.tournamentInfoResponse.stadiumName);
+        } else {
+          console.error("Stadium data is empty.");
+        }
+        console.log("Stadium Name:", response.data.name);
+        console.log("Stadium Name:", this.tournamentInfoResponse.stadiumName);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getAgeCategoryByCode(ageCategoryCode) {
+      try {
+        const response = await this.$http.get("/tournament/age-category", {
+          params: {
+            ageCategoryCode: ageCategoryCode,
+          },
+        });
+        const ageCategoryData = response.data;
+        this.tournamentInfoResponse.ageCategory = ageCategoryData.categoryName;
+        this.tournamentInfoResponse.categoryName = ageCategoryData.categoryName;
+        console.log("Age Category:", this.tournamentInfoResponse.ageCategory);
+        console.log("Category Name:", this.tournamentInfoResponse.categoryName);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getPlayerAmountById(amountCode) {
+      try {
+        const response = await this.$http.get("/tournament/player/amount/info", {
+          params: {
+            amountCode: amountCode,
+          },
+        });
+        const playerAmountData = response.data;
+        this.tournamentInfoResponse.playerAmount = playerAmountData.amountName;
+        this.tournamentInfoResponse.amountName = playerAmountData.amountName;
+        console.log("Player Amount:", this.tournamentInfoResponse.playerAmount);
+        console.log("Amount Name:", this.tournamentInfoResponse.amountName);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    async getRegisteredTeamsByTournamentId() {
+      try {
+        const response = await this.$http.get(`/participation/tournament/${this.tournamentId}/teams`);
+        this.registeredTeams = response.data;
+        console.log("Registered Teams: ", this.registeredTeams);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
+  async mounted() {
+    console.log("Mounting to tournament profile with tournamentId:", this.tournamentId)
+    await this.getTournamentInformationByTournamentId()
+    console.log("Mounting to tournament profile with userId: ", this.userId)
+    console.log("Registered teams: ", this.registeredTeams);
+    await this.getRegisteredTeamsByTournamentId();
   }
 
 }
@@ -237,7 +366,7 @@ export default {
 }
 
 .tournament-teams-list {
-  border: #333333 3px solid;
+  border-top: #333333 3px solid;
   padding: 10px;
   width: 100%;
   display: grid;
@@ -376,6 +505,11 @@ export default {
     text-align: center;
   }
 
+  .admin-tournament-team-logo .image {
+    width: 120px;
+    height: 120px;
+  }
+
   .admin-tournament-team-name {
     text-align: center;
   }
@@ -392,4 +526,30 @@ export default {
     margin: 0;
   }
 }
+/* Scrollbar styles for Webkit browsers (Chrome, Safari) */
+::-webkit-scrollbar {
+  width: 12px; /* Width of the entire scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #101720; /* Color of the track */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #272e36; /* Color of the thumb */
+  border-radius: 10px; /* Rounded corners */
+  border: 3px solid #101720; /* Padding around thumb */
+}
+
+/* Scrollbar styles for Firefox */
+* {
+  scrollbar-width: thin; /* Width of the scrollbar */
+  scrollbar-color: #272e36 #101720; /* Color of the thumb and track */
+}
+
+/* Optional: Hide scrollbar in IE/Edge */
+body {
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
 </style>
