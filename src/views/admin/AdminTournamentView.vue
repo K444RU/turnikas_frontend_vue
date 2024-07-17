@@ -70,6 +70,17 @@
           </div>
         </div>
       </div>
+      <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <strong class="me-auto">Notification: </strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body">
+            {{ toastMessage }}
+          </div>
+        </div>
+      </div>
       <div class="admin-tournament-view-right-nav"></div>
     </div>
   </div>
@@ -78,6 +89,7 @@
 <script>
 import UserProfileHeader from "@/components/user/UserProfileHeader";
 import Home from "@/views/HomeView";
+import {Toast} from 'bootstrap';
 
 export default {
   name: 'adminTournamentRoute',
@@ -103,6 +115,7 @@ export default {
         additionalInfo: ''
       },
       registeredTeams: [],
+      toastMessage: '',
     }
   },
   computed: {
@@ -111,13 +124,25 @@ export default {
     },
   },
   methods: {
+    showToast(message) {
+      this.toastMessage = message;
+      const toastEl = document.getElementById('liveToast');
+      const toast = new Toast(toastEl);
+      toast.show();
+    },
     shuffleTournamentGroups(tournamentId) {
       this.$http.post(`/participation/tournament/${tournamentId}/groups`)
           .then(response => {
             console.log(response.data);
-          }).catch(error => {
-        console.log(error);
-      });
+            this.showToast("Groups have been created successfully!");
+          })
+          .catch(error => {
+            if (error.response && error.response.status === 400) {
+              this.showToast("Groups have already been created for this tournament.");
+            } else {
+              this.showToast("An error occurred while creating groups.");
+            }
+          });
     },
 
     async getTournamentInformationByTournamentId() {
@@ -576,6 +601,10 @@ export default {
 /* Optional: Hide scrollbar in IE/Edge */
 body {
   -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+.toast-container {
+  z-index: 1050;
 }
 
 </style>
