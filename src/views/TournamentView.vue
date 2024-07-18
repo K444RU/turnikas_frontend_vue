@@ -260,11 +260,10 @@
             </div>
             <div class="tab-pane fade" id="teams-tab-pane" role="tabpanel" aria-labelledby="teams-tab" tabindex="0">
               <h1>TOURNAMENT TEAMS</h1>
-
               <div class="test-tournament-list-body">
                 <div class="test-tournament-centre-nav">
                   <div class="test-tournament-centre-nav-left-info">
-                    <div v-for="team in registeredTeams" :key="team.id" class="tournament-teams-box">
+                    <div v-for="team in registeredTeams" :key="team.id" class="tournament-teams-box" @click="openTeamInfoModal(team)">
                       <div class="team-image">
                         <img v-if="team.teamLogo" :src="team.teamLogo" style="height: 90px" alt="Team Logo">
                         <img v-else src="../assets/images/defaultTeamLogo.png" style="height: 90px"
@@ -283,9 +282,8 @@
                   </div>
                 </div>
               </div>
-
-
             </div>
+
             <div class="tab-pane fade" id="prizes-tab-pane" role="tabpanel" aria-labelledby="prizes-tab" tabindex="0">
               <h1>TOURNAMENT PRIZES</h1>
               <div class="test-tournament-list-body">
@@ -354,7 +352,7 @@
 
       <!--Scrollable modal for join tournament-->
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div ref="modal" class="modal fade" id="staticBackdrop"
+        <div ref="teamInfoModal" class="modal fade" id="staticBackdrop"
              data-bs-backdrop="static"
              data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -377,6 +375,26 @@
               <div class="modal-footer">
                 <button type="button" class="close-changes-button" data-bs-dismiss="modal">Close</button>
                 <button @click="saveTeamToTournament" type="button" class="save-changes-button">Join Tournament</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal for team information -->
+      <div ref="teamInfoModal" class="modal fade team-info-modal" id="teamInfoModal" tabindex="-1" aria-labelledby="teamInfoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable team-info-modal-dialog">
+          <div class="modal-content team-info-modal-content">
+            <div class="modal-header team-info-modal-header">
+              <img v-if="selectedTeam.teamLogo" :src="selectedTeam.teamLogo" alt="Team Logo" class="team-info-modal-logo">
+              <img v-else src="../assets/images/defaultTeamLogo.png" alt="Default Team Logo" class="team-info-modal-logo">
+              <h1 class="modal-title fs-5" id="teamInfoModalLabel">{{ selectedTeam.teamName }}</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body team-info-modal-body">
+              <div class="team-info">
+                <p><strong>Coach Name:</strong> {{ selectedTeam.teamCoachName }}</p>
+                <p><strong>Category Code:</strong> {{ selectedTeam.categoryCode }}</p>
               </div>
             </div>
           </div>
@@ -424,6 +442,7 @@ export default {
       eligibleTeams: [],
       userLoggedIn: false,
       tournamentGroups: [],
+      selectedTeam: {},
     };
   },
   computed: {
@@ -634,6 +653,12 @@ export default {
       if (tournamentTeamsTabButton) {
         tournamentTeamsTabButton.click();
       }
+    },
+
+    openTeamInfoModal(team) {
+      this.selectedTeam = team;
+      const teamInfoModal = new bootstrap.Modal(this.$refs.teamInfoModal);
+      teamInfoModal.show();
     }
   },
 
@@ -969,5 +994,54 @@ export default {
 /*    margin-right: 0;*/
 /*  }*/
 /*}*/
+
+/* Scoped CSS for team info modal */
+.team-info-modal-content {
+  border-radius: 10px; /* Rounded corners */
+  width: 500px; /* Adjust width as needed */
+}
+
+.team-info-modal .team-info-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: wheat;
+}
+
+.team-info-modal .team-info-modal-logo {
+  height: 100px;
+  margin-right: 10px;
+}
+
+.team-info-modal .modal-title {
+  font-size: 1.5rem;
+  margin-left: 10px;
+}
+
+.team-info-modal .team-info-modal-content {
+  background-color: #101720 !important;
+  border-radius: 10px; /* Rounded corners */
+  width: 150% !important;
+  justify-items: center;
+}
+
+
+.team-info-modal .team-info-modal-body {
+  padding: 20px;
+  background-color: #101720 !important;
+  color: wheat;
+  width: 100%;
+}
+
+.team-info-modal .team-info-modal-header {
+  width: 100%;
+  background-color: #101720 !important;
+}
+
+.team-info-modal .team-info p {
+  margin: 10px 0;
+  font-size: 1rem;
+}
+
 </style>
 
