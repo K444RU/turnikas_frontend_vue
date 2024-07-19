@@ -384,20 +384,23 @@
       <!-- Modal for team information -->
       <div ref="teamInfoModal" class="modal fade team-info-modal" id="teamInfoModal" tabindex="-1" aria-labelledby="teamInfoModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable team-info-modal-dialog">
-          <div class="modal-content team-info-modal-content">
             <div class="modal-header team-info-modal-header">
-              <img v-if="selectedTeam.teamLogo" :src="selectedTeam.teamLogo" alt="Team Logo" class="team-info-modal-logo">
-              <img v-else src="../assets/images/defaultTeamLogo.png" alt="Default Team Logo" class="team-info-modal-logo">
-              <h1 class="modal-title fs-5" id="teamInfoModalLabel">{{ selectedTeam.teamName }}</h1>
+              <div class="team-info-header-content">
+                <img v-if="selectedTeam.teamLogo" :src="selectedTeam.teamLogo" alt="Team Logo" class="team-info-modal-logo">
+                <img v-else src="../assets/images/defaultTeamLogo.png" alt="Default Team Logo" class="team-info-modal-logo">
+                <h1 class="modal-title fs-5" id="teamInfoModalLabel">{{ selectedTeam.teamName }}</h1>
+              </div>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body team-info-modal-body">
               <div class="team-info">
-                <p><strong>Coach Name:</strong> {{ selectedTeam.teamCoachName }}</p>
-                <p><strong>Category Code:</strong> {{ selectedTeam.categoryCode }}</p>
+<!--                <p><strong>Coach Name:</strong> {{ selectedTeam.teamCoachName }}</p>-->
+<!--                <p><strong>Category Code:</strong> {{ selectedTeam.categoryCode }}</p>-->
+                <div class="team-player-info-box">
+                  Team player
+                </div>
               </div>
             </div>
-          </div>
         </div>
       </div>
 
@@ -996,18 +999,6 @@ export default {
 /*}*/
 
 /* Scoped CSS for team info modal */
-.team-info-modal-content {
-  border-radius: 10px; /* Rounded corners */
-  width: 500px; /* Adjust width as needed */
-}
-
-.team-info-modal .team-info-modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: wheat;
-}
-
 .team-info-modal .team-info-modal-logo {
   height: 100px;
   margin-right: 10px;
@@ -1018,24 +1009,36 @@ export default {
   margin-left: 10px;
 }
 
-.team-info-modal .team-info-modal-content {
-  background-color: #101720 !important;
-  border-radius: 10px; /* Rounded corners */
-  width: 150% !important;
-  justify-items: center;
-}
+/*.team-info-modal .team-info-modal-content {*/
+/*  background-color: #101720 !important;*/
+/*  border-radius: 10px; !* Rounded corners *!*/
+/*  width: 150% !important;*/
+/*  justify-items: center;*/
+/*}*/
 
 
 .team-info-modal .team-info-modal-body {
-  padding: 20px;
   background-color: #101720 !important;
   color: wheat;
-  width: 100%;
+  width: 150%;
+  border-radius: 0 0 10px 10px;
 }
 
 .team-info-modal .team-info-modal-header {
-  width: 100%;
-  background-color: #101720 !important;
+  width: 150%;
+  height: 200px;
+  background-color: #ceab00 !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 100px;
+}
+
+.team-info-header-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 150%;
 }
 
 .team-info-modal .team-info p {
