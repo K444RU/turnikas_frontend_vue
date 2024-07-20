@@ -383,7 +383,8 @@
 
       <!-- Modal for team information -->
       <div ref="teamInfoModal" class="modal fade team-info-modal" id="teamInfoModal" tabindex="-1" aria-labelledby="teamInfoModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable team-info-modal-dialog">
+        <div class="modal-dialog modal-dialog-centered team-info-modal-dialog">
+          <div class="modal-content team-info-modal-content">
             <div class="modal-header team-info-modal-header">
               <div class="team-info-header-content">
                 <img v-if="selectedTeam.teamLogo" :src="selectedTeam.teamLogo" alt="Team Logo" class="team-info-modal-logo">
@@ -394,15 +395,23 @@
             </div>
             <div class="modal-body team-info-modal-body">
               <div class="team-info">
-<!--                <p><strong>Coach Name:</strong> {{ selectedTeam.teamCoachName }}</p>-->
-<!--                <p><strong>Category Code:</strong> {{ selectedTeam.categoryCode }}</p>-->
-                <div class="team-player-info-box">
-                  Team player
+                <div v-for="player in teamPlayerResponse" :key="player.id" class="team-player-info-box">
+                  <div class="team-player-profile-image">
+                    <!-- Placeholder for profile picture -->
+                    <img src="../assets/images/ProfileDefault.png" alt="Profile Image" class="profile-image">
+                  </div>
+                  <div class="team-player-profile-name">
+                    <div class="team-player-profile-firstname">{{ player.firstName }}</div>
+                    <div class="team-player-profile-lastname">{{ player.lastName }}</div>
+                  </div>
                 </div>
               </div>
             </div>
+          </div>
         </div>
       </div>
+
+
 
     </div>
     <Footer/>
@@ -439,6 +448,12 @@ export default {
         prize: '',
         additionalInfo: ''
       },
+      teamPlayerResponse :[{
+        id: 0,
+        teamId: 0,
+        firstName: '',
+        lastName: ''
+      }],
       teamInfoResponse: [],
       selectedTeamId: null,
       registeredTeams: [],
@@ -658,10 +673,25 @@ export default {
       }
     },
 
-    openTeamInfoModal(team) {
+    async openTeamInfoModal(team) {
       this.selectedTeam = team;
+      this.selectedTeamId = team.id;
+      await this.getTournamentTeamPlayerInformationByTeamId();
       const teamInfoModal = new bootstrap.Modal(this.$refs.teamInfoModal);
       teamInfoModal.show();
+    },
+
+    async getTournamentTeamPlayerInformationByTeamId() {
+      try {
+        const response = await this.$http.get('team/players/info', {
+          params: {
+            teamId: this.selectedTeamId,
+          },
+        });
+        this.teamPlayerResponse = response.data;
+      } catch (error) {
+        console.log(error);
+      }
     }
   },
 
@@ -1009,23 +1039,22 @@ export default {
   margin-left: 10px;
 }
 
-/*.team-info-modal .team-info-modal-content {*/
-/*  background-color: #101720 !important;*/
-/*  border-radius: 10px; !* Rounded corners *!*/
-/*  width: 150% !important;*/
-/*  justify-items: center;*/
-/*}*/
+.team-info-modal .team-info-modal-content {
+  justify-items: center;
+  background-color: transparent !important;
+}
 
 
 .team-info-modal .team-info-modal-body {
   background-color: #101720 !important;
   color: wheat;
-  width: 150%;
+  width: 200%;
   border-radius: 0 0 10px 10px;
+  overflow-y: auto; /* Enable vertical scrolling if content overflows */
 }
 
 .team-info-modal .team-info-modal-header {
-  width: 150%;
+  width: 200%;
   height: 200px;
   background-color: #ceab00 !important;
   display: flex;
@@ -1044,6 +1073,45 @@ export default {
 .team-info-modal .team-info p {
   margin: 10px 0;
   font-size: 1rem;
+}
+
+.team-player-info-box {
+  padding: 10px;
+  width: 300%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 1px solid white;
+  background-color: #1d2127; /* Background color for player box */
+  margin-bottom: 10px; /* Spacing between player boxes */
+  overflow-y: auto; /* Enable vertical scrolling if content overflows */
+}
+
+.team-player-profile-image {
+  flex: 0 0 50px; /* Fixed size for profile image container */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-image {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%; /* Circular profile image */
+  object-fit: cover;
+}
+
+.team-player-profile-name {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.team-player-profile-firstname, .team-player-profile-lastname {
+  font-size: 1rem;
+  color: wheat;
 }
 
 </style>
