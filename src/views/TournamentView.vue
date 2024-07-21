@@ -391,7 +391,7 @@
                 <img v-else src="../assets/images/defaultTeamLogo.png" alt="Default Team Logo" class="team-info-modal-logo">
                 <h1 class="modal-title fs-5" id="teamInfoModalLabel">{{ selectedTeam.teamName }}</h1>
               </div>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" class="btn-close close-button" data-dismiss="modal"></button>
             </div>
             <div class="modal-body team-info-modal-body">
               <div class="team-info">
@@ -410,7 +410,6 @@
           </div>
         </div>
       </div>
-
 
 
     </div>
@@ -1042,25 +1041,30 @@ export default {
 .team-info-modal .team-info-modal-content {
   justify-items: center;
   background-color: transparent !important;
+  margin-top: -50px;
 }
-
 
 .team-info-modal .team-info-modal-body {
   background-color: #101720 !important;
   color: wheat;
   width: 200%;
   border-radius: 0 0 10px 10px;
-  overflow-y: auto; /* Enable vertical scrolling if content overflows */
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
 }
 
 .team-info-modal .team-info-modal-header {
   width: 200%;
   height: 200px;
-  background-color: #ceab00 !important;
+  background: linear-gradient(to bottom, #a88c00, #101720) !important;
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-top: 100px;
+  border-bottom: none;
+  position: relative;
 }
 
 .team-info-header-content {
@@ -1075,22 +1079,35 @@ export default {
   font-size: 1rem;
 }
 
+.team-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
 .team-player-info-box {
   padding: 10px;
-  width: 300%;
+  width: 90%;
   display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 10px;
   box-sizing: border-box;
   border-radius: 10px;
-  border: 1px solid white;
-  background-color: #1d2127; /* Background color for player box */
-  margin-bottom: 10px; /* Spacing between player boxes */
-  overflow-y: auto; /* Enable vertical scrolling if content overflows */
+  border-top: 1px solid #333333;
+  border-bottom: 1px solid #333333;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.team-player-info-box:hover {
+  background-color: #36454F;
+  cursor: pointer;
 }
 
 .team-player-profile-image {
-  flex: 0 0 50px; /* Fixed size for profile image container */
+  flex: 0 0 50px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1099,19 +1116,30 @@ export default {
 .profile-image {
   height: 50px;
   width: 50px;
-  border-radius: 50%; /* Circular profile image */
+  border-radius: 50%;
   object-fit: cover;
 }
 
 .team-player-profile-name {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  gap: 5px;
   justify-content: center;
+  align-items: center;
 }
 
-.team-player-profile-firstname, .team-player-profile-lastname {
+.team-player-profile-firstname,
+.team-player-profile-lastname {
   font-size: 1rem;
   color: wheat;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+  color: #101720;
 }
 
 </style>
