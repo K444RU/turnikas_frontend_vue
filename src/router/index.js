@@ -53,7 +53,7 @@ const routes = [
         component: teamProfileView
     },
     {
-        path: '/player-profile',
+        path: '/player-profile/:playerId',
         name: 'playerProfileRoute',
         component: playerProfileView
     },
@@ -82,7 +82,6 @@ const routes = [
         name: 'adminTournamentRoute',
         component: adminTournamentView
     },
-
     {
         path: '/about',
         name: 'about',
