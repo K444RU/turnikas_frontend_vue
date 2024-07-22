@@ -391,13 +391,12 @@
                 <img v-else src="../assets/images/defaultTeamLogo.png" alt="Default Team Logo" class="team-info-modal-logo">
                 <h1 class="modal-title fs-5" id="teamInfoModalLabel">{{ selectedTeam.teamName }}</h1>
               </div>
-              <button type="button" class="btn-close close-button" data-dismiss="modal"></button>
+              <button type="button" class="btn-close close-button" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body team-info-modal-body">
               <div class="team-info">
-                <div v-for="player in teamPlayerResponse" :key="player.id" class="team-player-info-box">
+                <div v-for="player in teamPlayerResponse" :key="player.id" @click="navigateToTeamPlayerProfile(player.id)" class="team-player-info-box">
                   <div class="team-player-profile-image">
-                    <!-- Placeholder for profile picture -->
                     <img src="../assets/images/ProfileDefault.png" alt="Profile Image" class="profile-image">
                   </div>
                   <div class="team-player-profile-name">
@@ -481,6 +480,21 @@ export default {
     }
   },
   methods: {
+    navigateToTeamPlayerProfile(playerId) {
+      // Ensure modal is properly closed
+      const teamInfoModal = new bootstrap.Modal(this.$refs.teamInfoModal);
+      teamInfoModal.hide();
+
+      // Navigate to player profile route with playerId as parameter
+      this.$router.push({
+        name: 'playerProfileRoute',
+        params: { playerId }
+      }).then(() => {
+        // Scroll to the top of the page after navigation
+        window.scrollTo(0, 0);
+      });
+      console.log('Player Id is: ' + playerId);
+    },
     async getTournamentGroups() {
       try {
         const response = await this.$http.get(`/participation/tournament/${this.tournamentId}/generated-groups`);

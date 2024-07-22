@@ -6,7 +6,6 @@
       </div>
     </div>
 
-
     <div id="player-profile-container">
       <div id="left">
         <img class="player-profile-container-image" src="@/assets/images/jersey.png" alt="Default Player Image" />
@@ -17,7 +16,6 @@
         <p>Last Name: {{ teamPlayerResponse.lastName }}</p>
       </div>
 
-
       <div id="right">
         <div class="right-box">
           <h2>Right Box 1</h2>
@@ -25,18 +23,11 @@
         </div>
         <div class="right-box">
           <h2>Player Profile</h2>
-          <p class="text">Blessed with outstanding agility and athleticism, charisma and class also makes him one of the game’s great personalities.
-            Born in Poland’s capital city, Szczesny spent his formative years with local side Legia Warsaw before moving to Arsenal as a 16-year-old.
-            After finding his feet in London, the Polish international made his debut in September 2009 and, upon returning from a loan spell with Brentford in 2010, he established himself as the Gunners’ first-choice keeper for the next five seasons.
-            Szczesny celebrated two FA Cups, a Community Shield and the 2013-14 Premier League Golden Glove Award during his time with Arsenal.
-            In 2015, Roma secured Szczesny’s services for a loan spell that ultimately lasted two years, comprising of 72 appearances in Serie A and a further nine in the Champions League, ending the 2016/17 season with the highest number of clean sheets in the league (14).
-            Szczesny’s maiden campaign with Juventus (2017/18), saw him concede just nine goals in 21 appearances across all competitions, proving himself as one of Europe’s standout shot-stoppers.
-            Now being Juve's first-choice keeper, Szczesny has stepping into his position with confidence and performances to match, estabilishing himself as one of the best keepers in Europe.</p>
+          <p class="text">...</p>
         </div>
       </div>
     </div>
     <Footer/>
-
   </div>
 </template>
 
@@ -46,18 +37,17 @@ import Footer from "@/components/common/Footer";
 
 export default {
   name: 'playerProfileRoute',
-  components: {TeamProfileHeader, Footer},
+  components: { TeamProfileHeader, Footer },
   data() {
     return {
       playerId: this.$route.params.playerId,
-
       teamPlayerResponse: {
         id: 0,
         teamId: 0,
         firstName: '',
         lastName: ''
       },
-    }
+    };
   },
   methods: {
     getTeamPlayerInformationByPlayerId() {
@@ -77,10 +67,10 @@ export default {
     },
   },
   mounted() {
-    console.log("PLAYER ID from route: " + this.$route.query.playerId);
+    console.log("PLAYER ID from route: " + this.$route.params.playerId);
+    this.playerId = this.$route.params.playerId;
     this.getTeamPlayerInformationByPlayerId();
   }
-
 }
 </script>
 
