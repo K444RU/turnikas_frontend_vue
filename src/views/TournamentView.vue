@@ -410,7 +410,6 @@
         </div>
       </div>
 
-
     </div>
     <Footer/>
   </div>
@@ -481,16 +480,21 @@ export default {
   },
   methods: {
     navigateToTeamPlayerProfile(playerId) {
-      // Ensure modal is properly closed
-      const teamInfoModal = new bootstrap.Modal(this.$refs.teamInfoModal);
-      teamInfoModal.hide();
+      const modal = this.$refs.teamInfoModal;
+      if (modal) {
+        $(modal).modal('hide');
+      }
 
-      // Navigate to player profile route with playerId as parameter
+      document.body.classList.remove('modal-open');
+      const backdrops = document.getElementsByClassName('modal-backdrop');
+      for (let i = 0; i < backdrops.length; i++) {
+        backdrops[i].parentNode.removeChild(backdrops[i]);
+      }
+
       this.$router.push({
         name: 'playerProfileRoute',
         params: { playerId }
       }).then(() => {
-        // Scroll to the top of the page after navigation
         window.scrollTo(0, 0);
       });
       console.log('Player Id is: ' + playerId);
